@@ -1,37 +1,36 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import Countdown from 'react-countdown'
-import {Card, CardHeader, CardMedia, CardContent, CardActions,IconButton, Typography } from '@material-ui/core';
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import { CardActions,IconButton,  } from '@material-ui/core';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {Text, Box, Flex} from 'rebass'
 import LikeButton from '../Buttons/LikeButton'
 
-import {AuthContext} from '../../context/auth'
 
 export default function EventWindow (props){
     const {post} = props
-    const {user} = useContext(AuthContext)
     const [expanded, setExpanded] = useState(false);
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
       };
-      const renderer = ({ days, hours, minutes, seconds, completed }) => {
-        if (completed) {
-          // Render a complete state
-          return 'Over'
-        } else {
-          // Render a countdown
-          return (
-            <span>
-              {days}:{hours}:{minutes}:{seconds}
-            </span>
-          );
-        }
-      };
+      const parseDate = Date.parse(post.timeOfEvent);
+      
+      // const renderer = ({ parseDate }) => {
+      //   if ({parseDate} > 0) {
+      //     // Render a complete state
+      //     return 'Over'
+      //   } else {
+      //     // Render a countdown
+      //     return (
+      //       <span>
+      //        { parseDate}
+      //       </span>
+      //     );
+      //   }
+      // };
     return(
-        <Card >
+        <Box >
           <Flex flexDirection="column">
             <Flex flexDirection='column' mr="auto" mb={3}>
              <Text fontWeight='bold' fontSize={18} textAlign="left">
@@ -49,6 +48,7 @@ export default function EventWindow (props){
           </Flex>
           <Flex>
           <CardActions >
+        
             <LikeButton post={post}postId={post.id}/>
             <IconButton>
               <ShareIcon />
@@ -60,16 +60,16 @@ export default function EventWindow (props){
               <ExpandMoreIcon />
             </IconButton>
             <Text color="textSecondary">
-            <Countdown date={Date.now()+300000000} renderer={renderer}/>
+            <Countdown date={parseDate}/>
             </Text>
           </CardActions>
           </Flex>
             <Flex >
              <Box ml="auto" >
-               <Text>{post.firstname}  {post.secondname} </Text>
+               <Text>{post.firstName}  {post.secondName} </Text>
              </Box>
             </Flex>
         </Flex>
-      </Card>
+      </Box>
     )
 }

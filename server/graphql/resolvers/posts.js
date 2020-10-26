@@ -1,4 +1,6 @@
 const { AuthenticationError, UserInputError } = require('apollo-server');
+const { uploadToCloudinary, deleteFromCloudinary } = require ('../../util/cloudinary');
+const { pubSub, NEW_POST } = require('../../Subscriptions');
 
 const Post = require('../../models/Post');
 const checkAuth = require('../../util/check-auth');
@@ -38,7 +40,8 @@ module.exports = {
         privateEvent,
         notifyFriends,
         adultEvent,
-        imagesOfEvent,}
+        image,
+      }
         ,
         locationOfEvent:{
          address,
@@ -48,10 +51,19 @@ module.exports = {
        }, context) {
       const user = checkAuth(context);
 
-      // if (body.trim()===''){
-      //   throw new Error ('Post body must not be empty')
-      // }     
-
+      let imageUrl, imagePublicId;
+      if (image) {
+        const { createReadStream } = await image;
+        const stream = createReadStream();
+        const uploadImage = await uploadToCloudinary(stream, 'post');
+  
+        if (!uploadImage.secure_url) {
+          throw new Error('Something went wrong while uploading image to Cloudinary');
+        }
+  
+        imageUrl = uploadImage.secure_url;
+        imagePublicId = uploadImage.public_id;
+      }
       const newPost = new Post({
         typeOfEvent,
         infoPost,
@@ -65,16 +77,17 @@ module.exports = {
         privateEvent,
         notifyFriends,
         adultEvent,
-        imagesOfEvent,
+        image: imageUrl,
+         imagePublicId,
         userId: user.id,
-        firstname: user.firstname,
-        secondname: user.secondname,
+        firstName: user.firstName,
+        secondName: user.secondName,
         createdAt: new Date().toISOString()
       });
 
       const post = await newPost.save();
 
-      context.pubsub.publish('NEW_POST',{
+      pubSub.publish(NEW_POST,{
         newPost: post
       })
 
@@ -96,15 +109,17 @@ module.exports = {
       }
     },
     async likePost(_,{postId}, context){
-      const {username} = checkAuth(context);
+      const user= checkAuth(context);
 
       const post = await Post.findById(postId);
       if(post){
-        if(post.likes.find(like => like.username === username)){
-          post.likes = post.likes.filter(like => like.username !== username);
+        if(post.likes.find(like => like.userId === user.id)){
+          post.likes = post.likes.filter(like => like.userId !== user.id);
         } else{
           post.likes.push({
-            username,
+            userId:user.id,
+            firstName: user.firstName,
+            secondName: user.secondName,
             createdAt: new Date().toISOString()
           })
         }
@@ -116,7 +131,7 @@ module.exports = {
   },
   Subscription:{
     newPost:{
-      subscribe: (_,__,{pubsub})=> pubsub.asyncIterator('NEW_POST')
+      subscribe: (_,__,{pubSub})=> pubSub.asyncIterator(NEW_POST)
     }
   }
 };

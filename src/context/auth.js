@@ -1,18 +1,18 @@
-import React, { useReducer, createContext } from 'react'
+import React, { useReducer, createContext, useContext } from 'react'
 import jwtDecode from 'jwt-decode'
 
-const initialState ={
+export const initialState ={
     user: null
 }
 
 if(localStorage.getItem('jwtToken')){
     const decodedToken = jwtDecode(localStorage.getItem('jwtToken'));
 
-    // if(decodedToken.exp * 1000 < Date.now()){
-    //     localStorage.removeItem('jwtToken')
-    // } else {
+    if(decodedToken.exp * 10000 < Date.now()){
+        localStorage.removeItem('jwtToken')
+    } else {
         initialState.user = decodedToken;
-    // }
+    }
 }
 
 const AuthContext = createContext ({
@@ -21,7 +21,7 @@ const AuthContext = createContext ({
     logout: ()=>{}
 })
 
-function authReducer(state, action){
+export function authReducer(state = initialState, action){
     switch (action.type){
         case "LOGIN":
             return {
@@ -62,3 +62,4 @@ function AuthProvider(props){
 }
 
 export {AuthContext, AuthProvider}
+export const useStore = () => useContext(AuthContext);

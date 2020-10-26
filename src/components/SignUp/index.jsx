@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react'
 import {Text, Box, Flex} from 'rebass'
 import { useMutation } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
@@ -10,30 +9,17 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import {AuthContext} from '../../context/auth'
 import { useForm } from "../../util/hooks"
-import {REGISTER_USER} from '../../apis'
-
-const WrapperDialog = styled(Box)`
-    /* position: absolute; */
-    z-index: 140;
-    max-width: 720px;
-    
-    overflow: hidden;
-    margin-top: 10%;
-    margin-left: auto;
-    padding: 50px;
-
-    background: #fff;
-    box-shadow: 0 0 15px rgba(0,0,0,0.4);
-`
+import {REGISTER_USER} from '../../apis/UserAPI'
 
 
 export default function SignUp(props){
+    const {setIsLogin} = props;
     const context = useContext(AuthContext)
-    const [errors, setErrors] = useState({});
+    const [errors ] = useState({});
     
     const {onChange, onSubmit, values } = useForm(registerUser, {
-        firstname: '',
-        secondname: '',
+        firstName: '',
+        secondName: '',
         email: '',
         password: '',
         confirmPassword: '',  
@@ -44,9 +30,9 @@ export default function SignUp(props){
             context.login(userData)
             props.history.push('/')
         },
-        onError(err){
-            setErrors(err.graphQLErrors[0].extensions.exception.errors);
-        },
+        // onError(err){
+        //     setErrors(err.graphQLErrors[0].extensions.exception.errors);
+        // },
             variables: values
     });
 
@@ -56,32 +42,26 @@ export default function SignUp(props){
     }
 
     return(
-        <WrapperDialog >
-       <Flex flexDirection="column">
-        <Flex>
-            <Text mx="auto">
-                myEvent
-            </Text>
-        </Flex>
+     <Box>
        <Form onSubmit={onSubmit} render={({handleSubmit, form}) => (
         <form onSubmit={handleSubmit} noValidate lassName={loading ? <CircularProgress/> : ""} >
             <Flex >
                 <Box  mx="auto">
                 <Flex pt={6}>
-                <TextField name="firstname"
+                <TextField name="firstName"
                     placeholder="First Name"
-                    values={values.firstname}
-                    helperText={errors.firstname ? "Error" : false}
-                    error={errors.firstname ? true: false}
+                    values={values.firstName}
+                    helperText={errors.firstName ? "Error" : false}
+                    error={errors.firstName ? true: false}
                     onChange={onChange}
                     />
                 </Flex>
                 <Flex pt={3}>
-                <TextField name="secondname"
+                <TextField name="secondName"
                     placeholder="Second name"
                     type="text"
-                    values={values.secondname}
-                    error={errors.secondname ? true : false}
+                    values={values.secondName}
+                    error={errors.secondName ? true : false}
                     onChange={onChange}/>
                 </Flex>
                 <Flex pt={3}>
@@ -123,13 +103,12 @@ export default function SignUp(props){
        )}/>
             <Flex pt={3}>
             <Box mx="auto" >
-            <Button  href="/login">
+            <Button  onClick={()=>setIsLogin(true)}>
                 Back
             </Button>
             </Box>
         </Flex>
-        </Flex>
-        </WrapperDialog>
+    </Box>
     )
 }
 

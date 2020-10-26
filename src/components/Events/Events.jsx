@@ -1,27 +1,63 @@
 import React,{useContext} from 'react'
-import { Dialog, Button,  Grid, CircularProgress, IconButton, TextField, Checkbox, Accordion, AccordionDetails, AccordionSummary, FormControlLabel } from '@material-ui/core';
+import { Dialog, Grid, CircularProgress, TextField, Checkbox, Accordion, AccordionDetails, AccordionSummary, FormControlLabel } from '@material-ui/core';
 import {Text, Box, Flex} from 'rebass'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
+// import FavoriteIcon from '@material-ui/icons/Favorite';
+// import ShareIcon from '@material-ui/icons/Share';
 
 
-import {panTo} from '../Map/index'
-import {FETCH_POSTS_QUERY} from '../../apis'
-import DeleteButton from '../Buttons/DeleteButton'
+import {FETCH_POSTS_QUERY} from '../../apis/EventAPI'
+// import DeleteButton from '../Buttons/DeleteButton'
 import { AuthContext } from '../../context/auth';
-import LikeButton from '../Buttons/LikeButton'
+// import LikeButton from '../Buttons/LikeButton'
 import Event from './Event'
 
-const WrapperEvent = styled(Flex)`
+const WrapperEvent = styled(Box)`
 box-sizing: border-box;
 max-width: 1024px;
-width:90vh;
+min-width: 360px;
+width:720px;
+height:500px;
 `
 
 
+
+
+export default function Events(props){
+
+      const {eventsWindow, handleEventsWindow} = props;
+      const {user} = useContext(AuthContext)
+      const { data, loading  } = useQuery(FETCH_POSTS_QUERY);
+      return (
+       <Dialog open={eventsWindow}  onClose={handleEventsWindow}    maxWidth="lg" scroll="body">
+        <WrapperEvent m={4} flexDirection="column">
+            <Flex mb={4}>
+                  <Text>Events</Text>
+            </Flex>
+            <Flex flexDirection="row">
+                  <Flex width={3/4}>
+                        <Grid>
+                              { loading ? (
+                                    <CircularProgress/>
+                              ) : (
+                                    data && data.getPosts.map(post => (
+                                     <Grid item key={post.id}>
+                                           <Event post={post} user={user}/>
+                                    </Grid>
+                                    ))
+                              )}
+                        </Grid>
+                  </Flex>
+                  <Box width={1/4} >
+                      <FilterBlock/>
+                  </Box>
+            </Flex>
+        </WrapperEvent>
+       </Dialog>
+      )
+}
 
 function FilterBlock(){
       return(
@@ -61,39 +97,5 @@ function FilterBlock(){
                   </Box>
             </Flex>
       </Flex>
-      )
-}
-
-export default function Events(props){
-
-      const {eventsWindow, handleEventsWindow} = props;
-      const {user} = useContext(AuthContext)
-      const { data, loading  } = useQuery(FETCH_POSTS_QUERY);
-      return (
-       <Dialog open={eventsWindow}  onClose={handleEventsWindow}    maxWidth="md" scroll="body">
-        <WrapperEvent m={4} flexDirection="column">
-            <Flex mb={4}>
-                  <Text>Events</Text>
-            </Flex>
-            <Flex flexDirection="row">
-                  <Flex width={3/4}>
-                        <Grid>
-                              { loading ? (
-                                    <CircularProgress/>
-                              ) : (
-                                    data && data.getPosts.map(post => (
-                                     <Grid item key={post.id}>
-                                           <Event post={post} user={user}/>
-                                    </Grid>
-                                    ))
-                              )}
-                        </Grid>
-                  </Flex>
-                  <Box width={1/4} >
-                      <FilterBlock/>
-                  </Box>
-            </Flex>
-        </WrapperEvent>
-       </Dialog>
       )
 }

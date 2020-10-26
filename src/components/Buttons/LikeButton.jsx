@@ -2,39 +2,50 @@ import React,{useEffect, useState} from 'react';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import {IconButton} from '@material-ui/core';
 import { useMutation } from "@apollo/react-hooks"
-import {Text, Box, Flex} from 'rebass'
-import {LIKE_POST} from '../../apis'
+import { Flex} from 'rebass'
+import {LIKE_POST} from '../../apis/EventAPI'
 
 export default function LikeButton(props){
     const {user, post, postId} = props;
-    const [liked, setLiked] = useState(false)
+    const [likeCount, setLikeCount] = useState(post.likeCount)
+    const [liked, setLiked] = useState(false);
+    const LikeButton = (
+        liked ? (
+           <FavoriteIcon color="secondary"/>
+        ) : (
+           <FavoriteIcon />
+        )
+    )
+    const variables = {
+        postId: postId,
+    }; 
+      console.log(user)
     useEffect(()=>{
-        if(user && post.likes.find(like => like.firstname === user.firstname)){
+        if(user && post.likes.find(like => like.userId === user.id)){
             setLiked(true)
         } else setLiked(false)
-     }, [user, post.likes]
-    )
+     }, [user, post.likeCount]
+    );
      const [likePost] = useMutation(LIKE_POST, {
         update(){
-
+            
         },
-        variables: {
-            postId
-        }
+        variables
+     });
+     function handleLikeCount(){
 
-     })
-     console.log(postId)
+     }
+    function handleLike(){
+   
+        setLikeCount(prev=> prev + 1)
+        likePost()
+    }
 
-     const LikeButton = (
-         liked ? (
-            <FavoriteIcon color="secondary"/>
-         ) : (
-            <FavoriteIcon/>
-         )
-     )
+    
     return(
         <Flex>
-              <IconButton onClick={likePost}>
+              {likeCount}
+              <IconButton onClick={handleLike}>
              {LikeButton}
             </IconButton>
         </Flex>
