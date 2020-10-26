@@ -23,7 +23,6 @@ export default function SearchAddress({ panTo }) {
 
   const handleSelect = async (address) => {
     setValue(address, false);
-    console.log(value)
     clearSuggestions();
 
     try {

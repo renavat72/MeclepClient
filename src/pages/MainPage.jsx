@@ -1,29 +1,51 @@
 import React from 'react'
-import {BrowserRouter, Route, Switch} from 'react-router-dom'
-import Login from '../components/Login'
-import SignUp from '../components/SignUp'
-import Dashboard from '../components/Dashboard'
-import Map from '../components/Map'
+import {BrowserRouter, Route} from 'react-router-dom'
+import { createGlobalStyle } from 'styled-components';
 
+import Dashboard from '../components/Dashboard'
+// import Profile from '../components/Profile'
 import {AuthProvider} from '../context/auth'
 import AuthRoute from '../util/authRoute'
-import { Box, Flex } from 'rebass'
+
+const GlobalStyle = createGlobalStyle`
+  html {
+    box-sizing: border-box;
+    height: -webkit-fill-available;
+  }
+
+  *,
+  *:before,
+  *:after {
+    box-sizing: inherit;
+  }
+
+  body {
+    font-family: open sans;
+   
+  }
+
+  #root {
+    position: relative;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+`;
 
 export default function MainPage(){
 
     return(
-        <Box width={1}>
-            <Flex >
+        <div>
+           
             <AuthProvider>
             <BrowserRouter>
-            <Switch>
+            <GlobalStyle />
+
+                <AuthRoute />
                 <Route exact path="/" component={Dashboard}/>
-                <AuthRoute  path="/login" component={Login} />
-                <AuthRoute  path="/registration" component={SignUp} />
-            </Switch>
+                {/* <Route exact path="/:id" component={Profile} /> */}
+
             </BrowserRouter>
             </AuthProvider>
-            </Flex>
-        </Box>
+        </div>
     )
 }

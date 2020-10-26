@@ -2,8 +2,8 @@ const {model, Schema} = require('mongoose');
 
 const postSchema = new Schema ({
     userId:String,
-    firstname: String,
-    secondname: String,
+    firstName: String,
+    secondName: String,
     createdAt: String,
     nameOfEvent: String,
     aboutOfEvent: String,
@@ -12,10 +12,11 @@ const postSchema = new Schema ({
     address: String,
     lat: String,
     lng: String,
-    privateEvent: String,
-    notifyFriends: String,
-    adultEvent: String,
-    imagesOfEvent: String,
+    privateEvent: Boolean,
+    notifyFriends: Boolean,
+    adultEvent: Boolean,
+    image: String,
+    imagePublicId: String,
     locationOfEvent: {
           address:String,
           lat: String,
@@ -24,16 +25,16 @@ const postSchema = new Schema ({
     comments:[
         {
             body: String,
-            firstname: String,
-            secondname: String,
+            firstName: String,
+            secondName: String,
             createdAt: String
         }
     ],
     likes: [
         {
             userId: String,
-            firstname: String,
-            secondname: String,
+            firstName: String,
+            secondName: String,
             createdAt: String
         }
     ],

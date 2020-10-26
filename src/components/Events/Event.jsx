@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
+import Countdown from 'react-countdown'
 import {IconButton} from '@material-ui/core';
 import {Text, Box, Flex} from 'rebass'
 import styled from 'styled-components';
 import ShareIcon from '@material-ui/icons/Share';
-import { Link } from 'react-router-dom';
 
 import DeleteButton from '../Buttons/DeleteButton'
 import LikeButton from '../Buttons/LikeButton'
@@ -18,16 +18,11 @@ background: #fff;
 
 export default function Event (props){
     const {post, user} = props;
-    console.log(post.userId)
+    const parseDate = Date.parse(post.timeOfEvent);
     return(
-      
+
           <WrapperCard >
-                <Flex
-                    m={3}
-                    flexDirection="column" 
-                    // as={Link} 
-                    // to={`/posts/${post.id}`}
-                    >
+                <Flex m={3} flexDirection="column" >
                   <Flex flexDirection="column">
                     <Text fontWeight='bold' fontSize={26}>
                       {post.nameOfEvent}
@@ -40,13 +35,9 @@ export default function Event (props){
                   <Flex my={3} width="280px">
                    <Text>
                          {post.aboutOfEvent}
-                         {/* Lrem, ipsum dolor sit amet consectetur adipisicing elit. Totam labore, quidem dolores tempora reiciendis porro recusandae minima minus eos natus quia eum dignissimos accusantium vel praesentium maiores itaque veritatis provident. */}
                    </Text>
                   </Flex>
                   <Flex my={1} >
-                   <Box my="auto" mr={3}>
-                         {post.likeCount}
-                   </Box>
                    <Box>
                       <LikeButton user={user} postId={post.id} post={post} />
                       <IconButton>
@@ -57,12 +48,12 @@ export default function Event (props){
                       )}
                    </Box>
                    <Box ml="auto" my="auto">
-                     <Text >{post.timeOfEvent}</Text>
+                     <Countdown date={parseDate}/>
                    </Box>
                    </Flex>
                    <Flex >
                     <Box ml="auto" >
-                      <Text>{post.firstname}  {post.secondname} </Text>
+                      <Text>{post.firstName}  {post.secondName} </Text>
                     </Box>
                   </Flex>
              </Flex>

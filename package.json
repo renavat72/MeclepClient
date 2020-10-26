@@ -10,10 +10,15 @@
     "@testing-library/user-event": "^7.1.2",
     "D": "^1.0.0",
     "apollo-upload-client": "^14.1.2",
+    "cloudinary": "^1.23.0",
+    "d": "^1.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "1.1.4",
-    "styled-components": "^5.1.1"
+    "react-slideshow-image": "^3.3.0",
+    "styled-components": "^5.1.1",
+    "uuid": "^8.3.1",
+    "websocket.io": "^0.2.1"
   },
   "scripts": {
     "start": "react-scripts start",

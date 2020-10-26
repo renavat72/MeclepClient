@@ -1,48 +1,49 @@
 import React from 'react'
-import { Dialog, TextField, IconButton, CircularProgress, Button } from '@material-ui/core';
+import { Dialog, TextField, CircularProgress, Button } from '@material-ui/core';
 import {Text, Box, Flex} from 'rebass'
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import { Form } from 'react-final-form';
-import { useMutation} from '@apollo/react-hooks'
+import { useMutation, useQuery} from '@apollo/react-hooks'
 
-import {CHANGE_FIRSTNAME, CHANGE_SECONDNAME} from '../../apis'
+import {CHANGE_FIRSTNAME, GET_AUTH_USER} from '../../apis/UserAPI'
 import { useForm } from "../../util/hooks"
+import UploadPhoto from '../UploadPhoto'
 
-function FormEditProfile(){
+
+function FormEditProfile(data){
     const { onChange, onSubmit, values } = useForm(editProfileCallback, {
-        firstname: '',
-        secondname: ''
+        firstName: '',
+        secondName: '',
+        photo:''
       });
     // Добавить secondname (бек - готов)
-      const [changeFirstname, { error }] = useMutation(CHANGE_FIRSTNAME, {
+      const [changeFirstName, { error }] = useMutation(CHANGE_FIRSTNAME, {
         update(_, result){
           console.log(result)
-          values.firstname = ''
+          values.firstName = ''
         },
         variables: values
-      })
+      });
 
       function editProfileCallback(){
         console.log(values)
-        changeFirstname()
+        changeFirstName()
       }
-
 
     return(
 
         <Box>
             <Form onSubmit={onSubmit} render={({handleSubmit}, form)=>(
-                <form onSubmit={handleSubmit}  noValidate lassName={error ? <CircularProgress/> : ""}>
+                <form onSubmit={handleSubmit}  noValidate className={error ? <CircularProgress/> : ""}>
                     <Flex flexDirection="column">
                         <Flex flexDirection="column">
                         <Flex>
                         <TextField 
                             label="Change first name"  
-                            values={values.firstname}
+                            values={values.firstName}
                             onChange={onChange}/>
                         <TextField 
                             label="Change second name" 
-                            values={values.secondname}
+                            values={values.secondName}
                             onChange={onChange}/>
                         </Flex>
                         <TextField label="Change email"/>
@@ -52,12 +53,7 @@ function FormEditProfile(){
                         </Flex>
                         </Flex>
                         <Flex>
-                        <input accept="image/*" id="icon-button-file" type="file" />
-                            <label htmlFor="icon-button-file">
-                            <IconButton color="primary" aria-label="upload picture" component="span">
-                                <PhotoCamera />
-                            </IconButton>
-                            </label>   
+                        <UploadPhoto authUser={data}/>
                         </Flex>
                         <Flex ml="auto" mt={4}>
                         <Button type="submit" variant="contained">Edit</Button>
@@ -71,6 +67,8 @@ function FormEditProfile(){
 
 export default function EditProfile(props){ 
       const {editProfileWindow, handleEditProfileWindow} = props;
+      const {data} = useQuery(GET_AUTH_USER);
+      console.log(data)
 
       return (
        <Dialog open={editProfileWindow}  onClose={handleEditProfileWindow}>

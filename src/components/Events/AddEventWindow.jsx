@@ -1,14 +1,14 @@
 import React, {useState} from 'react'
-import { TextField, Button, Dialog, DialogTitle, IconButton, CircularProgress, Select, MenuItem, InputLabel, FormControlLabel, Checkbox} from '@material-ui/core';
+import { TextField, Button, Dialog, DialogTitle,  CircularProgress, NativeSelect, InputLabel, FormControlLabel, Checkbox} from '@material-ui/core';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { Flex, Box } from 'rebass';
 import { Form } from 'react-final-form'
-import { useMutation, gql} from '@apollo/react-hooks'
+import { useMutation} from '@apollo/react-hooks'
 import styled from 'styled-components';
 
-import {CREATE_POST_MUTATION} from '../../apis'
+import {CREATE_POST_MUTATION} from '../../apis/EventAPI'
 import PlacesAutocomplete from "./PlacesAutocomplete"
 
 
@@ -17,10 +17,10 @@ const CurrentInfoSide = styled(Flex)`
      border-left: 1px solid #e5e5e5;
 `
 const AddEventWrapper = styled(Flex)`
+     
       box-sizing: border-box;
       overflow: hidden;
 `
-
 
 
 export default function AddEventWindow(props){
@@ -32,41 +32,18 @@ export default function AddEventWindow(props){
   };
   const [values, setValues] = useState({
     nameOfEvent: '',
-    typeOfEvent: '',
-    timeOfEvent: '',
+    typeOfEvent: 'Party',
     aboutOfEvent: '',
     lat:'',
     lng:'',
     address: '',
-    // privateEvent: false,
-    // notifyFriends: false,
-    // adultEvent: false,
-    imagesOfEvent: "",
+    privateEvent: false,
+    notifyFriends: false,
+    adultEvent: false,
+    image: "",
 
   })
-  const MUTATION = gql`
-  mutation($file: Upload!) {
-    uploadFile(file: $file) {
-      success
-    }
-  }
-`;
-
-function UploadFile() {
-  const [mutate] = useMutation(MUTATION);
-
-  function onChange({
-    target: {
-      validity,
-      files: [file],
-    },
-  }) {
-    if (validity.valid) mutate({ variables: { file } });
-  }
-
-  return <input type="file" required onChange={onChange} />;
-}
-
+  
   const onChange = (event) => {
     setValues({...values, [event.target.name]: event.target.value});
   };
@@ -107,17 +84,16 @@ function UploadFile() {
                     </Flex>
                     <Flex pt={3} flexDirection="column" maxWidth="200px">
                     <InputLabel htmlFor="typeOfEvent">Type</InputLabel>
-                    <Select
-                      labelId="typeOfEvent"
+                    <NativeSelect
                       name="typeOfEvent"
                       values={values.typeOfEvent}
                       onChange={onChange}
                     >
-                      <MenuItem value="Party">Party</MenuItem>
-                      <MenuItem value="Club">Club</MenuItem>
-                      <MenuItem value="Meeting">Meeting</MenuItem>
-                      <MenuItem value="Exhibition">Exhibition</MenuItem>
-                    </Select>
+                      <option value="Party">Party</option>
+                      <option value="Club">Club</option>
+                      <option value="Meeting">Meeting</option>
+                      <option value="Exhibition">Exhibition</option>
+                    </NativeSelect>
                     </Flex>
                     <Flex pt={3}  maxWidth="200px">
                     <TextField
@@ -164,7 +140,7 @@ function UploadFile() {
                       }
                   </Flex>
                   { currentSide ?
-               <CurrentInfo values={values} onChange={onChange}/> : null}
+               <CurrentInfo values={values} onChange={onChange} setValues={setValues}/> : null}
               </Flex>
               </AddEventWrapper>
           </form>
@@ -174,53 +150,74 @@ function UploadFile() {
 
    
 
-function CurrentInfo(values, onChange){
+function CurrentInfo(props){
+  const {values, setValues} = props;
+  const handleChange = (event) => {
+    setValues({ ...values, [event.target.name]: event.target.checked });
+  };
   return(
     <CurrentInfoSide flexDirection="column" px={3}>
         <Flex flexDirection="column"  my="auto">
           <FormControlLabel
             control={
               <Checkbox
-                values={values.privateEvent}
-                onChange={onChange}
+                name="privateEvent"
+                checked={values.privateEvent}
+                onChange={handleChange}
                 color="primary"
               />
             }
-            label="Private event?"
+            label="Private event"
           />
           <FormControlLabel
             control={
               <Checkbox
-                values={values.adultEvent}
-                onChange={onChange}
+                name="adultEvent"
+                checked={values.adultEvent}
+                onChange={handleChange}
                 color="primary"
               />
             }
-            label="Adult event?"
+            label="Adult event"
           />
           <FormControlLabel
             control={
               <Checkbox
-                values={values.notifyFriends}
-                onChange={onChange}
+                name="notifyFriends"
+                checked={values.notifyFriends}
+                onChange={handleChange}
                 color="primary"
               />
             }
-            label="Notify friends?"
+            label="Notify friends"
           />
         </Flex>
         <Flex mt="auto" ml="auto">
-          <UploadFile/>
-        {/* <label htmlFor="icon-button-file">
-          <Box css="display: none;">
-        <input onChange={onChange}  values={values.imagesOfEvent} id="icon-button-file" type="file" />
-        </Box>
-                  <IconButton color="primary" type="submit" component="span">
-                    <PhotoCamera />
-                  </IconButton>
-          </label> */}
+          <UploadFile values={values} setValues={setValues}/>
+          
         </Flex>
     </CurrentInfoSide>
   )
 }
+};
+function UploadFile(props) {
+  const {values, setValues} = props;
+  const handlePostImageUpload = (e) => {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    setValues({...values, image:file});
+
+    e.target.value = null;
+    console.log(file)
+  };
+  return (
+    <div>
+    <input name="image" onChange={handlePostImageUpload} type="file" id="post-image" accept="image/x-png,image/jpeg"  style={{ display: 'none' }}/>
+    <label htmlFor="post-image">
+    <PhotoCamera />
+    </label>
+    </div>
+    );
 }

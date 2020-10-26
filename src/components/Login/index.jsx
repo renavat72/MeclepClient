@@ -1,54 +1,51 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState} from 'react'
 import {Text, Box, Flex} from 'rebass'
-import {Button, TextField } from '@material-ui/core';
+import {Button, TextField, FormHelperText } from '@material-ui/core';
 import { Form } from 'react-final-form'
 import styled from 'styled-components';
 import { useMutation } from '@apollo/react-hooks'
 
-import {LOGIN_USER} from '../../apis'
+import {LOGIN_USER} from '../../apis/UserAPI'
 import { useForm } from "../../util/hooks"
 import {AuthContext} from '../../context/auth'
+import InfoSide from '../InfoSide'
 
-const WrapperDialog = styled(Box)`
-    box-sizing: border-box;
-    max-width: 720px;
-    overflow: hidden;
-    margin-top: 15%;
-    margin-left: auto;
-    padding: 50px;
-
-    background: #fff;
-    box-shadow: 0 0 15px rgba(0,0,0,0.4);
-`
 
 export default function Login(props){
     const context = useContext(AuthContext)
-
+    const {setIsLogin} = props;
     const {onChange, onSubmit, values } = useForm(loginUserCallback, {
         email: '',
         password: '',
     })
-
+    const [error, setError] = useState('');
+    console.log(error)
     const [loginUser, {loading}] = useMutation (LOGIN_USER, {
+        
         update(_, {data:{login: userData}}){
             context.login(userData)
             props.history.push('/login')
         },
+        // onError(err){
+        //     setErrors(err.graphQLErrors[0].extensions.extension.errors)
+        // },
         variables: values
     });
-
+       
     function loginUserCallback(){
         loginUser();
+
+    if (!email || !password) {
+        setError('All fields are required');
+        return;
+      }
+  
     }
+    const { email, password } = values;
 
     return(
-        <WrapperDialog >
-       <Flex flexDirection="column"my="auto">
-        <Flex>
-            <Text mx="auto">
-                myEvent
-            </Text>
-        </Flex>
+        <Box>
+ 
         <Form onSubmit={onSubmit} noValidate className={loading ? "loading" : ""} render={({form, handleSubmit}) => (
             <form onSubmit={handleSubmit}>
             <Box  mx="auto">
@@ -57,7 +54,6 @@ export default function Login(props){
               placeholder="Email"
               type="email"
               value={values.email}
-              error={loading ? "Invalid login" : false}
               onChange={onChange}
                     />
             </Flex>
@@ -66,8 +62,8 @@ export default function Login(props){
                placeholder="Password"
               type="password"
               value={values.password}
-              error={loading ? "Invalid password" : false}
-              onChange={onChange}/>
+              onChange={onChange}
+              />
             </Flex>
             </Box>
             <Flex pt={5} >
@@ -76,23 +72,18 @@ export default function Login(props){
                 </Box>
             </Flex>
         </form>
-    )}/>
+        )}/>
         <Flex>
-            {/* {loading && (
-                <div>
-                    <ul>
-                        <li>
-                            {loading.gtaphQLErrors[0].message}
-                        </li>
-                    </ul>
-                </div>
-            )} */}
+        {error && (
+            <Text>
+                {error}
+            </Text>
+          )}
         </Flex>
-        <Flex pt={4}mx="auto">
-            <Text>New user? <a href="/registration">Create account</a></Text>
+        <Flex pt={4}  >
+            <Text  mx="auto"  onClick={()=>setIsLogin(false)} color="blue">Create account</Text>
         </Flex>
-        </Flex>
-        </WrapperDialog>
+        </Box>
     )
 }
 

@@ -1,13 +1,39 @@
 const {model, Schema} = require('mongoose');
 
 const userSchema = new Schema ({
-    firstname: String,
-    secondname: String,
+    firstName: String,
+    secondName: String,
     password: String,
     email: String,
     createdAt: String,
-    profileImage: String
-
+    image: String,
+    imagePublicId: String,
+    coverImage: String,
+    coverImagePublicId: String,
+    followers: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Follow',
+        },
+      ],
+      following: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Follow',
+        },
+      ],
+      notifications: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Notification',
+        },
+      ],
+      messages: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+        },
+      ],
 });
 
 module.exports = model('User', userSchema)

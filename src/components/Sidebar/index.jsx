@@ -1,13 +1,13 @@
 import React, { useState, useContext } from 'react'
 import {Button, Drawer, List, ListItem, ListItemText, Avatar, Badge, ListItemIcon } from '@material-ui/core';
 import { Box, Flex } from 'rebass';
-import { AuthContext } from '../../context/auth'
 import AccountBoxOutlinedIcon from '@material-ui/icons/AccountBoxOutlined';
 import MailIcon from '@material-ui/icons/Mail';
 import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 import EventIcon from '@material-ui/icons/Event';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
+import { AuthContext } from '../../context/auth'
 import Events from '../Events/Events'
 import EditProfile from '../EditProfile'
 import DialogWindow from '../Dialog'
@@ -20,7 +20,6 @@ const Sidebar = (props) => {
     const [dialogWindow, setDialogWindow] = useState(false);
     const [friendsWindow, setFriendsWindow] = useState(false);
     const [editProfileWindow,setEditProfileWindow] = useState(false);
-
     const handleEventsWindow = () => {
         setEventsWindow(!eventsWindow);
       };
@@ -43,7 +42,7 @@ const Sidebar = (props) => {
     const Logout = () => {
         return (
             <Box>
-            <Button variant="outlined"  onClick = { logout } href="/login"> <ListItemIcon> <ExitToAppIcon /></ListItemIcon> Logout </Button>
+            <Button variant="outlined"  onClick = { logout } href="/authorization"> <ListItemIcon> <ExitToAppIcon /></ListItemIcon> Logout </Button>
             </Box>
         )
     }
@@ -95,17 +94,17 @@ const Sidebar = (props) => {
                     <Avatar>H</Avatar>
                     <Flex my="auto">
                     <Box width={1/3} ml={2}>
-                        {user.firstname}
+                        {user.firstName}
                     </Box>
                     <Box width={1/3}>
-                        {user.secondname}
+                        {user.secondName}
                     </Box>
                     </Flex>
                 </Flex>
                 <Flex flexDirection="column">
                     <List>
                         {[<FriendWindowBlock/>, <DialogBlock/>, <EventsBlock />, <EditProfileBlock/>].map((text) => (
-                            <ListItem key={text} onClick={handleClick} my={1}>
+                            <ListItem key={text.id} onClick={handleClick} my={1}>
                                 <ListItemText primary={text} />
                             </ListItem>
                         ))}
