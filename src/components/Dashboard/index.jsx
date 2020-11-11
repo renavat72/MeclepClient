@@ -17,18 +17,20 @@ export default function Dashboard(){
 
       return(
         <Box >
-        <AddEventWindow eventWindow={eventWindow}  handleEventWindow={handleEventWindow}/>
-        <Map/>
-          <Flex>
+          <AddEventWindow eventWindow={eventWindow}  handleEventWindow={handleEventWindow}/>
+          <Map/>
             <Flex>
-              <Layout />
-            </Flex>
-            <Flex ml="auto" mr={4} >
-              <Fab color="primary">
-                  <AddIcon onClick={handleEventWindow}/>
-              </Fab>
-            </Flex>
-        </Flex>
+              <Flex>
+                <Layout />
+              </Flex>
+              <Flex ml="auto" mr={4} >
+                <Fab color="primary">
+                    <AddIcon onClick={handleEventWindow}/>
+                </Fab>
+              </Flex>
+          </Flex>
+
+             
       </Box>
     )
 }

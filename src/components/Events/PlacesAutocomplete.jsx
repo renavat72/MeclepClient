@@ -4,6 +4,7 @@ import usePlacesAutocomplete, {
     getGeocode,
     getLatLng,
   } from "use-places-autocomplete";
+import { Box, Text } from 'rebass';
 
 
 export default function PlacesAutocomplete(props){
@@ -45,13 +46,15 @@ export default function PlacesAutocomplete(props){
 
           return (
             <li key={id} onClick={handleSelect(suggestion, value)}>
-                <strong>{main_text}</strong> <small>{secondary_text}</small>
+              <Box width={1}>
+                <Text>{main_text}</Text> <Text>{secondary_text}</Text>
+              </Box>
               </li>
             );
           });
 
       return (
-        <div >
+        <Box width="200px">
         <TextField
             name="locationOfEvent"
             values={value}
@@ -60,7 +63,7 @@ export default function PlacesAutocomplete(props){
             placeholder="Street of party"
           />
 
-        {status === "OK" && <ul>{renderSuggestions(value)}</ul>}
-      </div>
+        {status === "OK" && <ul width={1/2}><Box >{renderSuggestions(value)}</Box></ul>}
+      </Box>
     );
   };

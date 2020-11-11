@@ -26,7 +26,45 @@ module.exports = gql`
     locationOfEvent: String!
     infoPost: String
   }
-
+  type PostPayload {
+    id: ID!
+    userId: String
+    createdAt: String!
+    firstName: String!
+    secondName: String!
+    likes: [Like]!
+    likeCount: Int!
+    comments: [Comment]!
+    commentCount: Int!
+    timeOfEvent: String!
+    typeOfEvent: String!
+    nameOfEvent: String!
+    aboutOfEvent: String!
+    address:String!
+    lat: Float
+    lng: Float
+    privateEvent: Boolean
+    notifyFriends: Boolean
+    adultEvent: Boolean
+    image: String
+    imagePublicId: String
+    locationOfEvent: String!
+    infoPost: String
+  }
+  type ParserEvent {
+    id: ID!
+    createdAt: String
+    title: String!
+    headerDescription: String!
+    urlContent:String!
+    description: String!
+    time: String
+    period: String
+    typeOfEvent: String
+    address: String!
+    infoParserEvent: String
+  }
+  
   type Comment{
     id: ID!
     createdAt: String!
@@ -133,6 +171,10 @@ module.exports = gql`
     count: String!
     notifications: [NotificationPayload]!
   }
+  type NotificationCreatedOrDeletedPayload {
+    operation: NotificationOperationType!
+    notification: NotificationPayload
+  }
 
   type Message {
     id: ID!
@@ -221,13 +263,22 @@ module.exports = gql`
   input DeleteNotificationInput {
     id: ID!
   }
-  type NotificationCreatedOrDeletedPayload {
-    operation: NotificationOperationType!
-    notification: NotificationPayload
+
+  input InfoParserEvent{
+    title: String
+    headerDescription: String
+    urlContent:String
+    description: String
+    time: String
+    period: String
+    typeOfEvent: String
+    address: String
   }
 
-
   type Query {
+    getParserEvents:[ParserEvent]
+    searchPost(searchQuery: String!): [Post]
+    filterTypePost(searchQuery: String!): [Post]
     getMessages(authUserId: ID!, userId: ID!): [MessagePayload]
     getConversations(authUserId: ID!): [ConversationsPayload]
     getCurrentUser(userId: String!): UserPayload
@@ -245,12 +296,13 @@ module.exports = gql`
 
   }
     type Mutation{
+        createParserEvent(input:InfoParserEvent):ParserEvent!
         createMessage(input: CreateMessageInput!): MessagePayload
         updateMessageSeen(input: UpdateMessageSeenInput!): Boolean
         register(registerInput: RegisterInput): User!
         login(email: String!, password: String!): User!
-        createPost(infoPost: InfoPost, locationOfEvent:LocationOfEvent): Post!
-        deletePost(postId: ID!): Post!
+        createPost(infoPost: InfoPost, locationOfEvent:LocationOfEvent): PostPayload
+        deletePost(postId: ID!): PostPayload
         likePost(postId: String!): Post!
         uploadUserPhoto(input: UploadUserPhotoInput!): UserPayload
         changeFirstName(currentFirstName: String!, newFirstName: String!): User!
@@ -262,6 +314,7 @@ module.exports = gql`
  }
     type Subscription{
       newPost: Post!
+      newParserEvent: ParserEvent!
       messageCreated(authUserId: ID!, userId: ID!): MessagePayload
       newConversation: ConversationsPayload
       isUserOnline(authUserId: ID!, userId: ID!): IsUserOnlinePayload

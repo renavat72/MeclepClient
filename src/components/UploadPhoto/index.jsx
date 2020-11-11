@@ -13,39 +13,42 @@ export default function UploadPhoto(props){
     
     const [values, setValues] = useState({
         id: authUser.id,
-        coverImage: '',
+        image: '',
         imagePublicId: authUser.coverImagePublicId,
-        isCover: true,
       })
      
-        const [uploadPhoto] = useMutation(UPLOAD_PHOTO, {
-            update(_, result){
-            console.log(result)
-            },
-            variables: {
-                    input: { 
-                        id: values.id,
-                        image: values.coverImage,
-                        imagePublicId: values.imagePublicId,
-                        isCover: values.isCover,
-                    }
-            }
-        })
+      const [uploadPhoto] = useMutation(UPLOAD_PHOTO, {
+        update(_, result){
+        console.log(result)
+        },
+        variables: {
+                input: { 
+                    id: authUser.id,
+                    image: values.image,
+                    imagePublicId: values.imagePublicId,
+                    isCover: true,
+                }
+        }
+    })
         
         function handleUploadPhoto(event){
-            setValues({...values, [event.target.name]: event.target.value});
-        
+            const file = event.target.files[0];
+    
+            if (!file) return;
+            setValues({...values,image:file});
+           
             uploadPhoto()
+            console.log(file)
         }
         console.log(values)
-    
+
     return(
         <div>
           <Input
             name="coverImage"
             type="file"
             id="coverImage"
-            value={values.photo}
+            // value={values.photo}
             onChange={handleUploadPhoto}
             accept="image/x-png,image/jpeg"
         />

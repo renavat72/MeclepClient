@@ -123,3 +123,59 @@ export const DELETE_POST = gql`
         }
     }
 `
+
+export const FILTER_TYPE_POST = gql`
+   query($searchQuery: String!) {
+     filterTypePost(searchQuery: $searchQuery){
+            id
+            nameOfEvent
+            aboutOfEvent
+            timeOfEvent
+            address
+            lat
+            lng
+            typeOfEvent
+            createdAt
+            firstName
+            secondName
+            privateEvent
+            notifyFriends
+            adultEvent
+            image
+            likeCount
+            likes{
+                id
+                # firstName
+                # secondName
+            }
+        }
+    }
+`
+
+export const SEARCH_POST = gql`
+   query($searchQuery: String!) {
+    searchPost(searchQuery: $searchQuery){
+            id
+            nameOfEvent
+            aboutOfEvent
+            timeOfEvent
+            address
+            lat
+            lng
+            typeOfEvent
+            createdAt
+            firstName
+            secondName
+            privateEvent
+            notifyFriends
+            adultEvent
+            image
+            likeCount
+            likes{
+                id
+                # firstName
+                # secondName
+            }
+        }
+    }
+`

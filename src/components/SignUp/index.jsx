@@ -1,9 +1,8 @@
 import React, { useState, useContext } from 'react'
-import {Text, Box, Flex} from 'rebass'
+import { Box, Flex} from 'rebass'
 import { useMutation } from '@apollo/react-hooks'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import styled from 'styled-components';
 import { Form } from 'react-final-form'
 import CircularProgress from '@material-ui/core/CircularProgress';
 

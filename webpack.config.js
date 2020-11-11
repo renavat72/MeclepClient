@@ -20,10 +20,22 @@ module.exports = {
             use: 'css-loader'
         },
         {
-            test: /\.(jpg|png|svg)$/,
-            loader: 'url-loader?limit=25000',
+            test: /\.(gif|svg|jpg|png)(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "file-loader",
             include: path.join(__dirname, 'public')
-        }
+        },
+        {
+            test: /\.(woff(2)?|ttf|eot|svg|jpg)(\?v=\d+\.\d+\.\d+)?$/,
+            use: [
+              {
+                loader: 'file-loader',
+                options: {
+                  name: '[name].[ext]',
+                  outputPath: 'fonts/'
+                }
+              }
+            ]
+          }
     ]
     },
   

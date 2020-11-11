@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import MainPage from './pages/MainPage';
 import styled from 'styled-components';
 // import theme from './theme'

@@ -1,14 +1,12 @@
 import React, {useContext, useState} from 'react'
 import {Text, Box, Flex} from 'rebass'
-import {Button, TextField, FormHelperText } from '@material-ui/core';
+import {Button, TextField } from '@material-ui/core';
 import { Form } from 'react-final-form'
-import styled from 'styled-components';
 import { useMutation } from '@apollo/react-hooks'
 
-import {LOGIN_USER} from '../../apis/UserAPI'
+import {LOGIN_USER, GET_AUTH_USER} from '../../apis/UserAPI'
 import { useForm } from "../../util/hooks"
 import {AuthContext} from '../../context/auth'
-import InfoSide from '../InfoSide'
 
 
 export default function Login(props){
@@ -80,8 +78,12 @@ export default function Login(props){
             </Text>
           )}
         </Flex>
-        <Flex pt={4}  >
-            <Text  mx="auto"  onClick={()=>setIsLogin(false)} color="blue">Create account</Text>
+        <Flex pt={4}>
+            <Box mx="auto">
+        <Button color="primary" onClick={()=>setIsLogin(false)} >
+        Create account
+        </Button>  
+        </Box>
         </Flex>
         </Box>
     )

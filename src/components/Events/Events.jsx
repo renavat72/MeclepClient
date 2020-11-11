@@ -1,5 +1,5 @@
-import React,{useContext} from 'react'
-import { Dialog, Grid, CircularProgress, TextField, Checkbox, Accordion, AccordionDetails, AccordionSummary, FormControlLabel } from '@material-ui/core';
+import React,{useContext,useEffect,useState} from 'react'
+import { Dialog, TextField, Checkbox, Accordion, AccordionDetails, AccordionSummary, FormControlLabel, Radio, RadioGroup, Button } from '@material-ui/core';
 import {Text, Box, Flex} from 'rebass'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import styled from 'styled-components';
@@ -9,93 +9,162 @@ import { useQuery } from '@apollo/react-hooks';
 
 
 import {FETCH_POSTS_QUERY} from '../../apis/EventAPI'
-// import DeleteButton from '../Buttons/DeleteButton'
+
 import { AuthContext } from '../../context/auth';
-// import LikeButton from '../Buttons/LikeButton'
 import Event from './Event'
 
 const WrapperEvent = styled(Box)`
-box-sizing: border-box;
-max-width: 1024px;
-min-width: 360px;
-width:720px;
-height:500px;
+width:100%;
+min-height: 720px;
+
+
+`
+const WrapperFilterEvent = styled(Box)`
+position: fixed;
+
+`
+const WrapperBlock = styled(Box)`
+/* overflow:hidden; */
 `
 
 
-
+const Block = ({children }) => (
+      <Box>
+      {children}
+      </Box>
+);
 
 export default function Events(props){
+      const {eventsWindow, handleEventsWindow,authUser} = props;
+      const [typeValue, setTypeValue] = useState("");
+      const [favorite, setFavorite] = useState();
+      const [myFollowing, setMyFollowing] = useState();
+      const [searchValue, setSearchValue] = useState();
 
-      const {eventsWindow, handleEventsWindow} = props;
-      const {user} = useContext(AuthContext)
-      const { data, loading  } = useQuery(FETCH_POSTS_QUERY);
+      const onTypeChange = e => setTypeValue(e.target.value);
+      const onSearchChange = e => setSearchValue(e.target.value);
+      const { data } = useQuery(FETCH_POSTS_QUERY);
+      const {user} = useContext(AuthContext);
+      const filteredEvents =  data&&data.getPosts.filter(post => (
+            (!typeValue || post.typeOfEvent === typeValue) && 
+            (!searchValue || post.nameOfEvent === searchValue) &&  //Доработать ввод 
+            (!favorite || post.likes.find(user =>user.userId === favorite)) 
+            &&(!myFollowing || post.userId === myFollowing) //Доработать сравнение. Не видит значения 
+            ));
+      function favoriteHandle(){
+            favorite ? setFavorite(null): setFavorite(user.id )
+      }
+      function myFollowingHandle(){
+            myFollowing ? setMyFollowing(null): setMyFollowing(authUser&&authUser.getAuthUser.following.map(user=> user.user))
+      }
+
+      // console.log(data&& data.getPosts.map(post => post.nameOfEvent === searchValue))
+
       return (
-       <Dialog open={eventsWindow}  onClose={handleEventsWindow}    maxWidth="lg" scroll="body">
-        <WrapperEvent m={4} flexDirection="column">
+       <Dialog open={eventsWindow}  onClose={handleEventsWindow} width={1} maxWidth="xl"  >
+         <WrapperBlock m={4} flexDirection="column" minWidth="600px" >
             <Flex mb={4}>
-                  <Text>Events</Text>
+                  <Text fontSize={3} fontWeight='bold'>Events</Text>
             </Flex>
-            <Flex flexDirection="row">
-                  <Flex width={3/4}>
-                        <Grid>
-                              { loading ? (
-                                    <CircularProgress/>
-                              ) : (
-                                    data && data.getPosts.map(post => (
-                                     <Grid item key={post.id}>
-                                           <Event post={post} user={user}/>
-                                    </Grid>
-                                    ))
-                              )}
-                        </Grid>
-                  </Flex>
-                  <Box width={1/4} >
-                      <FilterBlock/>
+            <Flex width={1}>
+                  <WrapperEvent >
+                   <EventsList events={filteredEvents} user={user}/>
+                  </WrapperEvent>
+                  <Box width={3/4} mr="auto">
+                    <FilterBlock
+                        typeValue={typeValue}
+                        onTypeChange={onTypeChange}
+                        searchValue={searchValue}
+                        onSearchChange={onSearchChange}
+                        favoriteHandle={favoriteHandle}
+                        myFollowingHandle={myFollowingHandle}
+                        />
                   </Box>
             </Flex>
-        </WrapperEvent>
+        </WrapperBlock>
        </Dialog>
       )
 }
 
-function FilterBlock(){
+function EventsList({events, user}){
+      useEffect(()=>{
+            setEventsData(events)
+      },[events] )
+      const [eventsData, setEventsData ] = useState();
+
       return(
-            <Flex mx="auto">
-            <Flex flexDirection="column">
-            <TextField placeholder="Find a event"/>
+      <Box> {eventsData <= 0 ? 
+            <Box mt="300px">
+              <Text textAlign="center" fontWeight='bold'  color="#aaa">No events</Text>
+            </Box>
+            :
+            eventsData && eventsData.map(post => (
+            <Block item key={post.id}>
+                  <Box my={3} ml={1}>
+                  <Event post={post} user={user}/>
+                  </Box>
+            </Block>
+            )) }
+      </Box>
+)
+}
+
+function FilterBlock(props){
+      const {typeValue, onTypeChange, searchValue, onSearchChange, favoriteHandle, myFollowingHandle} =props;
+      return(
+            <Flex flexDirection="column"  ml="auto" width={3/4}>
+                  <WrapperFilterEvent>
+                  <Box width="170px">
+                     <TextField 
+                        // width="180px"
+                        placeholder="Find event" 
+                        value={searchValue}
+                        onChange={onSearchChange}/>
+                  </Box>
+               <Box width="170px" >
                <Accordion>
                   <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   >
-                  <Text>Types</Text>
+                  <Text textAlign="left">Types</Text>
                   </AccordionSummary>
                   <AccordionDetails>
-                  <Flex flexDirection="column" mr="auto">
-                     <FormControlLabel control={
-                        <Checkbox color="primary"/>}
-                        label="Party"/>
-                       <FormControlLabel control={
-                        <Checkbox color="primary"/>}
-                        label="Club"/>
-                        <FormControlLabel control={
-                        <Checkbox color="primary"/>}
-                        label="Meeting"/>
-                        <FormControlLabel control={
-                        <Checkbox color="primary"/>}
-                        label="Exhibition"/>
+                  <Flex flexDirection="column" mr="auto " >
+                  <RadioGroup value={typeValue} onChange={onTypeChange}>
+                     <FormControlLabel value="Party" control={
+                           <Radio 
+                           color="primary"/>}
+                           label="Party"/>
+                     <FormControlLabel value="Club" control={
+                           <Radio 
+                           color="primary"/>}
+                           label="Club"/>
+                     <FormControlLabel value="Meeting" control={
+                           <Radio 
+                           color="primary"/>}
+                           label="Meeting"/>
+                      <FormControlLabel value="Exhibition" control={
+                            <Radio 
+                            color="primary"/>}
+                            label="Exhibition"/>
+                    </RadioGroup>
                    </Flex>
                   </AccordionDetails>
                   </Accordion>
+                  </Box>
                   <Box mt={3}>
                     <FormControlLabel control={
-                        <Checkbox color="primary"/>}
+                        <Checkbox 
+                        onChange={()=>favoriteHandle()} 
+                        color="primary"/>}
                         label="Favorite"/>
                     <FormControlLabel control={
-                        <Checkbox color="primary"/>}
+                        <Checkbox 
+                        onChange={()=>myFollowingHandle()}
+                        color="primary"/>}
                         label="My friends"/>
                   </Box>
+            </WrapperFilterEvent>
             </Flex>
-      </Flex>
       )
 }

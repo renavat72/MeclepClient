@@ -1,4 +1,6 @@
-  export default {
+import { css } from 'styled-components';
+
+ export default {
     screen: {
       xs: `${375 / 16}em`,
       sm: `${540 / 16}em`,
@@ -28,7 +30,7 @@
       0, 4, 8, 16, 32, 64, 128, 256
     ],
     fonts: {
-      body: 'system-ui, sans-serif',
+      body: 'Nunito, sans-serif',
       heading: 'inherit',
       monospace: 'Menlo, monospace',
     },
@@ -54,6 +56,11 @@
         color: 'white',
         bg: 'primary',
       }
+    },
+    textStyles:{
+      h1: css`
+      color:red;
+      `
     }
   }
   

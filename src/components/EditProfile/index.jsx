@@ -9,25 +9,32 @@ import { useForm } from "../../util/hooks"
 import UploadPhoto from '../UploadPhoto'
 
 
-function FormEditProfile(data){
+function FormEditProfile(props){
+    const {data} = useQuery(GET_AUTH_USER);
     const { onChange, onSubmit, values } = useForm(editProfileCallback, {
-        firstName: '',
+        currentFirstName: data&& data.getAuthUser.firstName,
+        newFirstName: '',
         secondName: '',
         photo:''
       });
     // Добавить secondname (бек - готов)
+ 
       const [changeFirstName, { error }] = useMutation(CHANGE_FIRSTNAME, {
         update(_, result){
           console.log(result)
-          values.firstName = ''
+          ,
+          values.newFirstName = ''
         },
-        variables: values
+        variables: values,
       });
 
       function editProfileCallback(){
-        console.log(values)
         changeFirstName()
       }
+      console.log(data)
+    if (!data){
+      return null;
+    }else {
 
     return(
 
@@ -39,7 +46,7 @@ function FormEditProfile(data){
                         <Flex>
                         <TextField 
                             label="Change first name"  
-                            values={values.firstName}
+                            values={values.newFirstName}
                             onChange={onChange}/>
                         <TextField 
                             label="Change second name" 
@@ -53,7 +60,7 @@ function FormEditProfile(data){
                         </Flex>
                         </Flex>
                         <Flex>
-                        <UploadPhoto authUser={data}/>
+                        <UploadPhoto authUser={data.getAuthUser}/>
                         </Flex>
                         <Flex ml="auto" mt={4}>
                         <Button type="submit" variant="contained">Edit</Button>
@@ -63,13 +70,11 @@ function FormEditProfile(data){
             )} />
         </Box>
     )
+  }
 }
 
 export default function EditProfile(props){ 
       const {editProfileWindow, handleEditProfileWindow} = props;
-      const {data} = useQuery(GET_AUTH_USER);
-      console.log(data)
-
       return (
        <Dialog open={editProfileWindow}  onClose={handleEditProfileWindow}>
         <Box  m={4}>
@@ -77,7 +82,7 @@ export default function EditProfile(props){
                   <Text>Edit profile</Text>
             </Flex>
             <Flex>
-            <FormEditProfile/>
+            <FormEditProfile />
             </Flex>
         </Box>
        </Dialog>

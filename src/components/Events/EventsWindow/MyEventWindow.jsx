@@ -4,11 +4,11 @@ import { CardActions,IconButton,  } from '@material-ui/core';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {Text, Box, Flex} from 'rebass'
-import LikeButton from '../Buttons/LikeButton'
+import LikeButton from '../../Buttons/LikeButton'
 
 
-export default function EventWindow (props){
-    const {post} = props
+export default function MyEventWindow (props){
+    const {post, user} = props
     const [expanded, setExpanded] = useState(false);
 
     const handleExpandClick = () => {
@@ -16,32 +16,28 @@ export default function EventWindow (props){
       };
       const parseDate = Date.parse(post.timeOfEvent);
       
-      // const renderer = ({ parseDate }) => {
-      //   if ({parseDate} > 0) {
-      //     // Render a complete state
-      //     return 'Over'
-      //   } else {
-      //     // Render a countdown
-      //     return (
-      //       <span>
-      //        { parseDate}
-      //       </span>
-      //     );
-      //   }
-      // };
+      const renderer = ({ days,hours, minutes, seconds, completed }) => {
+        if (completed) {
+  
+          return "Completed"
+        } else {
+          return <span>{days}:{hours}:{minutes}:{seconds}</span>;
+        }
+      };
+
     return(
-        <Box >
+        <Box  width="250px" >
           <Flex flexDirection="column">
             <Flex flexDirection='column' mr="auto" mb={3}>
-             <Text fontWeight='bold' fontSize={18} textAlign="left">
+             <Text fontWeight='bold' fontSize={18} textAlign="left"  width="250px"  mb={2}>
                {post.nameOfEvent}
               </Text>
-              <Text fontSize={14} textAlign="left">
+              <Text fontSize={14} textAlign="left" width="200px">
                 {post.address}
               </Text>
               <Text my={1} textAlign="left">{post.typeOfEvent}</Text>
           </Flex>
-          <Flex my={2} maxWidth="240px">
+          <Flex my={1} maxWidth="300px">
             <Text color="textSecondary" textAlign="left">
               {post.aboutOfEvent}
             </Text>
@@ -49,7 +45,7 @@ export default function EventWindow (props){
           <Flex>
           <CardActions >
         
-            <LikeButton post={post}postId={post.id}/>
+            <LikeButton user={user} post={post}postId={post.id}/>
             <IconButton>
               <ShareIcon />
             </IconButton>
@@ -60,7 +56,7 @@ export default function EventWindow (props){
               <ExpandMoreIcon />
             </IconButton>
             <Text color="textSecondary">
-            <Countdown date={parseDate}/>
+            <Countdown date={parseDate} renderer={renderer}/>
             </Text>
           </CardActions>
           </Flex>

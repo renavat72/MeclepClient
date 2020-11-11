@@ -7,8 +7,9 @@ import {LIKE_POST} from '../../apis/EventAPI'
 
 export default function LikeButton(props){
     const {user, post, postId} = props;
-    const [likeCount, setLikeCount] = useState(post.likeCount)
-    const [liked, setLiked] = useState(false);
+    const [likeCount, setLikeCount] = useState(post.likeCount);
+    const likedUser = user && post.likes.find(like => like.userId === user.id);
+    const [liked, setLiked] = useState(likedUser? true: false);
     const LikeButton = (
         liked ? (
            <FavoriteIcon color="secondary"/>
@@ -19,32 +20,40 @@ export default function LikeButton(props){
     const variables = {
         postId: postId,
     }; 
-      console.log(user)
     useEffect(()=>{
         if(user && post.likes.find(like => like.userId === user.id)){
-            setLiked(true)
-        } else setLiked(false)
-     }, [user, post.likeCount]
+            setLiked(true) 
+        } else {
+            setLiked(false);
+        };
+     }, [likedUser]
     );
+    // useEffect(()=>{
+    //     if(!liked){
+    //         setLikeCount(prev=> prev +1);
+    //     } else setLikeCount(prev=> prev - 1);
+    //  }, [liked, likeCount]
+    // );
+    
      const [likePost] = useMutation(LIKE_POST, {
         update(){
             
         },
         variables
      });
-     function handleLikeCount(){
-
-     }
-    function handleLike(){
    
-        setLikeCount(prev=> prev + 1)
-        likePost()
+    function handleLike(){
+        setLiked(!liked)
+        liked ? setLikeCount(  prev=> prev- 1) : setLikeCount( prev=> prev + 1);
+        likePost();
+       
     }
 
-    
     return(
         <Flex>
+            <Flex my="auto">
               {likeCount}
+            </Flex>
               <IconButton onClick={handleLike}>
              {LikeButton}
             </IconButton>

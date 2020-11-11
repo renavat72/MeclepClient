@@ -12,11 +12,12 @@ import { AuthContext } from '../../context/auth'
 
 
 const FriendsSide = styled(Flex)`
-
+    width:300px;
     background-color: #f8f8f8;
     box-shadow: 0 0 15px rgba(0,0,0,0.08);
 `
 const FriendsBlock = styled(Flex)`
+
      border-top: 1px solid #e5e5e5;
      box-sizing: border-box;
      cursor: pointer;
@@ -38,13 +39,17 @@ const FriendsBlock = styled(Flex)`
 
 
 const InputBlock = styled(Flex)`
+    width:300px;
+
      background-color: #f8f8f8;
      border: 1px solid #ececec;
      box-sizing: border-box;
      cursor: pointer;
 `
 const DialogBlock = styled(Flex)`
-    min-height: 400px;
+    /* width:300px;
+
+    height: 400px; */
     overflow: auto;
     box-sizing: border-box;
 `
@@ -59,9 +64,9 @@ export default function DialogWindow(props){
 
       return (
        <Dialog open={dialogWindow}  onClose={handleDialogWindow}  maxWidth="lg">
-        <Box  maxWidth="900px" css="box-sizing: border-box;">
-            <Flex flexDirection="row" >
-              <DialogFriendsSide setFriendInfo={setFriendInfo} authUser={authUser}/>
+        <Box>
+            <Flex flexDirection="row">
+              <DialogFriendsSide setFriendInfo={setFriendInfo} authUser={authUser}  />
                <DialogSide friendInfo={friendInfo} authUser={authUser.user.id}/>
             </Flex>
         </Box>
@@ -78,56 +83,15 @@ function DialogSide(props){
     const { data} = useQuery(GET_MESSAGES,{variables})
     // const client = useApolloClient();
 
-    // const updateMessageSeen = useCallback(async () => {
-    //     try {
-    //       await client.mutate({
-    //         mutation: UPDATE_MESSAGE_SEEN,
-    //         variables: {
-    //           input: {
-    //             receiver: authUser.id,
-    //             sender: friendInfo,
-    //           },
-    //         },
-    //         refetchQueries: () => [
-    //           {
-    //             query: GET_CONVERSATIONS,
-    //             variables: { friendInfo: authUser},
-    //           },
-    //           { query: GET_AUTH_USER },
-    //         ],
-    //       });
-    //     } catch (err) {}
-    //   }, [authUser, client, friendInfo]);
     
-    //   useEffect(() => {
-    //     const unsubscribe = subscribeToMore({
-    //       document: GET_MESSAGES_SUBSCRIPTION,
-    //       variables: { authUserId: authUser, userId:friendInfo },
-    //       updateQuery: (prev, { subscriptionData }) => {
-    //         if (!subscriptionData.data) return prev;
-    
-    //         updateMessageSeen();
-    
-    //         const newMessage = subscriptionData.data.messageCreated;
-    //         const mergedMessages = [...prev.getMessages, newMessage];
-    
-    //         return { getMessages: mergedMessages };
-    //       },
-    //     });
-    
-    //     return () => {
-    //       unsubscribe();
-    //     };
-    //   }, [authUser, friendInfo, subscribeToMore, updateMessageSeen]);
-
     return(
-        <Flex width={4/5} flexDirection="column" >
-        <Box mb={3} >
-                    {data && data.getMessages.map((message) =>{
+        <Flex flexDirection="column" >
+        <Box>
+                    {/* {data && data.getMessages.map((message) =>{
                     const isAuthUserReceiver = authUser.id === message.sender.id;
                     return(
                      <DialogBlock flexDirection="column" pt={3} px={2} userMessage={isAuthUserReceiver} key={message.id} >
-                       <Box>
+                       <Box >
                            <Flex flexDirection="column">
                            {!isAuthUserReceiver && (
                                 <Text mb={2} ml="auto">{message.sender.firstName}</Text>
@@ -142,7 +106,7 @@ function DialogSide(props){
                   </DialogBlock>
 )
                     }
-                        )}
+                        )} */}
        </Box>
        <InputBlock width={1} p={3}>
                <Box width={1} >
@@ -164,8 +128,8 @@ function DialogFriendsSide(props){
     const {data} = useQuery(GET_CONVERSATIONS,{variables})
 
     return(
-        <FriendsSide width={1/5} variables={variables}>
-        <Box mx="auto" mt={2}>
+        <FriendsSide width="150px" variables={variables} >
+        <Box mx="auto" mt={2} >
             {data && data.getConversations.map((user) =>
                 <FriendsBlock flexDirection="row" p={2} mb={1} key={user.id} onClick={(()=>setFriendInfo(user.id))}>
                     <Text mr="auto">Ava</Text>

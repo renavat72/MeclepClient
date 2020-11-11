@@ -61,8 +61,24 @@ export default function AddEventWindow(props){
 
   function createPostCallback(){
     createPost()
-  }
+  };
 
+  function DatePicker(){
+    
+    var now = new Date();
+    var year = now.getFullYear();
+    var month = now.getMonth();
+    var day = now.getDate()
+    var hour = now.getHours();
+    var minute = now.getMinutes();
+    var second = now.getSeconds();
+
+
+    const Datetime = year + '-' + month + '-' + day + 'T' + "00" + ':' + "00";
+    return Datetime;
+  }
+  DatePicker()
+  const [selectedDate, setSelectedDate] = useState(DatePicker());
     return(
      <Dialog open={eventWindow}  onClose={handleEventWindow}>
         <Form onSubmit={onSubmit} render={({handleSubmit}) => (
@@ -100,6 +116,12 @@ export default function AddEventWindow(props){
                         name="timeOfEvent"
                         placeholder="Time of event"
                         type="datetime-local"
+                        // value={selectedDate}
+                        inputProps={{
+                          // min:{selectedDate},
+                          // max:"2020-12-31T00:00"
+                        }}
+                    
                         values={values.timeOfEvent}
                         onChange={onChange}/>
                     </Flex>

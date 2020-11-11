@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {UserInputError, AuthenticationError, withFilter} = require('apollo-server')
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const checkAuth = require('../../util/check-auth');
 // const { IS_USER_ONLINE } = require ('../../Subscriptions');
@@ -20,7 +20,7 @@ function generateToken(user){
       firstName: user.firstName,
       secondName: user.secondName
       
-  }, SECRET_KEY,  {expiresIn: '1h'}
+  }, SECRET_KEY,  {expiresIn: '1y'}
  );
 }
 
@@ -208,13 +208,14 @@ module.exports = {
             return [];
           }
           const users= User.find({
-            $or: [{ firstName: new RegExp(searchQuery, 'i') }, { secondName: new RegExp(searchQuery, 'i') }],
+            $or: [{ firstName: new RegExp(searchQuery, 'i') }],
               _id: {
                 $ne: authUser.id,
               },
             }).limit(50);
             return users;
         },
+        
       
 
     Mutation: {
@@ -343,7 +344,7 @@ module.exports = {
       },
     },
     
-    uploadUserPhoto: async (root, { input: { id, image, imagePublicId, isCover } }, { User }) => {
+    uploadUserPhoto: async (root, { input: { id, image, imagePublicId, isCover }}) => {
       const { createReadStream } = await image;
       const stream = createReadStream();
       const uploadImage = await uploadToCloudinary(stream, 'user', imagePublicId);

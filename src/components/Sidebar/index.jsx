@@ -6,20 +6,24 @@ import MailIcon from '@material-ui/icons/Mail';
 import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 import EventIcon from '@material-ui/icons/Event';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { useQuery } from '@apollo/react-hooks';
 
 import { AuthContext } from '../../context/auth'
 import Events from '../Events/Events'
 import EditProfile from '../EditProfile'
 import DialogWindow from '../Dialog'
 import FriendsWindow from '../FriendsWindow'
+import {GET_AUTH_USER} from '../../apis/UserAPI'
 
 const Sidebar = (props) => {
-    const { user, logout } = useContext(AuthContext)
+    const { user, logout } = useContext(AuthContext);
+    const { data} = useQuery(GET_AUTH_USER);
+
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [eventsWindow, setEventsWindow] = useState(false);
     const [dialogWindow, setDialogWindow] = useState(false);
     const [friendsWindow, setFriendsWindow] = useState(false);
-    const [editProfileWindow,setEditProfileWindow] = useState(false);
+    const [editProfileWindow,setEditProfileWindow] = useState(true);
     const handleEventsWindow = () => {
         setEventsWindow(!eventsWindow);
       };
@@ -86,12 +90,14 @@ const Sidebar = (props) => {
         const handleClick = () => {
             setOpen(!open);
         };
+            const InitialsWords =user.firstName[0] + user.secondName[0];
+
 
         return(
          <Drawer anchor="left" variant="permanent" onClose={openHandler} open={sidebarOpen} >
             <Flex flexDirection="column" px={2}>
                 <Flex mx={3} my={4}>
-                    <Avatar>H</Avatar>
+                    <Avatar>{InitialsWords}</Avatar>
                     <Flex my="auto">
                     <Box width={1/3} ml={2}>
                         {user.firstName}
@@ -103,7 +109,7 @@ const Sidebar = (props) => {
                 </Flex>
                 <Flex flexDirection="column">
                     <List>
-                        {[<FriendWindowBlock/>, <DialogBlock/>, <EventsBlock />, <EditProfileBlock/>].map((text) => (
+                        {[<FriendWindowBlock/>, <DialogBlock/>, <EventsBlock/>, <EditProfileBlock/>].map((text) => (
                             <ListItem key={text.id} onClick={handleClick} my={1}>
                                 <ListItemText primary={text} />
                             </ListItem>
@@ -111,7 +117,7 @@ const Sidebar = (props) => {
                     </List>
                 </Flex>
          </Flex>
-            <Flex mx={3} mt="auto" mb={4}>
+            <Flex mx={4} mt="auto" mb={4}>
                     <Logout/>
             </Flex>
         </Drawer>
@@ -122,7 +128,7 @@ const Sidebar = (props) => {
         <div>
             <DrawerSide/>
             <EditProfile editProfileWindow={editProfileWindow}  handleEditProfileWindow={handleEditProfileWindow}/>
-            <Events eventsWindow={eventsWindow}  handleEventsWindow={handleEventsWindow}/>
+            <Events eventsWindow={eventsWindow}  handleEventsWindow={handleEventsWindow} authUser={data}/>
             <DialogWindow dialogWindow={dialogWindow}  handleDialogWindow={handleDialogWindow}/>
             <FriendsWindow friendsWindow={friendsWindow} handleFriendsWindow={handleFriendsWindow}/>
             <Button variant="contained" onClick={openHandler}>Menu</Button>

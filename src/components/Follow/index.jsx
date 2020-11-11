@@ -11,7 +11,6 @@ export default function Follow({user}){
     const authUser = useContext(AuthContext)
     const {data} = useQuery(GET_AUTH_USER)
     const isFollowing = data && data.getAuthUser.following.find((f) => f.user === user.id)
-
     const [followUser] = useMutation(CREATE_FOLLOW, {
       update(){
 

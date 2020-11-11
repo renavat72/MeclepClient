@@ -1,16 +1,17 @@
 import React from 'react'
 import {render} from 'react-dom';
-import theme from './theme';
-import App from './App'
 import ApolloClient from 'apollo-client'
-import { ApolloProvider as ApolloHooksProvider } from '@apollo/react-hooks';
 import { ThemeProvider } from 'styled-components';
 import {InMemoryCache} from 'apollo-cache-inmemory'
 import {createHttpLink} from 'apollo-link-http'
 import {ApolloProvider} from '@apollo/react-hooks'
 import { setContext } from 'apollo-link-context'
-import { StoreProvider } from './context/store';
 
+import { StoreProvider } from './context/store';
+import theme from './rootLayout/theme';
+import App from './App'
+import {GlobalStyle} from './rootLayout/GlobalStyle'
+import './rootLayout/fonts.css';
 
 const httpLink = createHttpLink({
     uri: 'http://localhost:5000'
@@ -33,13 +34,12 @@ const apolloClient = new ApolloClient({
 
 render(
     <ApolloProvider client={apolloClient}>
-        <ApolloHooksProvider client={apolloClient}>
             <ThemeProvider theme={theme}>
+            <GlobalStyle />
                 <StoreProvider>
                     <App/>
                 </StoreProvider>
             </ThemeProvider>
-        </ApolloHooksProvider>
     </ApolloProvider>,
     document.getElementById('root')
 )

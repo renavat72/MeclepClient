@@ -14,7 +14,7 @@ export default function DeleteButton({postId}){
         variables
     })
     return (
-    <Button onClick={deletePost}>
+    <Button onClick={deletePost}color="secondary" >
         Delete
     </Button>
     )

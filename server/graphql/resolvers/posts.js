@@ -26,7 +26,33 @@ module.exports = {
       } catch (err) {
         throw new Error(err);
       }
-    }
+    },
+    async searchPost(_,{searchQuery}, context){
+      const authUser = checkAuth(context);
+      if(!searchQuery){
+        return [];
+      }
+      const posts= Post.find({
+        $or: [{ nameOfEvent: new RegExp(searchQuery, 'i') }],
+          _id: {
+            $ne: authUser.id,
+          },
+        }).limit(50);
+        return posts;
+    },
+    async filterTypePost(_,{searchQuery}, context){
+      const authUser = checkAuth(context);
+      if(!searchQuery){
+        return [];
+      }
+      const postsType= Post.find({
+        $or: [{ typeOfEvent: new RegExp(searchQuery, 'i') }],
+          _id: {
+            $ne: authUser.id,
+          },
+        }).limit(50);
+        return postsType;
+    },
   },
   Mutation: {
     async createPost(_, { 
@@ -86,7 +112,7 @@ module.exports = {
       });
 
       const post = await newPost.save();
-
+      const autoDelete = 
       pubSub.publish(NEW_POST,{
         newPost: post
       })
