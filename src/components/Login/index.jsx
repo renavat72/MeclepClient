@@ -4,7 +4,7 @@ import {Button, TextField } from '@material-ui/core';
 import { Form } from 'react-final-form'
 import { useMutation } from '@apollo/react-hooks'
 
-import {LOGIN_USER, GET_AUTH_USER} from '../../apis/UserAPI'
+import {LOGIN_USER} from '../../apis/UserAPI'
 import { useForm } from "../../util/hooks"
 import {AuthContext} from '../../context/auth'
 
@@ -17,33 +17,28 @@ export default function Login(props){
         password: '',
     })
     const [error, setError] = useState('');
-    console.log(error)
     const [loginUser, {loading}] = useMutation (LOGIN_USER, {
-        
         update(_, {data:{login: userData}}){
             context.login(userData)
-            props.history.push('/login')
+            // props.history.push('/login')
         },
-        // onError(err){
-        //     setErrors(err.graphQLErrors[0].extensions.extension.errors)
-        // },
+        onError(error){
+            setError(error.graphQLErrors[0].message);
+            if (!values.email || !values.password) {
+                setError('All fields are required');
+                return;
+              }
+        },
         variables: values
     });
-       
+
     function loginUserCallback(){
         loginUser();
 
-    if (!email || !password) {
-        setError('All fields are required');
-        return;
-      }
-  
     }
-    const { email, password } = values;
 
     return(
         <Box>
- 
         <Form onSubmit={onSubmit} noValidate className={loading ? "loading" : ""} render={({form, handleSubmit}) => (
             <form onSubmit={handleSubmit}>
             <Box  mx="auto">
@@ -71,19 +66,19 @@ export default function Login(props){
             </Flex>
         </form>
         )}/>
-        <Flex>
-        {error && (
-            <Text>
-                {error}
-            </Text>
-          )}
-        </Flex>
         <Flex pt={4}>
+            {error && (
+                <Box mt={4}mx="auto">
+                    <Text>
+                        {error}
+                    </Text>
+                </Box>
+            )}
             <Box mx="auto">
-        <Button color="primary" onClick={()=>setIsLogin(false)} >
-        Create account
-        </Button>  
-        </Box>
+                <Button color="primary" onClick={()=>setIsLogin(false)} >
+                Create account
+                </Button>  
+            </Box>
         </Flex>
         </Box>
     )

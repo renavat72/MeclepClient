@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { Box, Flex} from 'rebass'
+import { Box, Flex, Text} from 'rebass'
 import { useMutation } from '@apollo/react-hooks'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -9,12 +9,12 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import {AuthContext} from '../../context/auth'
 import { useForm } from "../../util/hooks"
 import {REGISTER_USER} from '../../apis/UserAPI'
-
+import {Validate} from '../validate'
 
 export default function SignUp(props){
     const {setIsLogin} = props;
     const context = useContext(AuthContext)
-    const [errors ] = useState({});
+    const [errors, setErrors] = useState([]);
     
     const {onChange, onSubmit, values } = useForm(registerUser, {
         firstName: '',
@@ -29,29 +29,28 @@ export default function SignUp(props){
             context.login(userData)
             props.history.push('/')
         },
-        // onError(err){
-        //     setErrors(err.graphQLErrors[0].extensions.exception.errors);
-        // },
             variables: values
     });
 
     function registerUser(){
-        console.log(values)
+        const errors = Validate(values.email,values.firstName,values.secondName, values.password, values.confirmPassword);
+        if (errors) {
+            setErrors(errors);
+            return false;
+          }
         addUser();
     }
-
+    console.log(errors)
     return(
      <Box>
        <Form onSubmit={onSubmit} render={({handleSubmit, form}) => (
-        <form onSubmit={handleSubmit} noValidate lassName={loading ? <CircularProgress/> : ""} >
+        <form onSubmit={handleSubmit} noValidate className={loading ? <CircularProgress/> : ""} >
             <Flex >
                 <Box  mx="auto">
                 <Flex pt={6}>
                 <TextField name="firstName"
                     placeholder="First Name"
                     values={values.firstName}
-                    helperText={errors.firstName ? "Error" : false}
-                    error={errors.firstName ? true: false}
                     onChange={onChange}
                     />
                 </Flex>
@@ -60,7 +59,6 @@ export default function SignUp(props){
                     placeholder="Second name"
                     type="text"
                     values={values.secondName}
-                    error={errors.secondName ? true : false}
                     onChange={onChange}/>
                 </Flex>
                 <Flex pt={3}>
@@ -69,7 +67,6 @@ export default function SignUp(props){
                     placeholder="Email"
                     type="email"
                     values={values.email}
-                    error={errors.email ? true : false}
                     onChange={onChange}/>
                 </Flex>
                 <Flex pt={3}>
@@ -77,7 +74,6 @@ export default function SignUp(props){
                     placeholder="Password"
                     type="password"
                     values={values.password}
-                    error={errors.password ? true : false}
                     onChange={onChange}/> 
                 </Flex>
                 <Flex pt={3}>
@@ -85,9 +81,17 @@ export default function SignUp(props){
                     placeholder="Confirm password"
                     type="password"
                     values={values.confirmPassword}
-                    error={errors.confirmPassword ? true : false}
                     onChange={onChange}
                     />
+                </Flex>
+                <Flex>
+                {errors && (
+                    <Box mt={4}mx="auto">
+                        <Text>
+                            {errors}
+                        </Text>
+                    </Box>
+                )}
                 </Flex>
                 <Flex pt={5} >
                 <Box mx="auto">
@@ -100,6 +104,7 @@ export default function SignUp(props){
           </Flex>
         </form>
        )}/>
+       
             <Flex pt={3}>
             <Box mx="auto" >
             <Button  onClick={()=>setIsLogin(true)}>

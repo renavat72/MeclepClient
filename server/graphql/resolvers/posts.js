@@ -67,8 +67,7 @@ module.exports = {
         notifyFriends,
         adultEvent,
         image,
-      }
-        ,
+      },
         locationOfEvent:{
          address,
          lat,
@@ -81,7 +80,7 @@ module.exports = {
       if (image) {
         const { createReadStream } = await image;
         const stream = createReadStream();
-        const uploadImage = await uploadToCloudinary(stream, 'post');
+        const uploadImage = await uploadToCloudinary(stream, 'events');
   
         if (!uploadImage.secure_url) {
           throw new Error('Something went wrong while uploading image to Cloudinary');
@@ -104,7 +103,7 @@ module.exports = {
         notifyFriends,
         adultEvent,
         image: imageUrl,
-         imagePublicId,
+        imagePublicId,
         userId: user.id,
         firstName: user.firstName,
         secondName: user.secondName,

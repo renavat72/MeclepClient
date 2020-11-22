@@ -1,74 +1,40 @@
-const {ApolloServer, PubSub} = require('apollo-server');
 const mongoose = require('mongoose');
 const {} = require('dotenv/config');
+const express = require('express')
+const cors = require('cors')
+const { createServer } = require(`http`)
 
-const { createServer } = require ('http');
-
-const typeDefs = require ('./graphql/typeDefs')
-const resolvers = require ('./graphql/resolvers')
 const { MONGODB } = require(`../config.js`)
-const checkAuth = require('./util/check-auth');
+const {apolloServer} = require('./util/apolloServer')
+const typeDefs = require ('./graphql/schema')
+const resolvers = require ('./graphql/resolvers')
+const models = require ('./models')
 
-const pubSub = new PubSub();
-
-
-const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-    context:({req})=>({req, pubSub}),
-    subscriptions: {
-        onConnect: async (context, webSocket) => {
-          // Check if user is authenticated
-          if (context) {
-            const user = await checkAuth(context);
-  
-            // Publish user isOnline true
-            pubSub.publish(IS_USER_ONLINE, {
-              isUserOnline: {
-                userId: user.id,
-                isOnline: true,
-              },
-            });
-  
-            // Add authUser to socket's context, so we have access to it, in onDisconnect method
-            return {
-              authUser: user,
-            };
-          }
-        },
-        onDisconnect: async (webSocket, context) => {
-          // Get socket's context
-          const c = await context.initPromise;
-          if (c && c.authUser) {
-            // Publish user isOnline false
-            pubSub.publish(IS_USER_ONLINE, {
-              isUserOnline: {
-                userId: c.authUser.id,
-                isOnline: false,
-              },
-            });
-  
-            // Update user isOnline to false in DB
-            await models.User.findOneAndUpdate(
-              { email: c.authUser.email },
-              {
-                isOnline: false,
-              }
-            );
-          }
-        },
-      },
-    
-});
-
-mongoose.connect(MONGODB,{ useCreateIndex: true,
+mongoose.connect(MONGODB,{
+  useCreateIndex: true,
   useNewUrlParser: true,
   useFindAndModify: false,
   useUnifiedTopology: true,})
 .then(()=>{
     console.log('MongoDB Connected');
-    return server.listen({port: 5000});
 })
-.then(res =>{
-    console.log(`Server running at ${res.url}`)
-})
+
+const app = express();
+
+const corsOptions = {
+  origin:`http://localhost:3000`,
+  credentials: true,
+};
+app.use(cors(corsOptions));
+
+const server = apolloServer(typeDefs, resolvers, models);
+server.applyMiddleware({ app, path: '/graphql' });
+
+const httpServer = createServer(app);
+server.installSubscriptionHandlers(httpServer);
+
+const PORT = process.env.PORT || process.env.API_PORT;
+httpServer.listen({ port: PORT }, () => {
+  console.log(`server ready at http://localhost:${PORT}${server.graphqlPath}`);
+  console.log(`Subscriptions ready at ws://localhost:${PORT}${server.subscriptionsPath}`);
+});

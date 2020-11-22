@@ -1,11 +1,11 @@
 import React, { useState} from 'react'
-import Fab from '@material-ui/core/Fab';
+import {Fab, Tooltip} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { Box, Flex } from 'rebass';
 
 import Map from '../Map'
-import Layout from '../Layout'
 import AddEventWindow from '../Events/AddEventWindow'
+import Sidebar from '../Sidebar';
 
 
 export default function Dashboard(){
@@ -21,16 +21,16 @@ export default function Dashboard(){
           <Map/>
             <Flex>
               <Flex>
-                <Layout />
+               <Sidebar/>
               </Flex>
               <Flex ml="auto" mr={4} >
                 <Fab color="primary">
+                  <Tooltip title="Create event">
                     <AddIcon onClick={handleEventWindow}/>
+                  </Tooltip>
                 </Fab>
               </Flex>
           </Flex>
-
-             
       </Box>
     )
 }

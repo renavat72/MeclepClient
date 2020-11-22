@@ -1,5 +1,5 @@
 import React,{useContext,useEffect,useState} from 'react'
-import { Dialog, TextField, Checkbox, Accordion, AccordionDetails, AccordionSummary, FormControlLabel, Radio, RadioGroup, Button } from '@material-ui/core';
+import { Dialog, TextField, Checkbox, Accordion, AccordionDetails, AccordionSummary, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
 import {Text, Box, Flex} from 'rebass'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import styled from 'styled-components';
@@ -34,7 +34,7 @@ const Block = ({children }) => (
       </Box>
 );
 
-export default function Events(props){
+export default function EventsBlock(props){
       const {eventsWindow, handleEventsWindow,authUser} = props;
       const [typeValue, setTypeValue] = useState("");
       const [favorite, setFavorite] = useState();
@@ -62,7 +62,7 @@ export default function Events(props){
 
       return (
        <Dialog open={eventsWindow}  onClose={handleEventsWindow} width={1} maxWidth="xl"  >
-         <WrapperBlock m={4} flexDirection="column" minWidth="600px" >
+         <WrapperBlock m={4} flexDirection="column" minWidth="700px" >
             <Flex mb={4}>
                   <Text fontSize={3} fontWeight='bold'>Events</Text>
             </Flex>
@@ -152,7 +152,7 @@ function FilterBlock(props){
                   </AccordionDetails>
                   </Accordion>
                   </Box>
-                  <Box mt={3}>
+                  <Flex mt={3} flexDirection="column">
                     <FormControlLabel control={
                         <Checkbox 
                         onChange={()=>favoriteHandle()} 
@@ -163,7 +163,7 @@ function FilterBlock(props){
                         onChange={()=>myFollowingHandle()}
                         color="primary"/>}
                         label="My friends"/>
-                  </Box>
+                  </Flex>
             </WrapperFilterEvent>
             </Flex>
       )

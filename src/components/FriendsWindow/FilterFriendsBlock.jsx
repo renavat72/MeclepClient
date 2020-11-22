@@ -1,15 +1,19 @@
 import React from 'react'
 import {Button,TextField } from '@material-ui/core';
-import { Box, Flex} from 'rebass'
+import { Box } from 'rebass'
+
+import{FilterFriends} from '../FriendsWindow'
 
 
 export default  function FilterFriendsBlock(){
     return(
           <Box >
-          <Flex mx="auto">
-                <TextField placeholder="Find a friend"/>
-          </Flex>
+            <FilterFriends flexDirection="column" width="170px">
+                  <TextField placeholder="Find a friend" width="170px"/>
+                  <Box mr="auto">
                 <Button>Friends</Button>
+                  </Box>
+            </FilterFriends>
           </Box>
     )
 }

@@ -1,12 +1,13 @@
-const { AuthenticationError, UserInputError, withFilter } = require('apollo-server');
+const { AuthenticationError, UserInputError, withFilter, PubSub } = require('apollo-server');
 
 const Post = require('../../models/Post');
 const checkAuth = require('../../util/check-auth');
 const User = require('../../models/User');
 const Message = require('../../models/Message');
 const mongoose = require('mongoose');
-const { pubSub, MESSAGE_CREATED, NEW_CONVERSATION } = require('../../Subscriptions');
+const { MESSAGE_CREATED, NEW_CONVERSATION } = require('../../Subscriptions');
 
+const pubsub = new PubSub();
 
 module.exports = {
   Query:{
@@ -112,7 +113,7 @@ module.exports = {
           .populate('receiver')
           .execPopulate();
  
-          pubSub.publish(MESSAGE_CREATED,{ messageCreated: newMessage });
+          pubsub.publish( 'MESSAGE_CREATED',{ messageCreated: newMessage });
 
         // const senderUser = checkAuth(context);
         const senderUser = await User.findById(sender);
@@ -129,7 +130,7 @@ module.exports = {
 
           newMessage.isFirstMessage = true;
         }
-        pubSub.publish(NEW_CONVERSATION, {
+        pubsub.publish(NEW_CONVERSATION, {
           newConversation: {
             receiverId: receiver,
             id: senderUser.id,
@@ -156,14 +157,15 @@ module.exports = {
         }
       },
     },
-          Subscription:{
+      Subscription:{
             messageCreated: {
                 subscribe: withFilter(
-                  () => pubsub.asyncIterator(MESSAGE_CREATED),
+                  () => pubsub.asyncIterator('MESSAGE_CREATED'),
                   (payload, variables) => {
                     const { sender, receiver } = payload.messageCreated;
                     const { authUserId, userId } = variables;
-            
+                    console.log(authUserId);
+                    if (!authUserId) throw new AuthenticationError('Unauthenticated')
                     const isAuthUserSenderOrReceiver =
                       authUserId === sender.id || authUserId === receiver.id;
                     const isUserSenderOrReceiver =
@@ -180,8 +182,10 @@ module.exports = {
               newConversation: {
                 subscribe: withFilter(
                   () => pubsub.asyncIterator(NEW_CONVERSATION),
-                  (payload, variables, { authUser }) =>
-                    authUser && authUser.id === payload.newConversation.receiverId
+                  (payload, variables) =>{
+                    const {authUser} = variables;
+
+                    authUser && authUser.id === payload.newConversation.receiverId}
                 ),
               },
           }

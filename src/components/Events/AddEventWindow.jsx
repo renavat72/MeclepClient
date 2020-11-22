@@ -43,7 +43,6 @@ export default function AddEventWindow(props){
     image: "",
 
   })
-  
   const onChange = (event) => {
     setValues({...values, [event.target.name]: event.target.value});
   };
@@ -77,7 +76,8 @@ export default function AddEventWindow(props){
     const Datetime = year + '-' + month + '-' + day + 'T' + "00" + ':' + "00";
     return Datetime;
   }
-  DatePicker()
+  DatePicker();
+
   const [selectedDate, setSelectedDate] = useState(DatePicker());
     return(
      <Dialog open={eventWindow}  onClose={handleEventWindow}>
@@ -238,7 +238,7 @@ function UploadFile(props) {
     <div>
     <input name="image" onChange={handlePostImageUpload} type="file" id="post-image" accept="image/x-png,image/jpeg"  style={{ display: 'none' }}/>
     <label htmlFor="post-image">
-    <PhotoCamera />
+    <PhotoCamera color="primary" />
     </label>
     </div>
     );

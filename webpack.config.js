@@ -12,7 +12,7 @@ module.exports = {
         rules:[{
             test: /\.(js|jsx)$/,
             exclude: /node_module/,
-            loader: 'babel-loader',
+            loader: "babel-loader",
         },
       
         {
@@ -38,9 +38,8 @@ module.exports = {
           }
     ]
     },
-  
+
     resolve: {
-       
         extensions: [ '*', '.js', '.jsx']
     },
     devtool: 'cheep-module-eval-source-map',

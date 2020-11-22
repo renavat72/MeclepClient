@@ -1,12 +1,11 @@
 import React, {useContext, useEffect} from "react";
 import { GoogleMap,  useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
-import RoomIcon from '@material-ui/icons/Room';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useQuery } from '@apollo/react-hooks';
 
 import {FETCH_POSTS_QUERY} from '../../apis/EventAPI'
-import AnotherEventWindow from '../Events/EventsWindow/AnotherEventWindow';
-import MyEventWindow from '../Events/EventsWindow/MyEventWindow';
+// import AnotherEventWindow from '../Events/EventsInfoWindow/AnotherEventWindow';
+import MyEventWindow from '../Events/EventsInfoWindow/MyEventWindow';
 import { AuthContext } from '../../context/auth';
 import Party from '../../icons/Markers/party.svg'
 import Club from '../../icons/Markers/club.svg'
@@ -15,14 +14,9 @@ import Exhibition from '../../icons/Markers/exhibition.svg'
 
 const libraries = ["places"];
 const mapContainerStyle = {
+  position: 'absolute',
   height: "100vh",
   width: "100vw",
-  // maxWidth: "auto",
-  position: 'absolute',
-  // top: -10,
-  // // left: 0,
-  // bottom: 0,
-  // right: 0,
 };
 const options = {
   disableDefaultUI: true,
@@ -34,7 +28,7 @@ const center = {
 };
 
 export default function Map() {
-  
+
   useEffect(()=>{
     setMarkers(MarkersData)
   });
@@ -49,20 +43,6 @@ export default function Map() {
   const [markers, setMarkers] = React.useState([]);
   const [selected, setSelected] = React.useState(null);
 
-  
-
-
-  //  console.log(selected)
-  // const onMapClick = React.useCallback((e) => {
-  //   setMarkers((current) => [
-  //     ...current,
-  //     {
-  //       lat: e.latLng.lat(),
-  //       lng: e.latLng.lng(),
-  //       time: new Date(),
-  //     },
-  //   ]);
-  // }, []);
   const mapRef = React.useRef();
   const onMapLoad = React.useCallback((map) => {
     mapRef.current = map;
@@ -84,7 +64,6 @@ export default function Map() {
   }
   return (
       <GoogleMap
-      // onClick={onMapClick}
         mapContainerStyle={mapContainerStyle}
         zoom={14}
         center={center}

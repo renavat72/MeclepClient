@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Countdown from 'react-countdown'
-import {IconButton, Modal, Button} from '@material-ui/core';
+import {IconButton, Button} from '@material-ui/core';
 import {Text, Box, Flex} from 'rebass'
 import styled from 'styled-components';
 import ShareIcon from '@material-ui/icons/Share';

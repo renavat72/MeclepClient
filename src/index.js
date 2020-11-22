@@ -1,36 +1,25 @@
 import React from 'react'
 import {render} from 'react-dom';
-import ApolloClient from 'apollo-client'
 import { ThemeProvider } from 'styled-components';
-import {InMemoryCache} from 'apollo-cache-inmemory'
-import {createHttpLink} from 'apollo-link-http'
 import {ApolloProvider} from '@apollo/react-hooks'
-import { setContext } from 'apollo-link-context'
 
 import { StoreProvider } from './context/store';
+import createApolloClient from './apollo-client'
 import theme from './rootLayout/theme';
 import App from './App'
 import {GlobalStyle} from './rootLayout/GlobalStyle'
 import './rootLayout/fonts.css';
 
-const httpLink = createHttpLink({
-    uri: 'http://localhost:5000'
-})
+const API_URL = 'http://localhost:5000/graphql'
+const WEBSOCKET_API_URL ='ws://localhost:5000/graphql'
 
-const authLink = setContext (() => {
-    const token = localStorage.getItem('jwtToken');
-    return {
-        headers: {
-            Authorization: token ? `Bearer ${token}` : ''
-        }
-    }
-})
 
-const apolloClient = new ApolloClient({
-    link: authLink.concat(httpLink),
-    cache: new InMemoryCache()
-});
+const websocketApiUrl = WEBSOCKET_API_URL
+? WEBSOCKET_API_URL
+: API_URL.replace('https://', 'ws://').replace('http://', 'ws://');
 
+
+const apolloClient = createApolloClient(API_URL, websocketApiUrl);
 
 render(
     <ApolloProvider client={apolloClient}>

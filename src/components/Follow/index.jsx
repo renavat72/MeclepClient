@@ -5,7 +5,7 @@ import { useMutation } from "@apollo/react-hooks"
 
 import {GET_AUTH_USER, CREATE_FOLLOW, DELETE_FOLLOW} from '../../apis/UserAPI'
 import { AuthContext } from '../../context/auth'
-import { Box } from 'rebass';
+import { Flex } from 'rebass';
 
 export default function Follow({user}){
     const authUser = useContext(AuthContext)
@@ -27,17 +27,18 @@ export default function Follow({user}){
     variables: {
       input: {  id: isFollowing ? isFollowing.id : null },
     }
-    
  })
-      return (<Box>
-        { isFollowing  ? 
-      <Button onClick={onFollowUser}  >
-      onFollow
-      </Button>
-      :
-        <Button onClick={followUser}>
-        Follow
-        </Button> }
-      </Box>
+      return (
+      <Flex my="auto">
+        { isFollowing  ?
+          <Button onClick={onFollowUser}  >
+          onFollow
+          </Button>
+          :
+            <Button onClick={followUser}>
+            Follow
+            </Button>
+        }
+      </Flex>
       );
 }

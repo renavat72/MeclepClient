@@ -4,7 +4,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
 import {Text, Box, Flex} from 'rebass'
-import LikeButton from '../../Buttons/LikeButton'
+// import LikeButton from '../../Buttons/LikeButton'
 
 
 export default function AnotherEventWindow (props){
@@ -14,7 +14,7 @@ export default function AnotherEventWindow (props){
     const handleClick = () => {
       setOpen(!open);
     };
-   
+
     return(
         <Box width="250px">
           <Flex flexDirection="column">
