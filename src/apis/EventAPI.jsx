@@ -63,7 +63,9 @@ export const FETCH_POSTS_QUERY = gql`
             privateEvent
             notifyFriends
             adultEvent
-            image
+            image{
+                mimetype
+            }
             likeCount
             likes{
                 id

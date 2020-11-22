@@ -53,3 +53,12 @@ export const UPDATE_MESSAGE_SEEN = gql`
     updateMessageSeen(input: $input)
   }
 `;
+
+export const CREATE_MESSAGE = gql`
+  mutation($input: CreateMessageInput!) {
+    createMessage(input: $input){
+      id
+      isFirstMessage
+    }
+  }
+`;

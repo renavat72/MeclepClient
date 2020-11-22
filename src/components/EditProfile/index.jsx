@@ -18,26 +18,21 @@ function FormEditProfile(props){
         photo:''
       });
     // Добавить secondname (бек - готов)
- 
-      const [changeFirstName, { error }] = useMutation(CHANGE_FIRSTNAME, {
-        update(_, result){
-          console.log(result)
-          ,
+
+    const [changeFirstName, { error }] = useMutation(CHANGE_FIRSTNAME, {
+        update(_){
           values.newFirstName = ''
         },
         variables: values,
       });
 
-      function editProfileCallback(){
+    function editProfileCallback(){
         changeFirstName()
       }
-      console.log(data)
     if (!data){
       return null;
     }else {
-
-    return(
-
+      return(
         <Box>
             <Form onSubmit={onSubmit} render={({handleSubmit}, form)=>(
                 <form onSubmit={handleSubmit}  noValidate className={error ? <CircularProgress/> : ""}>
@@ -45,11 +40,11 @@ function FormEditProfile(props){
                         <Flex flexDirection="column">
                         <Flex>
                         <TextField 
-                            label="Change first name"  
+                            label="Change first name"
                             values={values.newFirstName}
                             onChange={onChange}/>
                         <TextField 
-                            label="Change second name" 
+                            label="Change second name"
                             values={values.secondName}
                             onChange={onChange}/>
                         </Flex>
@@ -73,7 +68,7 @@ function FormEditProfile(props){
   }
 }
 
-export default function EditProfile(props){ 
+export default function EditProfile(props){
       const {editProfileWindow, handleEditProfileWindow} = props;
       return (
        <Dialog open={editProfileWindow}  onClose={handleEditProfileWindow}>
@@ -87,4 +82,4 @@ export default function EditProfile(props){
         </Box>
        </Dialog>
     )
-}       
+}

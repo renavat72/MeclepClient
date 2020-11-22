@@ -11,22 +11,23 @@ const WrapperDialog = styled(Flex)`
     position:absolute;
     float: right;
     /* transform: translateY(20%); */
+    width:100%;
+    max-width: 300px;
+
     top:200%;
     right:1%;
-
-    max-width: 300px;
-    width:100%;
-
     padding: 50px;
 
     background: #fff;
     box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  
 `
     const BackgroundImage = styled(Flex)`
     position: absolute;
     
     width:100vw;
     height:100vh;
+
     background-image: url(${People});
     background-size: cover;
     background-position:center;
@@ -36,7 +37,7 @@ const WrapperDialog = styled(Flex)`
 export default function Authorization(props){
     const [isLogin, setIsLogin] = useState(true)
     return(
-        <Flex >
+        <Flex>
                 <BackgroundImage/>
              <Box ml={2}>
               <SliderText />

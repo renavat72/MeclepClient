@@ -10,11 +10,12 @@ const Input = styled.input`
 
 export default function UploadPhoto(props){
     const {authUser} = props
-    
+
     const [values, setValues] = useState({
         id: authUser.id,
         image: '',
         imagePublicId: authUser.coverImagePublicId,
+        isCover:'',
       })
      
       const [uploadPhoto] = useMutation(UPLOAD_PHOTO, {
@@ -26,19 +27,19 @@ export default function UploadPhoto(props){
                     id: authUser.id,
                     image: values.image,
                     imagePublicId: values.imagePublicId,
-                    isCover: true,
+                    isCover: values.true,
                 }
         }
     })
         
-        function handleUploadPhoto(event){
+    async function handleUploadPhoto(event){
             const file = event.target.files[0];
     
             if (!file) return;
-            setValues({...values,image:file});
-           
+            setValues({...values,image:file, isCover:true});
+
             uploadPhoto()
-            console.log(file)
+           
         }
         console.log(values)
 
@@ -48,7 +49,6 @@ export default function UploadPhoto(props){
             name="coverImage"
             type="file"
             id="coverImage"
-            // value={values.photo}
             onChange={handleUploadPhoto}
             accept="image/x-png,image/jpeg"
         />

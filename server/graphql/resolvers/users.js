@@ -50,7 +50,7 @@ module.exports = {
               match: { seen: false },
             });
 
-          user.newNotifications = user.notifications;
+          // user.newNotifications = user.notifications;
 
           const lastUnseenMessages = await Message.aggregate([
             {
@@ -102,7 +102,7 @@ module.exports = {
           );
     
           // Attach new conversations to auth User
-          user.newConversations = sortedConversations;
+          // user.newConversations = sortedConversations;
     
           return user;
         },
@@ -267,7 +267,6 @@ module.exports = {
                          }
                      })
                 }
-
                 password = await bcrypt.hash(password, 12);
 
                 const newUser = new User({
@@ -347,7 +346,7 @@ module.exports = {
     uploadUserPhoto: async (root, { input: { id, image, imagePublicId, isCover }}) => {
       const { createReadStream } = await image;
       const stream = createReadStream();
-      const uploadImage = await uploadToCloudinary(stream, 'user', imagePublicId);
+      const uploadImage = await uploadToCloudinary(stream, 'user', "12321");
   
       if (uploadImage.secure_url) {
         const fieldsToUpdate = {};

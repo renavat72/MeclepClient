@@ -1,15 +1,15 @@
 const uuid =require ('uuid');
 const cloudinary =require ('cloudinary');
 const {} = require('dotenv/config');
-
+const { CLOUD_NAME,API_KEY,API_SECRET } = require('../../config');
 
 cloudinary.config({
-  cloud_name: "dpwdmmyl8",
-  api_key: "159261177612768",
-  api_secret:"lZX7LB_Z3zRJGPF8OZ0Ec0876qE",
+  cloud_name: CLOUD_NAME,
+  api_key: API_KEY,
+  api_secret:API_SECRET,
 });
 
-const uploadToCloudinary = async (stream, folder, imagePublicId) => {
+module.exports.uploadToCloudinary = async (stream, folder, imagePublicId) => {
   const options = imagePublicId ? { public_id: imagePublicId, overwrite: true } : { public_id: `${folder}/${uuid()}` };
 
   return new Promise((resolve, reject) => {
@@ -25,7 +25,7 @@ const uploadToCloudinary = async (stream, folder, imagePublicId) => {
   });
 };
 
-const deleteFromCloudinary = async (publicId) => {
+module.exports.deleteFromCloudinary = async (publicId) => {
   return new Promise((resolve, reject) => {
     cloudinary.v2.uploader.destroy(publicId, (error, result) => {
       if (result) {
@@ -36,7 +36,3 @@ const deleteFromCloudinary = async (publicId) => {
     });
   });
 };
-module.exports={
-  uploadToCloudinary,
-  deleteFromCloudinary,
-}
