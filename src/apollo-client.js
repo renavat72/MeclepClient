@@ -12,8 +12,8 @@ import { createHttpLink } from 'apollo-link-http';
 
 export default function createApolloClient(urlServer, websocketApiUrl){
 
-  const uploadLink = createUploadLink({ uri: urlServer }); 
-  let httpLink = createHttpLink({uri: urlServer})
+  let uploadLink = createUploadLink({ uri: urlServer }); 
+  // let httpLink = createHttpLink({uri: urlServer})
   const token =  localStorage.getItem('jwtToken')
 
   const authLink = setContext((_, { headers }) => {
@@ -43,8 +43,8 @@ export default function createApolloClient(urlServer, websocketApiUrl){
       return kind === 'OperationDefinition' && operation === 'subscription';
     },
     wsLink,
-    uploadLink,
-    httpLink= authLink.concat(httpLink)
+    uploadLink = authLink.concat(uploadLink),
+    // uploadLink,
   
   )
   return new ApolloClient({

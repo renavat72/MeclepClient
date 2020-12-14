@@ -10,6 +10,7 @@ const userPayload = `
   coverImage
   coverImagePublicId
   createdAt
+  isOnline
 `;
 
 export const REGISTER_USER = gql`
@@ -143,17 +144,17 @@ export const GET_ALL_USERS = gql`
           id
           user
         }
-        notifications {
-          id
-          author {
-            id
-            firstName
-             secondName
-          }
-          follow {
-            id
-          }
-        }
+        # notifications {
+        #   id
+        #   author {
+        #     id
+        #     firstName
+        #      secondName
+        #   }
+        #   follow {
+        #     id
+        #   }
+        # }
 
     }
   }
@@ -208,7 +209,7 @@ export const SEARCH_USERS = gql`
 export const UPLOAD_PHOTO = gql`
   mutation($input: UploadUserPhotoInput!) {
     uploadUserPhoto(input: $input) {
-      id
+      id image imagePublicId
     }
   }
 `;

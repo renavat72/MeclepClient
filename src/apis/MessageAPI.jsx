@@ -6,6 +6,23 @@ export const GET_CONVERSATIONS = gql`
         id
         firstName
         secondName
+        isOnline
+        lastMessage
+        lastMessageCreatedAt
+        lastMessageSender
+    }
+   }
+`
+export const GET_CONVERSATIONS_SUBSCRIPTION = gql`
+   subscription{
+    newConversation{
+        id
+        firstName
+        secondName
+        isOnline
+        lastMessage
+        lastMessageCreatedAt
+        lastMessageSender
     }
    }
 `
@@ -26,6 +43,7 @@ export const GET_MESSAGES_SUBSCRIPTION = gql`
         createdAt
       }
       message
+      seen
       createdAt
     }
   }
@@ -45,6 +63,8 @@ export const GET_MESSAGES = gql`
             secondName
         }
         message
+        seen
+
     }
    }
 `

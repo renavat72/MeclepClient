@@ -15,10 +15,10 @@ export default function FollowingBlock(props){
       useEffect(()=>{
              setFollowingState(FollowingData);
              refetch()
-
       }, [ data])
       const FollowingData = data&&data.followingUser;
       const [followingState, setFollowingState] = useState(FollowingData);
+      console.log(data)
 
       if (followingState === undefined){
             return  null
@@ -34,16 +34,16 @@ export default function FollowingBlock(props){
                                           <Avatar>{user.firstName[0] + user.secondName[0]}</Avatar>
                                     </Link>
                                     <Flex my="auto">
-                                          <Text mx={2}>
+                                          <Text mx={2} fontSize={[14,16]}>
                                           {user.firstName}
                                           </Text>
-                                          <Text>
+                                          <Text fontSize={[14,16]}>
                                           {user.secondName}
                                           </Text>
                                     </Flex>
                                     <Flex ml="auto">
                                     <Follow user={user} />
-                                    <Button>Send</Button>
+                                    <Button >Send</Button>
                                     </Flex>
                               </DialogFriend> 
                               )))}

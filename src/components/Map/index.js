@@ -1,16 +1,18 @@
-import React, {useContext, useEffect} from "react";
-import { GoogleMap,  useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
+import React, {useContext, useEffect, useState, useRef, useCallback} from "react";
+import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useQuery } from '@apollo/react-hooks';
 
-import {FETCH_POSTS_QUERY} from '../../apis/EventAPI'
-// import AnotherEventWindow from '../Events/EventsInfoWindow/AnotherEventWindow';
+
+import {FETCH_ALL_EVENTS_QUERY} from '../../apis/ParserEventAPI'
+import AnotherEventWindow from '../Events/EventsInfoWindow/AnotherEventWindow';
 import MyEventWindow from '../Events/EventsInfoWindow/MyEventWindow';
 import { AuthContext } from '../../context/auth';
 import Party from '../../icons/Markers/party.svg'
 import Club from '../../icons/Markers/club.svg'
 import Meeting from '../../icons/Markers/meeting.svg'
 import Exhibition from '../../icons/Markers/exhibition.svg'
+import ParserMarker from '../../icons/Markers/parserMarker.svg'
 
 const libraries = ["places"];
 const mapContainerStyle = {
@@ -27,70 +29,74 @@ const center = {
   lng: 37.618423,
 };
 
-export default function Map() {
+const TypeMarker = (post) => {
+  if(post.typeOfEvent === 'Party'){return Party}
+  if(post.typeOfEvent === 'Meeting'){return Meeting}
+  if(post.typeOfEvent === 'Exhibition'){return Exhibition}
+  if(post.typeOfEvent === 'Club'){return Club}
 
-  useEffect(()=>{
-    setMarkers(MarkersData)
-  });
+  else return ParserMarker
+}
+
+
+export default function Map({children,mapRef}) {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
   });
-  const { data  } = useQuery(FETCH_POSTS_QUERY);
+  const [markers, setMarkers] = useState('');
   const {user} = useContext(AuthContext);
+  const [selected, setSelected] = useState(null);
+  const { data, loading } = useQuery(FETCH_ALL_EVENTS_QUERY);
+  const mergeData = data && data.getParserEvents.concat(data.getPosts);
+ 
+ 
+    useEffect(()=>{
+      setMarkers(mergeData)
+    },[data]);
 
-  const MarkersData = data&& data.getPosts;
-  const [markers, setMarkers] = React.useState([]);
-  const [selected, setSelected] = React.useState(null);
-
-  const mapRef = React.useRef();
-  const onMapLoad = React.useCallback((map) => {
+  const onMapLoad = useCallback((map) => {
     mapRef.current = map;
   }, []);
 
-   const panTo = React.useCallback(({ lat, lng }) => {
-    mapRef.current.panTo({ lat, lng });~
-    mapRef.current.setZoom(14);
-  }, []);
 
+  if (loading) return <CircularProgress />
   if (loadError) return "Error";
   if (!isLoaded) return <CircularProgress />;
+  if (markers === undefined) return <CircularProgress />
 
-  const TypeMarker = (post) => {
-    if(post.typeOfEvent === 'Party'){return Party}
-    if(post.typeOfEvent === 'Meeting'){return Meeting}
-    if(post.typeOfEvent === 'Exhibition'){return Exhibition}
-    else return Club
-  }
   return (
-      <GoogleMap
+    <div>
+    <GoogleMap
         mapContainerStyle={mapContainerStyle}
         zoom={14}
         center={center}
         options={options}
         onLoad={onMapLoad}
       >
-          {markers&&markers.map((post) => (
-            <Marker
+        {children}
+         {markers.filter(post=>post.lat!==null).map((post) =>  (
+              <Marker
               key={post.id}
               icon={TypeMarker(post)}
               position={{ lat: post.lat, lng: post.lng }}
               onClick={() => {
-                 setSelected(post);
+                setSelected(post);
                 }}
-              />
-              ))}
-
-                 {selected ? (
-                    <InfoWindow   
-                      position={{ lat: selected.lat, lng: selected.lng }} 
-                      onCloseClick={()=>{
-                        setSelected(null)
-                      }}>
-                      <MyEventWindow post={selected} user={user} />
-                      {/* <AnotherEventWindow/> */}
+                />
+            ))} 
+                {selected ? (
+                  <InfoWindow
+                  position={{ lat: selected.lat , lng: selected.lng}} 
+                  onCloseClick={()=>{
+                    setSelected(null)
+                  }}>
+                      {
+                        selected.urlContent ? <AnotherEventWindow post={selected} />: <MyEventWindow post={selected} user={user} />
+                      }
                       </InfoWindow>
                   ): null}
       </GoogleMap>
+    </div>
   );
 }

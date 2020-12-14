@@ -26,10 +26,10 @@ export default function FollowersBlock(){
                               <Avatar>{user.firstName[0] + user.secondName[0]}</Avatar>
                         </Link>
                         <Flex my="auto">
-                              <Text mx={2}>
+                              <Text mx={2} fontSize={[14,16]}>
                                  {user.firstName}
                               </Text>
-                              <Text>
+                              <Text fontSize={[14,16]}>
                                  {user.secondName}
                               </Text>
                         </Flex>

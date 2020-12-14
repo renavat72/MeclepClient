@@ -3,6 +3,8 @@ const { uploadToCloudinary, deleteFromCloudinary } = require ('../../util/cloudi
 const { pubSub, NEW_POST } = require('../../Subscriptions');
 
 const Post = require('../../models/Post');
+const ParserEvent = require('../../models/ParserEvent');
+
 const checkAuth = require('../../util/check-auth');
 
 module.exports = {
@@ -111,7 +113,6 @@ module.exports = {
       });
 
       const post = await newPost.save();
-      const autoDelete = 
       pubSub.publish(NEW_POST,{
         newPost: post
       })
@@ -136,7 +137,7 @@ module.exports = {
     async likePost(_,{postId}, context){
       const user= checkAuth(context);
 
-      const post = await Post.findById(postId);
+      const post = await Post.findById(postId)
       if(post){
         if(post.likes.find(like => like.userId === user.id)){
           post.likes = post.likes.filter(like => like.userId !== user.id);

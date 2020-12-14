@@ -9,9 +9,9 @@ type Post {
     firstName: String!
     secondName: String!
     likes: [Like]!
-    likeCount: Int!
-    comments: [Comment]!
+    # likeCount: Int!
     commentCount: Int!
+    comments: [Comment]!
     timeOfEvent: String!
     typeOfEvent: String!
     nameOfEvent: String!
@@ -34,9 +34,9 @@ type Post {
     firstName: String!
     secondName: String!
     likes: [Like]!
-    likeCount: Int!
-    comments: [Comment]!
+    # likeCount: [Like]!
     commentCount: Int!
+    comments: [Comment]!
     timeOfEvent: String!
     typeOfEvent: String!
     nameOfEvent: String!
@@ -52,7 +52,23 @@ type Post {
     locationOfEvent: String!
     infoPost: String
   }
+  input InfoPost {
+    timeOfEvent: String!
+    typeOfEvent: String!
+    nameOfEvent: String!
+    aboutOfEvent: String!
+    privateEvent: Boolean
+    notifyFriends: Boolean
+    adultEvent: Boolean
+    imagePublicId: String
+    image: Upload
 
+  }
+  input LocationOfEvent{
+      address:String
+      lat: Float
+      lng: Float
+    }
   type Comment{
     id: ID!
     createdAt: String!
@@ -69,7 +85,7 @@ type Post {
   }
   type ParserEvent {
     id: ID!
-    createdAt: String
+    createdAt: String!
     title: String!
     headerDescription: String!
     urlContent:String!
@@ -77,9 +93,15 @@ type Post {
     time: String
     period: String
     typeOfEvent: String
+    website: String
+    images:[String]
     address: String!
-    infoParserEvent: String
+    lat: Float
+    lng: Float
+    likes: [Like]!
+    # infoParserEvent: String
   }
+
   input InfoParserEvent{
     title: String
     headerDescription: String
@@ -90,37 +112,22 @@ type Post {
     typeOfEvent: String
     address: String
   }
-  input InfoPost {
-    timeOfEvent: String!
-    typeOfEvent: String!
-    nameOfEvent: String!
-    aboutOfEvent: String!
-    privateEvent: Boolean
-    notifyFriends: Boolean
-    adultEvent: Boolean
-    imagePublicId: String
-    image: Upload
-  }
-  input LocationOfEvent{
-      address:String
-      lat: Float
-      lng: Float
-    }
+ 
   type Query {
     searchPost(searchQuery: String!): [Post]
     filterTypePost(searchQuery: String!): [Post]
-    getPosts: [Post]
-    getPost(postId: ID!): Post
+    getPosts: [PostPayload]
+    getPost(postId: ID!): PostPayload
     getParserEvents:[ParserEvent]
 
   }
   type Mutation {
     createPost(infoPost: InfoPost, locationOfEvent:LocationOfEvent): PostPayload
     deletePost(postId: ID!): PostPayload
-    likePost(postId: String!): Post!
+    likeParserPost(parserEventId: String!): ParserEvent!
+    likePost(postId: String!): PostPayload!
     createComment(postId: String!, body: String!):Post!
     deleteComment(postId:ID!, commentId: ID!): Post!
-    createParserEvent(input:InfoParserEvent):ParserEvent!
   }
   type Subscription {
     newPost: Post!
