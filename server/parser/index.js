@@ -11,7 +11,7 @@ const SITE = 'https://www.afisha.ru/msk/schedule_exhibition/';
 const pages = 1;
 
 
-(async function main() {
+async function main() {
   try {
     for(const page of arrayFromLength(pages)){
       const url = `${SITE}${pages}`
@@ -46,7 +46,7 @@ const pages = 1;
               period,
             });
             console.log(eventsData)
-            
+            listItemsHandler(eventsData)
             PostData(
               
                     ...initialData,
@@ -62,7 +62,9 @@ const pages = 1;
         }
   }
   catch(err){ console.log(err)}
-})();
+}
+main()
+console.log(SITE)
 
 function PostData(data){
   const { code } = data;
@@ -76,11 +78,12 @@ function PostData(data){
     address,
     time,
     period} = data;
-
+    
   return new Promise((resolve, reject)=>{
  
     createParserEvent(
-      {input:{
+      {
+        input: {
       initialData,
       headerDescription,
       description,

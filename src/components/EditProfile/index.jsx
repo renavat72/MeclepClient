@@ -55,7 +55,6 @@ function FormEditProfile(props){
                         </Flex>
                         </Flex>
                         <Flex>
-                        <UploadPhoto authUser={data.getAuthUser}/>
                         </Flex>
                         <Flex ml="auto" mt={4}>
                         <Button type="submit" variant="contained">Edit</Button>
@@ -63,6 +62,7 @@ function FormEditProfile(props){
                     </Flex>
                 </form>
             )} />
+            <UploadPhoto authUser={data.getAuthUser}/>
         </Box>
     )
   }

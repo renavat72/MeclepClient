@@ -14,16 +14,22 @@ export default function Dashboard(){
     const handleEventWindow = () => {
       setEventWindow(!eventWindow);
     };
-
+    const mapRef = React.useRef();
+;
+    const panTo = React.useCallback(({ lat, lng }) => {
+      mapRef.current.panTo({ lat, lng });
+      mapRef.current.setZoom(17);
+    }, []);
+    
       return(
         <Box >
           <AddEventWindow eventWindow={eventWindow}  handleEventWindow={handleEventWindow}/>
-          <Map/>
+          <Map mapRef={mapRef}>
             <Flex>
               <Flex>
-               <Sidebar/>
+               <Sidebar panTo={panTo}/>
               </Flex>
-              <Flex ml="auto" mr={4} >
+              <Flex ml="auto" mr={4} mt={2} >
                 <Fab color="primary">
                   <Tooltip title="Create event">
                     <AddIcon onClick={handleEventWindow}/>
@@ -31,6 +37,7 @@ export default function Dashboard(){
                 </Fab>
               </Flex>
           </Flex>
+          </Map>
       </Box>
     )
 }

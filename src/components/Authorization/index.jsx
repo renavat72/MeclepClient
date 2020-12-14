@@ -1,6 +1,7 @@
 import React, { useState} from 'react'
 import {Text, Box, Flex} from 'rebass'
 import styled from 'styled-components';
+import {media} from '../../rootLayout/theme'
 
 import Login from '../Login'
 import SignUp from '../SignUp'
@@ -8,14 +9,10 @@ import SliderText from '../SliderText'
 import People from '../../images/People.jpg'
 
 const WrapperDialog = styled(Flex)`
-    position:absolute;
-    float: right;
     /* transform: translateY(20%); */
     width:100%;
-    max-width: 300px;
 
     top:200%;
-    right:1%;
     padding: 50px;
 
     background: #fff;
@@ -37,13 +34,21 @@ const WrapperDialog = styled(Flex)`
 export default function Authorization(props){
     const [isLogin, setIsLogin] = useState(true)
     return(
-        <Flex>
+        <Flex >
                 <BackgroundImage/>
-             <Box ml={2}>
+             <Box ml={2} display={["none","none", "block"]}>
               <SliderText />
               </Box>
       
-        <WrapperDialog ml="auto" >
+        <WrapperDialog mb="auto"ml={[null,"auto"]}sx={{
+            position: ['relative','absolute'],
+            maxWidth: ['300px'],
+            right:[0,'1%'],   
+
+            float: [null,'right'],
+            mt:[100,0],
+            mx: ["auto"],
+         }} >
               <Flex flexDirection="column">
                     <Text mx="auto">
                         myEvent
@@ -51,7 +56,6 @@ export default function Authorization(props){
             {isLogin ? <Login setIsLogin={setIsLogin}/>: <SignUp setIsLogin={setIsLogin}/>}
             </Flex>
         </WrapperDialog>
-        {/* </BackgroundImage> */}
         </Flex>
     )
 }

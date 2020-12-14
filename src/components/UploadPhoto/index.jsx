@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 import { useMutation} from '@apollo/react-hooks'
 import styled from 'styled-components';
 
@@ -10,51 +10,60 @@ const Input = styled.input`
 
 export default function UploadPhoto(props){
     const {authUser} = props
-
+    const InputRef=  useRef()
+    const [uploadInput, setUploadInput] = useState([])
     const [values, setValues] = useState({
         id: authUser.id,
         image: '',
         imagePublicId: authUser.coverImagePublicId,
-        isCover:'',
+        isCover:true,
       })
-     
-      const [uploadPhoto] = useMutation(UPLOAD_PHOTO, {
-        update(_, result){
-        console.log(result)
-        },
-        variables: {
-                input: { 
-                    id: authUser.id,
-                    image: values.image,
-                    imagePublicId: values.imagePublicId,
-                    isCover: values.true,
-                }
-        }
-    })
+      console.log(values)
+
+   
+
+        const handleUploadPhoto = (e) => {
+          const file = e.target.files[0];
+      
+          if (!file) return;
+      
+          setValues({...values,image:file,});
+          uploadPhoto()
+
+          e.target.value = null;
+          console.log(file)
+        };
+        const [uploadPhoto] = useMutation(UPLOAD_PHOTO, {
+          update(_, result){
+          console.log(values)
+          },
+          variables:{ input:values}
+      })
+          
+    // async function handleUploadPhoto(event){
+    //     const file = event.target.files[0];
+
+    //     if (!file) return;
+    //     // await setUploadInput([...uploadInput,[file]])
         
-    async function handleUploadPhoto(event){
-            const file = event.target.files[0];
-    
-            if (!file) return;
-            setValues({...values,image:file, isCover:true});
 
-            uploadPhoto()
-           
-        }
-        console.log(values)
+    //         event.target.values = null;
+    //         console.log(file)
+    //     }
+    //     console.log(uploadInput)
 
-    return(
-        <div>
-          <Input
-            name="coverImage"
-            type="file"
-            id="coverImage"
-            onChange={handleUploadPhoto}
-            accept="image/x-png,image/jpeg"
-        />
-        <label htmlFor="coverImage">
-            click
-        </label>
-        </div>
-    )
-}
+        return(
+            <div>
+              <Input
+                name="image"
+                type="file"
+                id="image"
+                onChange={handleUploadPhoto}
+                accept="image/x-png,image/jpeg"
+            />
+            <label htmlFor="image">
+                click
+            </label>
+            </div>
+        )
+    }

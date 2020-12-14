@@ -2,6 +2,8 @@ const postsResolvers = require('./posts');
 const usersResolvers = require('./users');
 const commentsResolvers = require('./comments');
 const messagesResolvers = require('./messages');
+const notificationsResolvers = require('./notifications');
+const parserEventResolvers = require('./parserEvent');
 
 
 module.exports = {
@@ -14,19 +16,24 @@ module.exports = {
         createdAt: (parent) => parent.createdAt.toISOString(),
       },
     Post:{
-        likeCount: (parent) => parent.likes.length,
+        // likeCount: (parent) => parent.likes.length,
         commentCount: (parent) => parent.comments.length
     },
     Query: {
         ...postsResolvers.Query,
         ...usersResolvers.Query,
-        ...messagesResolvers.Query
+        ...messagesResolvers.Query,
+        ...notificationsResolvers.Query,
+        ...parserEventResolvers.Query
     },
     Mutation: {
         ...usersResolvers.Mutation,
         ...postsResolvers.Mutation,
         ...commentsResolvers.Mutation,
-        ...messagesResolvers.Mutation
+        ...messagesResolvers.Mutation,
+        ...notificationsResolvers.Mutation,
+        ...parserEventResolvers.Mutation
+
     },
     Subscription:{
         ...postsResolvers.Subscription,

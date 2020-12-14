@@ -7,13 +7,8 @@ import{FilterFriends} from '../FriendsWindow'
 
 export default  function FilterFriendsBlock(){
     return(
-          <Box >
-            <FilterFriends flexDirection="column" width="170px">
-                  <TextField placeholder="Find a friend" width="170px"/>
-                  <Box mr="auto">
-                <Button>Friends</Button>
-                  </Box>
+            <FilterFriends flexDirection="column">
+                  <TextField placeholder="Find a friend" />
             </FilterFriends>
-          </Box>
     )
 }

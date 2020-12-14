@@ -1,4 +1,4 @@
-const uuid =require ('uuid');
+const {v4} =require ('uuid');
 const cloudinary =require ('cloudinary');
 const {} = require('dotenv/config');
 const { CLOUD_NAME,API_KEY,API_SECRET } = require('../../config');
@@ -10,7 +10,7 @@ cloudinary.config({
 });
 
 module.exports.uploadToCloudinary = async (stream, folder, imagePublicId) => {
-  const options = imagePublicId ? { public_id: imagePublicId, overwrite: true } : { public_id: `${folder}/${uuid()}` };
+  const options = imagePublicId ? { public_id: imagePublicId, overwrite: true } : { public_id: `${folder}/${v4()}` };
 
   return new Promise((resolve, reject) => {
     const streamLoad = cloudinary.v2.uploader.upload_stream(options, (error, result) => {

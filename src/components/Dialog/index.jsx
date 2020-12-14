@@ -10,6 +10,7 @@ import {GET_AUTH_USER} from '../../apis/UserAPI'
 import { AuthContext } from '../../context/auth'
 import ConversationsSide from './ConversationsSide'
 import ChatSide from './ChatSide'
+import MobileDialog from './MobileDialog'
 
 export const FriendsSide = styled(Flex)`
     /* width:300px; */
@@ -92,10 +93,12 @@ export default function DialogWindow(props){
       
       return (
        <Dialog open={dialogWindow}  onClose={handleDialogWindow}  maxWidth="xl">
-            <Flex flexDirection="row" minWidth="700px">
+   
+            <Flex flexDirection="row" minWidth={["500px","700px"]}>
                <ConversationsSide setFriendInfo={setFriendInfo} authUser={user.id}/>
                <ChatSide friendInfo={friendInfo} authUser={user.id}  messages={data ? data.getMessages : []}/>
             </Flex>
+         
        </Dialog>
     )
 }

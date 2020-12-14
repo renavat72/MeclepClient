@@ -23,7 +23,7 @@ box-sizing: border-box;
 border: 1px solid black;
 `
 export const FilterFriends = styled(Flex)`
-position: fixed;
+/* position: fixed; */
 `
 export const WrapperFriends = styled(Box)`
 height: 720px;
@@ -82,13 +82,13 @@ export default function FriendsWindow(props){
 
       return (
        <Dialog open={friendsWindow}  onClose={handleFriendsWindow} maxWidth="xl">
-        <FriendsWindowBlock m={4} minWidth="700px" >
-            <Flex >
+        <FriendsWindowBlock m={[1,4]} minWidth={[null,"700px"]} >
+            <Flex flexDirection={["column-reverse","row"]}>
             <WrapperFriends >
                  <TabsUsers />
             </WrapperFriends>
-            <Box width={2/7} ml={3}mr={3}>
-                  <FilterFriendsBlock/>
+            <Box width={[1,2/7]} mx={[0,3]}my={[2,0]}>
+                  <FilterFriendsBlock  width="170px"/>
             </Box> 
         </Flex>
         </FriendsWindowBlock>

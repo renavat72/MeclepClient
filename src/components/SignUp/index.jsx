@@ -9,7 +9,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import {AuthContext} from '../../context/auth'
 import { useForm } from "../../util/hooks"
 import {REGISTER_USER} from '../../apis/UserAPI'
-import {Validate} from '../validate'
+import {Validate} from '../../util/validates/validateRegister'
 
 export default function SignUp(props){
     const {setIsLogin} = props;
@@ -84,9 +84,9 @@ export default function SignUp(props){
                     onChange={onChange}
                     />
                 </Flex>
-                <Flex>
+                <Flex flexDirection="column">
                 {errors && (
-                    <Box mt={4}mx="auto">
+                    <Box  mt={[0,0,4]} mx="auto">
                         <Text>
                             {errors}
                         </Text>

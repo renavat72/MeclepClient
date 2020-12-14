@@ -36,11 +36,10 @@ mutation createPost(
     likes{
       id firstName secondName createdAt
     }
-    likeCount
+    
     comments{
       id body firstName secondName createdAt
     }
-    commentCount
   }
 }
 `
@@ -63,10 +62,8 @@ export const FETCH_POSTS_QUERY = gql`
             privateEvent
             notifyFriends
             adultEvent
-            image{
-                mimetype
-            }
-            likeCount
+            image
+          
             likes{
                 id
                 userId
@@ -95,7 +92,7 @@ export const FETCH_POST_QUERY = gql`
             notifyFriends
             adultEvent
             image
-            likeCount
+            # likeCount
             likes{
                 id
                 # firstName
@@ -113,13 +110,13 @@ export const LIKE_POST = gql `
             likes{
                 id firstName secondName
             }
-            likeCount
+            # likeCount
         }
     }
 `
 
 export const DELETE_POST = gql`
-    mutation deletePost($postId: ID!){
+    mutation($postId: ID!){
         deletePost(postId: $postId){
             id
         }
@@ -144,7 +141,7 @@ export const FILTER_TYPE_POST = gql`
             notifyFriends
             adultEvent
             image
-            likeCount
+            # likeCount
             likes{
                 id
                 # firstName
@@ -172,7 +169,7 @@ export const SEARCH_POST = gql`
             notifyFriends
             adultEvent
             image
-            likeCount
+            # likeCount
             likes{
                 id
                 # firstName

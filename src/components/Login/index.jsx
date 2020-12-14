@@ -66,9 +66,9 @@ export default function Login(props){
             </Flex>
         </form>
         )}/>
-        <Flex pt={4}>
+        <Flex pt={4} flexDirection="column">
             {error && (
-                <Box mt={4}mx="auto">
+                <Box mt={[0,0,4]}mx="auto">
                     <Text>
                         {error}
                     </Text>

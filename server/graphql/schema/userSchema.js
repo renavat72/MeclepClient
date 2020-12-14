@@ -65,7 +65,7 @@ type User {
 
   input UploadUserPhotoInput {
     id: ID!
-    image: Upload!
+    image: Upload
     imagePublicId: String
     isCover: Boolean
   }
@@ -98,7 +98,7 @@ type User {
   type Mutation {
     register(registerInput: RegisterInput): User!
     login(email: String!, password: String!): User!
-    uploadUserPhoto(input: UploadUserPhotoInput!): UserPayload
+    uploadUserPhoto(input: UploadUserPhotoInput!): UserPayload!
     changeFirstName(currentFirstName: String!, newFirstName: String!): User!
     changeSecondName(currentSecondName: String! newSecondName: String!): User
     createFollow(input: CreateFollowInput!): Follow

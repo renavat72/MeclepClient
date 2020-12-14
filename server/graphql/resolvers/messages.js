@@ -49,7 +49,7 @@ module.exports = {
         },
         {
           $group: {
-            _id: '$sender',
+            _id: '$messages',
             doc: {
               $first: '$$ROOT',
             },

@@ -1,6 +1,5 @@
-const { AuthenticationError, UserInputError } = require('apollo-server');
-const { uploadToCloudinary, deleteFromCloudinary } = require ('../../util/cloudinary');
-const { pubSub, NEW_PARSER_EVENT } = require('../../Subscriptions');
+const { UserInputError } = require('apollo-server');
+const { NEW_PARSER_EVENT } = require('../../Subscriptions');
 
 const ParserEvent = require('../../models/ParserEvent');
 const checkAuth = require('../../util/check-auth');
@@ -29,40 +28,26 @@ module.exports = {
     // },
   },
   Mutation: {
-    async createParserEvent(_, { 
-        input: {
-            title,
-            headerDescription,
-            urlContent,
-            description,
-            time,
-            period,
-            typeOfEvent,
-            address
-      }}) {
+    async likeParserPost(_, { parserEventId } , context){
+      const user= checkAuth(context);
 
-
-      const NewParserEvent = new ParserEvent({
-        title,
-        headerDescription,
-        urlContent,
-        description,
-        time,
-        period,
-        typeOfEvent,
-        address,
-        createdAt: new Date().toISOString()
-      });
-
-      const parserEvent = await NewParserEvent.save();
-
-      pubSub.publish(NEW_PARSER_EVENT,{
-        newPost: parserEvent
-      })
-
-      return parserEvent;
-    },
-
+      const parserEvent = await ParserEvent.findById(parserEventId);
+      if(parserEvent){
+        
+        if(parserEvent.likes.find(like => like.userId === user.id)){
+          parserEvent.likes = parserEvent.likes.filter(like => like.userId !== user.id);
+        } else{
+          parserEvent.likes.push({
+            userId:user.id,
+            firstName: user.firstName,
+            secondName: user.secondName,
+            createdAt: new Date().toISOString()
+          })
+        }
+        await parserEvent.save();
+        return parserEvent;
+      } else throw new UserInputError('Parser event not found')
+    }
   },
   Subscription:{
     newParserEvent:{

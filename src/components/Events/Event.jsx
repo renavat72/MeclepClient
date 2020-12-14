@@ -36,7 +36,7 @@ export default function Event (props){
           <WrapperCard>
                 <Flex m={3} flexDirection="column"  width="500px">
                   <Flex flexDirection="column">
-                    <Text fontWeight='bold' fontSize={26}>
+                    <Text fontWeight='bold' fontSize={20}>
                       {post.nameOfEvent}
                     </Text>
                     <Text fontSize={18}>

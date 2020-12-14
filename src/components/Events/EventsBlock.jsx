@@ -7,11 +7,11 @@ import { useQuery } from '@apollo/react-hooks';
 // import FavoriteIcon from '@material-ui/icons/Favorite';
 // import ShareIcon from '@material-ui/icons/Share';
 
-
 import {FETCH_POSTS_QUERY} from '../../apis/EventAPI'
+import {FETCH_ALL_EVENTS_QUERY} from '../../apis/ParserEventAPI'
 
 import { AuthContext } from '../../context/auth';
-import Event from './Event'
+import ParserEvent from './ParserEvent'
 
 const WrapperEvent = styled(Box)`
 width:100%;
@@ -20,8 +20,7 @@ min-height: 720px;
 
 `
 const WrapperFilterEvent = styled(Box)`
-position: fixed;
-
+/* position: fixed; */
 `
 const WrapperBlock = styled(Box)`
 /* overflow:hidden; */
@@ -43,9 +42,12 @@ export default function EventsBlock(props){
 
       const onTypeChange = e => setTypeValue(e.target.value);
       const onSearchChange = e => setSearchValue(e.target.value);
-      const { data } = useQuery(FETCH_POSTS_QUERY);
+      const { data } = useQuery(FETCH_ALL_EVENTS_QUERY);
+
+      const mergeData = data && data.getParserEvents.concat(data.getPosts)
+
       const {user} = useContext(AuthContext);
-      const filteredEvents =  data&&data.getPosts.filter(post => (
+      const filteredEvents =  mergeData&&mergeData.filter(post => (
             (!typeValue || post.typeOfEvent === typeValue) && 
             (!searchValue || post.nameOfEvent === searchValue) &&  //Доработать ввод 
             (!favorite || post.likes.find(user =>user.userId === favorite)) 
@@ -62,15 +64,15 @@ export default function EventsBlock(props){
 
       return (
        <Dialog open={eventsWindow}  onClose={handleEventsWindow} width={1} maxWidth="xl"  >
-         <WrapperBlock m={4} flexDirection="column" minWidth="700px" >
+         <WrapperBlock m={[3,4]} >
             <Flex mb={4}>
-                  <Text fontSize={3} fontWeight='bold'>Events</Text>
+                  <Text  fontWeight='bold'>Events</Text>
             </Flex>
-            <Flex width={1}>
-                  <WrapperEvent >
-                   <EventsList events={filteredEvents} user={user}/>
+            <Flex width={1} flexDirection={["column-reverse","row"]} >
+                  <WrapperEvent mr={[0,5]}>
+                   <EventsList events={filteredEvents} user={user} panTo={props.panTo} handleEventsWindow={handleEventsWindow}/>
                   </WrapperEvent>
-                  <Box width={3/4} mr="auto">
+                  <Box width={[1,1/3,1/3]} >
                     <FilterBlock
                         typeValue={typeValue}
                         onTypeChange={onTypeChange}
@@ -86,7 +88,7 @@ export default function EventsBlock(props){
       )
 }
 
-function EventsList({events, user}){
+function EventsList({events, user, panTo,handleEventsWindow}){
       useEffect(()=>{
             setEventsData(events)
       },[events] )
@@ -98,10 +100,10 @@ function EventsList({events, user}){
               <Text textAlign="center" fontWeight='bold'  color="#aaa">No events</Text>
             </Box>
             :
-            eventsData && eventsData.map(post => (
+            eventsData && eventsData.sort((a, b) => b.date - a.date).map(post => (
             <Block item key={post.id}>
                   <Box my={3} ml={1}>
-                  <Event post={post} user={user}/>
+                  <ParserEvent post={post} user={user} panTo={panTo} handleEventsWindow={handleEventsWindow}/>
                   </Box>
             </Block>
             )) }
@@ -110,18 +112,16 @@ function EventsList({events, user}){
 }
 
 function FilterBlock(props){
-      const {typeValue, onTypeChange, searchValue, onSearchChange, favoriteHandle, myFollowingHandle} =props;
+      const {favoriteHandle, myFollowingHandle} =props;
       return(
-            <Flex flexDirection="column"  ml="auto" width={3/4}>
-                  <WrapperFilterEvent>
-                  <Box width="170px">
+            <Flex ml="auto" >
+                  <WrapperFilterEvent maxWidth={[null,"200px","170px"]} width={1}>
+               <Box >
                      <TextField 
-                        // width="180px"
+                        maxWidth
                         placeholder="Find event" 
-                        value={searchValue}
-                        onChange={onSearchChange}/>
-                  </Box>
-               <Box width="170px" >
+                        value={props.searchValue}
+                        onChange={props.onSearchChange}/>
                <Accordion>
                   <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
@@ -130,7 +130,7 @@ function FilterBlock(props){
                   </AccordionSummary>
                   <AccordionDetails>
                   <Flex flexDirection="column" mr="auto " >
-                  <RadioGroup value={typeValue} onChange={onTypeChange}>
+                  <RadioGroup value={props.typeValue} onChange={props.onTypeChange}>
                      <FormControlLabel value="Party" control={
                            <Radio 
                            color="primary"/>}

@@ -27,7 +27,7 @@ padding: 10px;
 
 export default function ChatSide(props){
   const {friendInfo, authUser, messages} = props;
-  const [textMessage, setTextMessage ] = useState('');
+  const [textMessage, setTextMessage ] = useState();
   const bottomRef = useRef(null);
   const [createMessage] = useMutation(CREATE_MESSAGE, {
         update(_, result){
@@ -79,6 +79,9 @@ export default function ChatSide(props){
                                       userMessage={isAuthUserReceiver}>
                                       {message.message}
                                   </Message>
+                                  <Flex ml="auto">
+                                  {!message.seen ? <Text>Send</Text>:null}
+                                  </Flex>
                     </Flex>
                   )
               }

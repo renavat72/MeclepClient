@@ -49,7 +49,7 @@ enum NotificationType {
   }
 
   type Query {
-    getUserNotifications(userId: ID!, skip: Int, limit: Int): NotificationsPayload
+    getUserNotifications(userId: ID!): NotificationsPayload
     }
   type Mutation {
     createNotification(input: CreateNotificationInput!): Notification

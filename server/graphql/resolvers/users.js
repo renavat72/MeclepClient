@@ -1,10 +1,10 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const {UserInputError, AuthenticationError, withFilter} = require('apollo-server')
+const {UserInputError, PubSub, withFilter} = require('apollo-server')
 const mongoose = require('mongoose');
 
 const checkAuth = require('../../util/check-auth');
-// const { IS_USER_ONLINE } = require ('../../Subscriptions');
+const IS_USER_ONLINE  = require ('../../Subscriptions');
 const {validateRegisterInput, validateLoginInput} = require ('../../util/validators')
 const {SECRET_KEY} = require('../../../config')
 const User = require('../../models/User');
@@ -23,6 +23,7 @@ function generateToken(user){
   }, SECRET_KEY,  {expiresIn: '1y'}
  );
 }
+const pubsub = new PubSub();
 
 module.exports = {
     Query: {
@@ -96,13 +97,11 @@ module.exports = {
             newConversations.push(user);
           });
 
-          // Sort users by last created messages date
           const sortedConversations = newConversations.sort((a, b) =>
             b.lastMessageCreatedAt.toString().localeCompare(a.lastMessageCreatedAt)
           );
     
-          // Attach new conversations to auth User
-          // user.newConversations = sortedConversations;
+          user.newConversations = sortedConversations;
     
           return user;
         },
@@ -345,9 +344,11 @@ module.exports = {
     
     uploadUserPhoto: async (root, { input: { id, image, imagePublicId, isCover }}) => {
       const { createReadStream } = await image;
+      if(!createReadStream){
+        throw new Error("No image")
+      }
       const stream = createReadStream();
-      const uploadImage = await uploadToCloudinary(stream, 'user', "12321");
-  
+      const uploadImage = await uploadToCloudinary(stream, 'user', imagePublicId);
       if (uploadImage.secure_url) {
         const fieldsToUpdate = {};
         if (isCover) {
@@ -362,7 +363,7 @@ module.exports = {
           .populate('posts')
           .populate('likes');
   
-        return updatedUser;
+        return updatedUser.save();
       }
   
       throw new Error('Something went wrong while uploading image to Cloudinary.');
@@ -371,7 +372,7 @@ module.exports = {
     Subscription:{
       isUserOnline: {
         subscribe: withFilter(
-          () => pubSub.asyncIterator(IS_USER_ONLINE),
+          () => pubsub.asyncIterator("IS_USER_ONLINE"),
           (payload, variables, { authUser }) => variables.authUserId === authUser.id
         ),
       },
