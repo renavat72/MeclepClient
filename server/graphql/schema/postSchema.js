@@ -87,6 +87,7 @@ type Post {
     id: ID!
     createdAt: String!
     title: String!
+    isOnline: Boolean
     headerDescription: String!
     urlContent:String!
     description: String!
@@ -95,6 +96,7 @@ type Post {
     typeOfEvent: String
     website: String
     images:[String]
+    city: String
     address: String!
     lat: Float
     lng: Float
@@ -116,9 +118,9 @@ type Post {
   type Query {
     searchPost(searchQuery: String!): [Post]
     filterTypePost(searchQuery: String!): [Post]
-    getPosts: [PostPayload]
+    getPosts(limit:Int, skip: Int, first: Int, after:String): [PostPayload]
     getPost(postId: ID!): PostPayload
-    getParserEvents:[ParserEvent]
+    getParserEvents(limit:Int, skip: Int, first: Int, after:String):[ParserEvent]
 
   }
   type Mutation {

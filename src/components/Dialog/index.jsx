@@ -3,6 +3,8 @@ import { Dialog } from '@material-ui/core';
 import {Flex} from 'rebass'
 import styled from 'styled-components';
 import { useQuery,useMutation } from '@apollo/react-hooks';
+import { useRouteMatch } from 'react-router-dom';
+import { ModalContainer, ModalLink,ModalRoute } from 'react-router-modal';
 
 import {GET_CONVERSATIONS, GET_MESSAGES, GET_MESSAGES_SUBSCRIPTION, UPDATE_MESSAGE_SEEN} from '../../apis/MessageAPI'
 import {GET_AUTH_USER} from '../../apis/UserAPI'
@@ -38,7 +40,17 @@ export const FriendsBlock = styled(Flex)`
 `
 
 export default function DialogWindow(props){
-      const {dialogWindow, handleDialogWindow} = props;
+      const {url} =useRouteMatch()
+          
+      const [isOpen, setIsOpen] = useState(true)
+
+      function handleOpen(){
+            setIsOpen(false);
+            window.history.pushState('', '', `${url}`);
+
+      }
+
+
       const { user } = useContext(AuthContext);
       const [friendInfo, setFriendInfo] = useState('');
       if(friendInfo===undefined){
@@ -92,13 +104,14 @@ export default function DialogWindow(props){
        },[ user.id, friendInfo, subscribeToMore]);
       
       return (
-       <Dialog open={dialogWindow}  onClose={handleDialogWindow}  maxWidth="xl">
+       <Dialog open={isOpen}  onClose={()=>handleOpen()} maxWidth="xl">
    
-            <Flex flexDirection="row" minWidth={["500px","700px"]}>
+            <Flex flexDirection="row" minWidth={["500px","700px"]} minHeight="470px">
                <ConversationsSide setFriendInfo={setFriendInfo} authUser={user.id}/>
+               <ModalLink path={`/dialog/${user.id}`}/>
                <ChatSide friendInfo={friendInfo} authUser={user.id}  messages={data ? data.getMessages : []}/>
-            </Flex>
-         
-       </Dialog>
+              {/* </ModalLink> */}
+            </Flex>         
+    </Dialog>
     )
 }

@@ -3,9 +3,13 @@ import {  Button, Avatar, CircularProgress,  } from '@material-ui/core';
 import { generatePath, Link } from 'react-router-dom';
 import {Text, Flex} from 'rebass'
 import { useQuery } from '@apollo/react-hooks';
+import { ModalRoute, ModalLink} from 'react-router-modal';
+import { useRouteMatch } from 'react-router-dom';
 
 import { FOLLOWING_USER} from '../../apis/UserAPI'
 import Follow from '../Follow'
+import ProfileWindow from '../Profile'
+
 import * as Routes from '../../routes';
 import{DialogBlock, DialogFriend} from '../FriendsWindow'
 
@@ -18,7 +22,7 @@ export default function FollowingBlock(props){
       }, [ data])
       const FollowingData = data&&data.followingUser;
       const [followingState, setFollowingState] = useState(FollowingData);
-      console.log(data)
+      const {url} =useRouteMatch();
 
       if (followingState === undefined){
             return  null
@@ -30,9 +34,9 @@ export default function FollowingBlock(props){
                   ) : ( followingState  <= 0  ? <Text textAlign="center" fontWeight='bold'  color="#aaa">No following</Text> :
                   followingState.map(user => (
                               <DialogFriend my={1} key={user.id} >
-                                    <Link to={generatePath(Routes.USER_PROFILE, {id: user.id,})}>
+                                    <ModalLink path={`/${ user.id}`}  parentPath={url} component={ProfileWindow}>
                                           <Avatar>{user.firstName[0] + user.secondName[0]}</Avatar>
-                                    </Link>
+                                    </ModalLink>
                                     <Flex my="auto">
                                           <Text mx={2} fontSize={[14,16]}>
                                           {user.firstName}

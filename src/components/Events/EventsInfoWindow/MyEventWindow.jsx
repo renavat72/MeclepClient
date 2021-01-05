@@ -63,9 +63,9 @@ export default function MyEventWindow (props){
           <Flex>
           <CardActions >
             <LikeButton user={user} post={post}postId={post.id}/>
-            <IconButton>
+            {/* <IconButton>
               <ShareIcon />
-            </IconButton>
+            </IconButton> */}
           </CardActions>
             <Flex ml="auto" my="auto">
 

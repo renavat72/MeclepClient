@@ -14,8 +14,8 @@ html {
 
 body {
   margin:0 auto;
-  font-family: 'Nunito', sans-serif;
- 
+  font-family: open sans;
+  
 }
 
 #root {

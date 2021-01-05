@@ -3,6 +3,7 @@ import {Route, Redirect} from 'react-router-dom'
 
 import {AuthContext} from '../context/auth'
 import Authorization from '../components/Authorization'
+import Dashboard from '../components/Dashboard'
 
 function AuthRoute ({component: Component, ...rest}){
     const {user} = useContext(AuthContext)
@@ -11,7 +12,7 @@ function AuthRoute ({component: Component, ...rest}){
         <Route
             {...rest}
             render={props =>
-                user ? <Redirect to="/"/> : <Route exact path="/authorization" component={Authorization}/>
+                user ? <Route to="/" component={Dashboard}/> : <Route exact path="/authorization" component={Authorization}/>
             }
         />
     )

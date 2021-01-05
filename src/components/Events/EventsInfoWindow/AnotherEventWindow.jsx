@@ -3,7 +3,6 @@ import { CardActions,IconButton,Link, Collapse, Button  } from '@material-ui/cor
 import ShareIcon from '@material-ui/icons/Share';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import {Text, Box, Flex} from 'rebass';
-import Map from '../../Map'
 
 import LikeButton from '../../Buttons/LikeButton'
 import Slider from '../../Slider' 
@@ -16,7 +15,6 @@ export default function AnotherEventWindow (props){
     const handleClick = () => {
       setOpen(!open);
     };
-  
     return(
         <Box width="250px">
           <Flex flexDirection="column">
@@ -30,7 +28,7 @@ export default function AnotherEventWindow (props){
               </Text>
               <Flex my={1}  flexDirection="row" justifyContent="space-between" >
                   <Box>
-                 <Text textAlign="left"  fontSize={14}>Выстовка</Text>
+                 {/* <Text textAlign="left"  fontSize={14}>Выстовка</Text> */}
                 </Box>
                 <Flex flexDirection="column">
                  <Text textAlign="right"  fontSize={14}>{post.time}</Text>
@@ -43,12 +41,12 @@ export default function AnotherEventWindow (props){
             {post.headerDescription}
             </Text>
           </Flex>
-          <Flex mt={3} flexDirection="row">
-              <Slider images={post.images}/>
-          </Flex>
-          <Flex mr="auto">
+        
+          {post.images != 0 ?   <Flex mt={3} flexDirection="row"> <Slider images={post.images}/> </Flex>: null}          
+          {post.description!= 0 ? <Flex mr="auto">
           {open ? <Button onClick={handleClick}>Hide</Button>:<Button onClick={handleClick}>Show more</Button>  }
-          </Flex>
+          </Flex>:null}
+          
             <Collapse in={open} timeout="auto" unmountOnExit>
                 <Flex my={1} maxWidth="250px" flexDirection="column">
                     <Text color="textSecondary" textAlign="left">
@@ -60,9 +58,9 @@ export default function AnotherEventWindow (props){
           <CardActions >
             <LikeButton post={post}postId={post.id}/>
            
-            <IconButton>
+            {/* <IconButton>
               <ShareIcon />
-            </IconButton>
+            </IconButton> */}
             {/* <IconButton
               onClick={handleExpandClick}
               aria-expanded={expanded}

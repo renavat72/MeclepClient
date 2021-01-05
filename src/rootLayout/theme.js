@@ -47,7 +47,7 @@ export const media = Object.keys(sizes).reduce((accumulator, label) => {
       monospace: 'Menlo, monospace',
     },
     fontWeights: {
-      body: 400,
+      body: 600,
       heading: 700,
       bold: 700,
     },
