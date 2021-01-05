@@ -1,8 +1,9 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { Dialog, TextField, CircularProgress, Button } from '@material-ui/core';
 import {Text, Box, Flex} from 'rebass'
 import { Form } from 'react-final-form';
 import { useMutation, useQuery} from '@apollo/react-hooks'
+import { useRouteMatch } from 'react-router-dom';
 
 import {CHANGE_FIRSTNAME, GET_AUTH_USER} from '../../apis/UserAPI'
 import { useForm } from "../../util/hooks"
@@ -69,9 +70,15 @@ function FormEditProfile(props){
 }
 
 export default function EditProfile(props){
-      const {editProfileWindow, handleEditProfileWindow} = props;
-      return (
-       <Dialog open={editProfileWindow}  onClose={handleEditProfileWindow}>
+  const [isOpen, setIsOpen] = useState(true);
+    const {url} =useRouteMatch()
+
+    function handleOpen(){
+          setIsOpen(false);
+          window.history.pushState('', '', `${url}`);
+    }   
+     return (
+       <Dialog open={isOpen}  onClose={()=>handleOpen()} >
         <Box  m={4}>
             <Flex mb={4}>
                   <Text>Edit profile</Text>

@@ -6,9 +6,13 @@ const checkAuth = require('../../util/check-auth');
 
 module.exports = {
   Query: {
-    async getParserEvents() {
+    async getParserEvents(_,{limit, skip,first}) {
       try {
-        const parserEvents = await ParserEvent.find().sort({ createdAt: -1 });
+        const parserEvents = await ParserEvent.find().sort({ createdAt: -1 })
+        .limit(limit)
+        .skip(skip)
+        .sort({ createdAt: 'desc' });
+
         return parserEvents;
       } catch (err) {
         throw new Error(err);

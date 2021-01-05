@@ -6,9 +6,11 @@ export const FETCH_PARSER_EVENTS_QUERY = gql`
             id
             createdAt
             title
+            isOnline
             headerDescription
             urlContent
             description
+            city
             address
             lat
             lng
@@ -22,14 +24,16 @@ export const FETCH_PARSER_EVENTS_QUERY = gql`
 `
 
 export const FETCH_ALL_EVENTS_QUERY = gql`
-   query {
-    getParserEvents {
+   query($limit: Int, $skip: Int, $first: Int, $after:String) {
+    getParserEvents(limit: $limit, skip: $skip, first: $first, after:$after) {
             id
             createdAt
             title
+            isOnline
             headerDescription
             urlContent
             description
+            city
             address
             lat
             lng
@@ -45,7 +49,7 @@ export const FETCH_ALL_EVENTS_QUERY = gql`
                 # secondName
             }
         }
-        getPosts {
+        getPosts(limit: $limit,  skip: $skip, first: $first, after:$after) {
             id
             userId
             createdAt

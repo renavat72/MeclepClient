@@ -42,8 +42,8 @@ export default function ParserEvent (props){
       );
     }
     return(
-          <WrapperCard>
-                <Flex m={3} flexDirection="column"   maxWidth="500px">
+          <WrapperCard maxWidth="500px">
+                <Flex  m={3} flexDirection="column"  width={[null, 500]}>
                     {/* <Locate panTo={panTo}/> */}
                   <Flex flexDirection="column">
                     <Text fontWeight='bold' fontSize={[16,20]}>
@@ -59,9 +59,9 @@ export default function ParserEvent (props){
                   <Flex my={3} flexDirection="row" >
                     {post.images != 0 ? <Slider images={post.images}/>: null}
                   </Flex>
-                  <Flex mr="auto" width="320px">
+                  {post.description!= 0 ?  <Flex mr="auto" width="320px">
                     {open ? <Button onClick={handleModal}>Hide</Button>:<Button onClick={handleModal}>Show more</Button>  }
-                    </Flex>
+                    </Flex>  : null }
                         <Collapse in={open} timeout="auto" unmountOnExit  >
                             <Flex my={1} flexDirection="column">
                                 <Text color="textSecondary" textAlign="left" fontSize={[14,16]}>
@@ -71,13 +71,12 @@ export default function ParserEvent (props){
                         </Collapse>
                    <Flex my={1}flexDirection="row">
                       <LikeButton user={props.user} postId={post.id} post={post} />
-                      <Flex my="auto">
+                      <Flex my="auto" ml="auto">
                         <Text  textAlign="right" fontSize={14}>{post.period}</Text>
                       </Flex>
                    </Flex>
-                   <Flex >
-                  </Flex>
-                    <Box ml="auto" mb="auto">
+                
+                    <Box ml="auto" mt="auto" >
                     <Text fontSize={16}><Link href={post.urlContent}> {post.website}</Link></Text>
                     </Box>
              </Flex>

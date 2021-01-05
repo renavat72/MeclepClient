@@ -38,6 +38,7 @@ const postSchema = new Schema ({
             createdAt: String
         }
     ],
+    expire_at: {type: Date, default: Date.now, expires: 3600*1460},
     user: {
         type: Schema.Types.ObjectId,
         ref: 'users'

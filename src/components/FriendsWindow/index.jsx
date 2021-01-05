@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import { Dialog, Tabs, Tab } from '@material-ui/core';
 import {Text, Box, Flex} from 'rebass'
 import styled from 'styled-components';
+import { useRouteMatch } from 'react-router-dom';
 
 import FilterFriendsBlock from './FilterFriendsBlock'
 import FollowingBlock from './FollowingBlock'
@@ -12,6 +13,7 @@ export const FriendsWindowBlock = styled(Box)`
 max-width: 1024px;
 overflow: auto;
 box-sizing: border-box;
+
 `
 export const DialogBlock = styled(Flex)`
 flex-direction:column;
@@ -28,9 +30,19 @@ export const FilterFriends = styled(Flex)`
 export const WrapperFriends = styled(Box)`
 height: 720px;
 `
-
 export default function FriendsWindow(props){
       const {friendsWindow, handleFriendsWindow} = props;
+      const {url} =useRouteMatch()
+      
+      const [isOpen, setIsOpen] = useState(true)
+
+      function handleOpen(){
+            setIsOpen(false);
+            window.history.pushState('', '', `${url}`);
+
+      }
+
+
       const TabsUsers = () =>{
             const [tab, setTab] = useState(0);
             const handleChange = (e, newTab) => {
@@ -50,12 +62,12 @@ export default function FriendsWindow(props){
                         <Tab label="All users" />
                   </Tabs>
                   <TabPanel tab={tab} index={0}>
-                        <FollowingBlock/>
+                        <FollowingBlock url={url}/>
                   </TabPanel>
-                  <TabPanel tab={tab} index={1}>
+                  <TabPanel tab={tab}index={1} url={url}>
                         <FollowersBlock/>
                   </TabPanel>
-                  <TabPanel tab={tab} index={2}>
+                  <TabPanel tab={tab} index={2} url={url}>
                         <AllUsersBlock/> 
                   </TabPanel>
               </Box>
@@ -81,17 +93,17 @@ export default function FriendsWindow(props){
       }
 
       return (
-       <Dialog open={friendsWindow}  onClose={handleFriendsWindow} maxWidth="xl">
-        <FriendsWindowBlock m={[1,4]} minWidth={[null,"700px"]} >
-            <Flex flexDirection={["column-reverse","row"]}>
-            <WrapperFriends >
-                 <TabsUsers />
-            </WrapperFriends>
-            <Box width={[1,2/7]} mx={[0,3]}my={[2,0]}>
-                  <FilterFriendsBlock  width="170px"/>
-            </Box> 
-        </Flex>
-        </FriendsWindowBlock>
-       </Dialog>
+            <Dialog open={isOpen}  onClose={()=>handleOpen()} maxWidth="xl">
+            <FriendsWindowBlock m={[1,4]} minWidth={[null,"700px"]} >
+                  <Flex flexDirection={["column-reverse","row"]}>
+                  <WrapperFriends >
+                  <TabsUsers />
+                  </WrapperFriends>
+                  <Box width={[1,2/7]} mx={[0,3]}my={[2,0]}>
+                        <FilterFriendsBlock  width="170px"/>
+                  </Box> 
+            </Flex>
+            </FriendsWindowBlock>
+            </Dialog>
     )
 }

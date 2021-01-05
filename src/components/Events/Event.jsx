@@ -16,13 +16,35 @@ box-shadow: 0 0 6px rgba(0,0,0,0.2);
 `
 
 export default function Event (props){
-    const {post, user } = props;
+    const {post, user,handleEventsWindow } = props;
     const parseDate = Date.parse(post.timeOfEvent);
+
     const [open, setOpen] = useState(false);
-    
+
+    function LocateToAddress({ panTo }) {
+      function handleLocate(){
+        navigator.geolocation.getCurrentPosition(
+          () => {
+            panTo({
+              lat: post.lat,
+              lng: post.lng,
+            });
+          },
+        ),handleEventsWindow()}
+
+      return (
+        <Text fontSize={[12,14]}
+          onClick={()=>handleLocate()}
+        >
+         {post.address}
+         </Text>
+      );
+    }
+
     const handleModal = () => {
       setOpen(!open);
     };
+
     const renderer = ({ days,hours, minutes, seconds, completed }) => {
       if (completed) {
 
@@ -31,6 +53,7 @@ export default function Event (props){
         return <span>{days}:{hours}:{minutes}:{seconds}</span>;
       }
     };
+    
     return(
           <Box>
           <WrapperCard>
@@ -40,7 +63,7 @@ export default function Event (props){
                       {post.nameOfEvent}
                     </Text>
                     <Text fontSize={18}>
-                      {post.address}
+                      <LocateToAddress panTo={props.panTo}/>
                     </Text>
                     <Text my={1}>{post.typeOfEvent}</Text>
                   </Flex>
