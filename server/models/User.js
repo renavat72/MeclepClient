@@ -16,12 +16,16 @@ const userSchema = new Schema ({
     },
     followers: [
         {
+          firstNameFollower: String,
+          secondNameFollower: String,
           type: Schema.Types.ObjectId,
           ref: 'Follow',
         },
       ],
       following: [
         {
+          firstNameUser: String,
+          secondNameUser: String,
           type: Schema.Types.ObjectId,
           ref: 'Follow',
         },

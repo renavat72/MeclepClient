@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import { Dialog, Tabs, Tab } from '@material-ui/core';
 import {Text, Box, Flex} from 'rebass'
 import styled from 'styled-components';
@@ -8,6 +8,8 @@ import FilterFriendsBlock from './FilterFriendsBlock'
 import FollowingBlock from './FollowingBlock'
 import FollowersBlock from './FollowersBlock'
 import AllUsersBlock from './AllUsersBlock'
+import { AuthContext } from '../../context/auth'
+import ChatWindow from '../Dialog/ChatWindow';
 
 export const FriendsWindowBlock = styled(Box)`
 max-width: 1024px;
@@ -30,19 +32,17 @@ export const FilterFriends = styled(Flex)`
 export const WrapperFriends = styled(Box)`
 height: 720px;
 `
-export default function FriendsWindow(props){
-      const {friendsWindow, handleFriendsWindow} = props;
+export default function FriendsWindow({handleClick}){
       const {url} =useRouteMatch()
-      
-      const [isOpen, setIsOpen] = useState(true)
+      const { user } = useContext(AuthContext);
 
+      const [isOpen, setIsOpen] = useState(true);
       function handleOpen(){
             setIsOpen(false);
             window.history.pushState('', '', `${url}`);
 
       }
-
-
+  
       const TabsUsers = () =>{
             const [tab, setTab] = useState(0);
             const handleChange = (e, newTab) => {
@@ -62,10 +62,10 @@ export default function FriendsWindow(props){
                         <Tab label="All users" />
                   </Tabs>
                   <TabPanel tab={tab} index={0}>
-                        <FollowingBlock url={url}/>
+                        <FollowingBlock url={url} authUser={user.id} handleClick={handleClick}/>
                   </TabPanel>
                   <TabPanel tab={tab}index={1} url={url}>
-                        <FollowersBlock/>
+                        <FollowersBlock  authUser={user.id} handleClick={handleClick}/>
                   </TabPanel>
                   <TabPanel tab={tab} index={2} url={url}>
                         <AllUsersBlock/> 

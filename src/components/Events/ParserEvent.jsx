@@ -17,7 +17,7 @@ box-shadow: 0 0 6px rgba(0,0,0,0.2);
 `
 
 export default function ParserEvent (props){
-    const {post,handleEventsWindow } = props;
+    const {post,handleOpen } = props;
     const [open, setOpen] = useState(false);
     const handleModal = () => {
       setOpen(!open);
@@ -31,7 +31,7 @@ export default function ParserEvent (props){
               lng: post.lng,
             });
           },
-        ),handleEventsWindow()}
+        ),handleOpen()}
 
       return (
         <Text fontSize={[12,14]}
@@ -41,6 +41,7 @@ export default function ParserEvent (props){
          </Text>
       );
     }
+    console.log()
     return(
           <WrapperCard maxWidth="500px">
                 <Flex  m={3} flexDirection="column"  width={[null, 500]}>
@@ -57,7 +58,7 @@ export default function ParserEvent (props){
                     
                   </Flex>
                   <Flex my={3} flexDirection="row" >
-                    {post.images != 0 ? <Slider images={post.images}/>: null}
+                     <Slider images={post.images}/>
                   </Flex>
                   {post.description!= 0 ?  <Flex mr="auto" width="320px">
                     {open ? <Button onClick={handleModal}>Hide</Button>:<Button onClick={handleModal}>Show more</Button>  }

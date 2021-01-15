@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CardActions,IconButton,Link, Collapse, Button  } from '@material-ui/core';
+import { CardActions,IconButton,Link, Collapse, Button, MobileStepper } from '@material-ui/core';
 import ShareIcon from '@material-ui/icons/Share';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import {Text, Box, Flex} from 'rebass';
@@ -11,7 +11,7 @@ import Slider from '../../Slider'
 export default function AnotherEventWindow (props){
     const {post} = props
     const [open, setOpen] = useState(false);
-
+ 
     const handleClick = () => {
       setOpen(!open);
     };
@@ -28,7 +28,6 @@ export default function AnotherEventWindow (props){
               </Text>
               <Flex my={1}  flexDirection="row" justifyContent="space-between" >
                   <Box>
-                 {/* <Text textAlign="left"  fontSize={14}>Выстовка</Text> */}
                 </Box>
                 <Flex flexDirection="column">
                  <Text textAlign="right"  fontSize={14}>{post.time}</Text>
@@ -41,8 +40,8 @@ export default function AnotherEventWindow (props){
             {post.headerDescription}
             </Text>
           </Flex>
-        
-          {post.images != 0 ?   <Flex mt={3} flexDirection="row"> <Slider images={post.images}/> </Flex>: null}          
+          <Slider images={post.images}/>
+          {/* {post.images != 0 ?   <Flex mt={3} flexDirection="row"> </Flex>: null}           */}
           {post.description!= 0 ? <Flex mr="auto">
           {open ? <Button onClick={handleClick}>Hide</Button>:<Button onClick={handleClick}>Show more</Button>  }
           </Flex>:null}

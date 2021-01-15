@@ -60,7 +60,13 @@ type User {
     type Follow {
         id: ID!
         user: ID
+        userCoverImage:String
+        userFirstName:String
+        userSecondName: String
         follower: ID
+        followerCoverImage:String
+        followerFirstName:String
+        followerSecondName: String
     }
 
   input UploadUserPhotoInput {
@@ -80,6 +86,12 @@ type User {
   input CreateFollowInput {
     userId: ID!
     followerId: ID!
+    coverImageUser:String
+    coverImageFollower:String
+    firstNameFollower: String!
+    secondNameFollower: String!
+    firstNameUser: String!
+    secondNameUser: String!
   }
   input DeleteFollowInput {
     id: ID!

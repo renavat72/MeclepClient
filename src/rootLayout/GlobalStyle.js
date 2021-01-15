@@ -15,9 +15,11 @@ html {
 body {
   margin:0 auto;
   font-family: open sans;
-  
 }
-
+:link{
+  text-decoration:none;
+  color: #000 !important;
+}
 #root {
   position: relative;
   min-height: 100vh;

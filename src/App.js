@@ -11,22 +11,18 @@ import DialogWindow from '../src/components/Dialog'
 import Profile from '../src/components/Profile'
 
 import styled from 'styled-components';
-import FriendsWindow from './components/FriendsWindow';
+import ProfileWindow from './components/Profile';
 // import theme from './theme'
 
 const Root = styled.div`
   margin: 0 auto;
   width: 100%;
-  /* position: relative; */
   padding: 0 auto;
   font-family: "Nunito", sans-serif;
 
 `
 
 export default function App() {
-  const history = useHistory();
-  // const {url} =useRouteMatch()
-
 
   return (
     <Root>
@@ -34,6 +30,7 @@ export default function App() {
                 <BrowserRouter>
                     <AuthRoute />
                     <Switch>
+                    <Route path={`/id:id`} component={ProfileWindow} />
                     </Switch>
                       {/* <Route exact  path="/home" component={Dashboard}/> */}
                         {/* <Route path={`/friends`} children={<FriendsWindow />} /> */}

@@ -11,7 +11,7 @@ const pubsub = new PubSub();
 
 module.exports = {
   Query: {
-    getUserNotifications: async (root, { userId, skip, limit }, { Notification }) => {
+    getUserNotifications: async (root, { userId, skip, limit } ) => {
       const query = { user: userId };
       const count = await Notification.where(query).countDocuments();
       const notifications = await Notification.where(query)

@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useReducer } from 'react'
-import {Button, Drawer, List, ListItem, ListItemText, Avatar, Badge, ListItemIcon } from '@material-ui/core';
+import React, { useState, useEffect } from 'react'
+import {Button, Drawer, List, ListItem, ListItemText, Avatar, Snackbar, ListItemIcon } from '@material-ui/core';
 import { Box, Flex, Text } from 'rebass';
+import MuiAlert from '@material-ui/lab/Alert';
 import AccountBoxOutlinedIcon from '@material-ui/icons/AccountBoxOutlined';
 import MailIcon from '@material-ui/icons/Mail';
 import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
@@ -8,13 +9,10 @@ import EventIcon from '@material-ui/icons/Event';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined';
 import { useQuery } from '@apollo/react-hooks';
-import { generatePath, Link,useRouteMatch } from 'react-router-dom';
-import { ModalContainer, ModalLink,ModalRoute } from 'react-router-modal';
+import {  ModalLink } from 'react-router-modal';
 import styled from 'styled-components';
 
-import { geolocationReducer, SET_CITY } from '../../reducers/geolocation'
-import { AuthContext } from '../../context/auth'
-
+import {  SET_CITY } from '../../reducers/geolocation'
 import EventsBlock from '../Events/EventsBlock'
 import EditProfile from '../EditProfile'
 import DialogWindow from '../Dialog'
@@ -22,13 +20,22 @@ import FriendsWindow from '../FriendsWindow'
 import {GET_AUTH_USER} from '../../apis/UserAPI'
 import CityWindow from '../CityWindow';
 import { useStore } from '../../context/store';
+import ProfileWindow from '../Profile'
+import MyProfileWindow from '../Profile/MyProfile'
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
+  export const CustomModalLink = styled(ModalLink)`
+        text-decoration: none; 
+  `
 
 
 const Sidebar = ({panTo, user, logout}) => {
     const { data} = useQuery(GET_AUTH_USER);
     const localCity = localStorage.getItem("City");
     const [{geolocation}, dispatch] = useStore();
-
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [eventsWindow, setEventsWindow] = useState(false);
     const [dialogWindow, setDialogWindow] = useState(false);
@@ -36,11 +43,17 @@ const Sidebar = ({panTo, user, logout}) => {
     // const [friendsWindow, setFriendsWindow] = useState(false);
     const [editProfileWindow,setEditProfileWindow] = useState(false);
     const [selectedCity, setSelectedCity ] = useState(localCity);
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
         localStorage.setItem("City", selectedCity)
         dispatch({ type: SET_CITY, payload: selectedCity });
     },[ dispatch, selectedCity]);
+
+    const handleClick = () => {
+        setOpen(!open);
+      };
+     
     const handleEventsWindow = () => {
         setEventsWindow(!eventsWindow);
       };
@@ -68,7 +81,7 @@ const Sidebar = ({panTo, user, logout}) => {
     const EventsBlockWindow = () => {
         return (
             <Box>
-                <ModalLink path={`/events`}component={EventsBlock}>
+                <ModalLink path={`/events`}component={EventsBlock} props={{panTo}}>
                   <Button >  
                     <ListItemIcon> 
                         <EventIcon />
@@ -95,30 +108,28 @@ const Sidebar = ({panTo, user, logout}) => {
         };
         return (
             <Box>
-                <ModalLink path={`/city`} component={CityWindow } props={{setSelectedCity, panTo}} >
+                <CustomModalLink path={`/city`} component={CityWindow } props={{setSelectedCity, panTo}} >
                    <Button >
                       <RoomOutlinedIcon onClick={toLocate}/>
                     <Text  mr="auto"  >
                         {selectedCity}
                     </Text>
                    </Button>
-            </ModalLink>
+            </CustomModalLink>
               </Box>
         );
       }
       const DialogBlock = () => {
         return (
             <Box >
-               <ModalLink path={`/dialog`}component={DialogWindow} textDecoration={"none"} >
+               <CustomModalLink path={`/dialog`}component={DialogWindow} textDecoration={"none"}  >
                <Button >
-                 <Badge badgeContent={0} color="secondary">
                      <MailIcon />
-                 </Badge>
                     <Box ml={4}>
                     Dialog
                     </Box>
                 </Button>
-          </ModalLink>
+          </CustomModalLink>
             </Box>
         )
     }
@@ -126,10 +137,10 @@ const Sidebar = ({panTo, user, logout}) => {
     const FriendWindowBlock = () => {
         return (
             <Box>
-                <ModalLink path={`/friends`} component={FriendsWindow} >
+                <ModalLink path={`/friends`} component={FriendsWindow} props={{handleClick}}>
                     <Button >
                         <ListItemIcon> 
-                            <PeopleOutlineIcon />
+                                <PeopleOutlineIcon />
                         </ListItemIcon>
                         <Text sx={{textDecoration: 'none'}} >
                             Friends
@@ -164,6 +175,7 @@ const Sidebar = ({panTo, user, logout}) => {
         return(
          <Drawer anchor="left" variant="permanent" onClose={openHandler} open={sidebarOpen} >
             <Flex flexDirection="column" px={2}>
+            <ModalLink path={`/myProfile`} component={MyProfileWindow} > 
                 <Flex mx={3} my={4} >
                     <Avatar>{InitialsWords}</Avatar>
                     <Flex my="auto">
@@ -175,6 +187,7 @@ const Sidebar = ({panTo, user, logout}) => {
                     </Box>
                     </Flex>
                 </Flex>
+            </ModalLink>
             <Flex flexDirection="column">
                 <List>
                     {[ <Locate panTo={panTo}/>,<FriendWindowBlock/>, <DialogBlock/>, <EventsBlockWindow/>, <EditProfileBlock/>].map((block, index) => (
@@ -223,10 +236,14 @@ const Sidebar = ({panTo, user, logout}) => {
         <div>                     
              {/* <ModalContainer/> */}
             <DrawerSide/>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClick}>
+                <Alert onClose={handleClick} severity="success">
+                Your message has been sent
+                </Alert>
+            </Snackbar>
             {/* <EditProfile editProfileWindow={editProfileWindow}  handleEditProfileWindow={handleEditProfileWindow}/> */}
             {/* <EventsBlock eventsWindow={eventsWindow}  handleEventsWindow={handleEventsWindow} authUser={data} panTo={panTo}/> */}
            {/* <ModalLink path="/friends" component={FriendsWindow}> */}
-               
             {/* <CityWindow  panTo={panTo}  setSelectedCity={setSelectedCity}/> */}
         </div>
 

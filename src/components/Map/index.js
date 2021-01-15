@@ -13,6 +13,7 @@ import Club from '../../icons/Markers/club.svg'
 import Meeting from '../../icons/Markers/meeting.svg'
 import Exhibition from '../../icons/Markers/exhibition.svg'
 import ParserMarker from '../../icons/Markers/parserMarker.svg'
+import { Box, Flex } from "rebass";
 
 
 
@@ -68,11 +69,9 @@ export default function Map({children,mapRef}) {
     mapRef.current = map;
   }, []);
 
-
-
   if (loading) return <CircularProgress />
   if (loadError) return "Error";
-  if (!isLoaded) return <CircularProgress />;
+  if (!isLoaded) return <CircularProgress />
   if (markers === undefined) return <CircularProgress />
 
   return (

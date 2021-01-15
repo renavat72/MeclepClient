@@ -77,17 +77,29 @@ export const GET_CURRENT_USER = gql`
           id
           firstName
           secondName
-        #     ${userPayload}
+            # ${userPayload}
         #     isOnline
         #     posts {
         #      id
         #     }
-        #     following {
-        #      id
-        #     }
-        #     followers {
-        #      id
-        #     }
+        following{
+                id
+                follower
+                user
+                followerFirstName
+                followerSecondName
+                userFirstName
+                userSecondName
+            }
+        followers{
+                id
+                follower
+                user
+                followerFirstName
+                followerSecondName
+                userFirstName
+                userSecondName
+            }
         #     notifications {
         #         id
         #         author {
@@ -103,29 +115,78 @@ export const GET_CURRENT_USER = gql`
 `;
 export const FOLLOWING_USER = gql`
      query{
-      followingUser {
+      followingUser{
         id
         firstName
         secondName
-        following {
-          id
-          user
-        }
-        followers {
-          id
-          user
-        }
-        notifications {
-          id
-          author {
-            id
-            firstName
-             secondName
-          }
-          follow {
-            id
-          }
-        }
+        following{
+                id
+                follower
+                user
+                followerFirstName
+                followerSecondName
+                userFirstName
+                userSecondName
+            }
+        followers{
+                id
+                follower
+                user
+                followerFirstName
+                followerSecondName
+                userFirstName
+                userSecondName
+            }
+        # notifications {
+        #   id
+        #   author {
+        #     id
+        #     firstName
+        #      secondName
+        #   }
+        #   follow {
+        #     id
+        #   }
+        # }
+
+    }
+  }
+`
+export const FOLLOWERS_USER = gql`
+     query{
+      followersUser {
+        id
+        firstName
+        secondName
+        following{
+                id
+                follower
+                user
+                followerFirstName
+                followerSecondName
+                userFirstName
+                userSecondName
+            }
+        followers{
+                id
+                follower
+                user
+                followerFirstName
+                followerSecondName
+                userFirstName
+                userSecondName
+            }
+        # notifications {
+        #   id
+        #   author {
+        #     id
+        #     firstName
+        #      secondName
+        #   }
+        #   follow {
+        #     id
+        #   }
+        # }
 
     }
   }
@@ -136,14 +197,24 @@ export const GET_ALL_USERS = gql`
         id
         firstName
         secondName
-        following {
-          id
-          user
-        }
-        followers {
-          id
-          user
-        }
+        following{
+                id
+                follower
+                user
+                followerFirstName
+                followerSecondName
+                userFirstName
+                userSecondName
+            }
+        followers{
+                id
+                follower
+                user
+                followerFirstName
+                followerSecondName
+                userFirstName
+                userSecondName
+            }
         # notifications {
         #   id
         #   author {
@@ -188,11 +259,21 @@ export const GET_AUTH_USER = gql`
             followersCount
             following{
                 id
+                follower
                 user
+                followerFirstName
+                followerSecondName
+                userFirstName
+                userSecondName
             }
             followers{
                 id
+                follower
                 user
+                followerFirstName
+                followerSecondName
+                userFirstName
+                userSecondName
             }
         }
     }

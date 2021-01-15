@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Flex, Image } from 'rebass';
-import {GridList, GridListTile} from '@material-ui/core';
+import {GridList, GridListTile, MobileStepper, Button} from '@material-ui/core';
 import styled from 'styled-components';
 
 
@@ -14,23 +14,41 @@ const SliderRoot = styled(Flex)`
 
 export default function Slider(props){
     const {images}=props;
-   
+    const [activeStep, setActiveStep] = React.useState(0);
+    const maxSteps = images.length;
+  
+    const handleNext = () => {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    };
+  
+    const handleBack = () => {
+      setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    };
     if (!images){
         return null
     }
     return(
-        <SliderRoot>
-        <GridList cols={2.5} style={{flexWrap: 'nowrap', transform: 'translateZ(0)', width: 500, height:120,   overflowY: "hidden"}}>
-            {images.map((image, index)=> {
-                return(
-                    <GridListTile key={image}>
-                        <Box width="150px" mx={2}>
-                      <img style={{width:150, height:100}} src={image}/>
-                        </Box>
-                    </GridListTile>
-                )
-            })}
-        </GridList>
-        </SliderRoot>
+        images != 0 ? <Box>
+        <Flex m="auto" width={1}>
+         <img style={{maxWidth:300, height:200, width:"100%"}} src={images[activeStep]}/>
+        </Flex>
+           <MobileStepper
+          steps={maxSteps}
+          position="static"
+          variant="text"
+          activeStep={activeStep}
+          nextButton={
+              <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
+              Next
+            </Button>
+          }
+          backButton={
+              <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+              Back
+            </Button>
+          }
+          />
+    </Box>: null 
+
     )
 }
