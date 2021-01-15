@@ -5,9 +5,10 @@ import {Text, Box, Flex} from 'rebass'
 import styled from 'styled-components';
 import { useMutation } from '@apollo/react-hooks';
 import { Form } from 'react-final-form'
+import { ModalLink} from 'react-router-modal';
 
 import {  CREATE_MESSAGE} from '../../apis/MessageAPI'
-
+import ProfileWindow from '../Profile'
 
 const InputBlock = styled(Flex)`
 background-color: #f8f8f8;
@@ -20,7 +21,7 @@ overflow-x: hidden;
 `
 const Message = styled(Text)`
 width:fit-content;
-background-color: ${(p) => p.userMessage ? "#8dabd8":"gray"};
+background-color: ${(p) => p.userMessage ? "#8dabd8":"#e5e5e5"};
 border-radius: 8px; 
 padding: 10px;
 `
@@ -36,7 +37,7 @@ export default function ChatSide(props){
       variables: {
         input: {
           sender: authUser,
-          receiver: friendInfo ? friendInfo : null,
+          receiver: friendInfo.id ? friendInfo.id : null,
           message: textMessage,
         }
         },
@@ -59,17 +60,31 @@ export default function ChatSide(props){
         onSubmit();
       }
     };
-
+    console.log()
     return(
         <Flex flexDirection="column" width={5/6}>
         <DialogBlock >
-            {messages<= 0 ? <Flex m="auto">
-                <Text textAlign="center" fontWeight='bold'  color="#aaa">Select a chat</Text>
+          {messages<= 0 ? null:
+            <Flex width={2/3} mx="auto" p={2} sx={{borderBottomWidth: 0.5, borderBottomStyle: "solid", borderBottomColor: '#aaa', }}>
+              <Flex mx="auto">
+                <ModalLink path={`/id${friendInfo.id}`} component={ProfileWindow} props={friendInfo.id}>
+                  <Flex mx="auto" flexDirection="row">
+                    <Text mr={2}>{friendInfo.firstName}</Text>
+                    <Text>{friendInfo.secondName}</Text>
+                  </Flex>
+                </ModalLink>
+              </Flex>
+            </Flex>
+            }
+            {messages<= 0 ? <Flex m="auto" >
+                <Text textAlign="center" fontWeight='bold'  color="#e5e5e5">Select a chat</Text>
               </Flex> :
                       messages.map((message) =>{
                       const isAuthUserReceiver = authUser === message.sender.id;
+                      console.log(message)
                       return(
-                      <Flex flexDirection="column" width={1} pr={1} userMessage={isAuthUserReceiver} key={message.id} pt={2}>
+                      <Flex flexDirection="column" width={1} px={3}  userMessage={isAuthUserReceiver} key={message.id} pt={3}>
+                        
                             {isAuthUserReceiver ? 
                                   <Text mb={2} ml="auto">{message.sender.firstName}</Text>
                                   : <Text mb={2} mr="auto">{message.sender.firstName}</Text>
@@ -80,7 +95,7 @@ export default function ChatSide(props){
                                       {message.message}
                                   </Message>
                                   <Flex ml="auto">
-                                  {!message.seen ? <Text>Send</Text>:null}
+                                  {message.seen ? <Text fontSize={12}>Send</Text>:null}
                                   </Flex>
                     </Flex>
                   )

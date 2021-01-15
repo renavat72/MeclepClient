@@ -4,9 +4,9 @@ import {Text, Box, Flex} from 'rebass'
 import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
 
-
-
 import {GET_CONVERSATIONS,GET_CONVERSATIONS_SUBSCRIPTION} from '../../apis/MessageAPI'
+
+
 
 const FriendsSide = styled(Flex)`
     /* width:300px; */
@@ -40,7 +40,7 @@ export default function ConversationsSide(props){
     const {authUser, setFriendInfo} = props;
     const variables = {
         authUserId: authUser,
-      };    
+      };
       if(!variables.authUserId){
           return null
         }
@@ -48,7 +48,6 @@ export default function ConversationsSide(props){
         useEffect(()=>{
             const unsubscribe = subscribeToMore({
               document: GET_CONVERSATIONS_SUBSCRIPTION,
-        
               updateQuery:(prev, {subscriptionData}) =>{
                     if(!subscriptionData.data) return prev;
                     const { newConversation } = subscriptionData.data;
@@ -73,16 +72,18 @@ export default function ConversationsSide(props){
         <FriendsSide variables={variables}width={[1,2/6]}>
         <Box mt={2} width={1}>
             {data && data.getConversations.map((user) =>
-                <FriendsBlock mx={[0,3]} flexDirection="row" p={[0,2]} mb={1} key={user.id} onClick={(()=>setFriendInfo(user.id))} backgroundColor={user.seen ? "Gray": "Blue"}>
-                        <BadgeIsOnline variant="dot" color="primary" invisible={user.isOnline? false:true}>
+                <FriendsBlock flexDirection="row" p={[0,2]} mb={1} key={user.id} onClick={(()=>setFriendInfo(user))} backgroundColor={user.seen ? "Gray": "#8dabd9"}>
+                        <BadgeIsOnline variant="dot" color="primary" anchorOrigin={{ vertical: 'bottom', horizontal: 'right'}} invisible={user.isOnline? true:false}>
                              <Avatar >{user.firstName[0] + user.secondName[0]}</Avatar>
-                            </BadgeIsOnline> 
-                    <Flex flexDirection="row" my="auto" ml={2}>
-                        <Text mr={2}>{user.firstName}</Text>
-                        <Text>{user.secondName}</Text>
-                    </Flex>
-                    <Flex >
-                        {user.lastMessage}
+                            </BadgeIsOnline>
+                    <Flex ml={3} flexDirection="column">
+                        <Flex flexDirection="row" my="auto">
+                            <Text mr={2} fontSize={14}>{user.firstName}</Text>
+                            <Text fontSize={14}>{user.secondName}</Text>
+                        </Flex>
+                        <Flex >
+                            {user.lastMessageSender ? <Text fontSize={14}>You: {user.lastMessage}</Text>:<Text fontSize={14}>{user.lastMessage}</Text>}
+                        </Flex>
                     </Flex>
                 </FriendsBlock>
             )}

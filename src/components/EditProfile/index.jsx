@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import { Dialog, TextField, CircularProgress, Button } from '@material-ui/core';
+import { Dialog, TextField, CircularProgress, Button, Chip } from '@material-ui/core';
 import {Text, Box, Flex} from 'rebass'
 import { Form } from 'react-final-form';
 import { useMutation, useQuery} from '@apollo/react-hooks'
@@ -37,29 +37,33 @@ function FormEditProfile(props){
         <Box>
             <Form onSubmit={onSubmit} render={({handleSubmit}, form)=>(
                 <form onSubmit={handleSubmit}  noValidate className={error ? <CircularProgress/> : ""}>
-                    <Flex flexDirection="column">
+                    <Flex flexDirection="column" width={1/2} mt={5}>
                         <Flex flexDirection="column">
-                        <Flex>
-                        <TextField 
-                            label="Change first name"
-                            values={values.newFirstName}
-                            onChange={onChange}/>
-                        <TextField 
-                            label="Change second name"
-                            values={values.secondName}
-                            onChange={onChange}/>
+                          <Flex flexDirection="column">
+                          <TextField 
+                              label="Change first name"
+                              values={values.newFirstName}
+                              onChange={onChange}/>
+                          <TextField 
+                              label="Change second name"
+                              values={values.secondName}
+                              onChange={onChange}/>
+                          </Flex>
+                          <TextField label="Change email"/>
+                          <Flex flexDirection="column">
+                            <TextField type="password" label="Change password"/>
+                            <TextField type="password" label="Confirm password"/>
+                          </Flex>
+                          <Flex flexDirection="row">
+                           <Text my="auto" mr={2}>I like:</Text>
+                           <Chip color="primary" label={`Party`}/>
+                            
+                            {/* <TextField type="password" label="Confirm password"/> */}
+                          </Flex>
                         </Flex>
-                        <TextField label="Change email"/>
-                        <Flex>
-                        <TextField type="password" label="Change password"/>
-                        <TextField type="password" label="Confirm password"/>
-                        </Flex>
-                        </Flex>
-                        <Flex>
-                        </Flex>
-                        <Flex ml="auto" mt={4}>
-                        <Button type="submit" variant="contained">Edit</Button>
-                        </Flex>
+                          <Flex ml="auto" mt={4}>
+                            <Button type="submit" variant="contained">Edit</Button>
+                          </Flex>
                     </Flex>
                 </form>
             )} />
@@ -78,14 +82,12 @@ export default function EditProfile(props){
           window.history.pushState('', '', `${url}`);
     }   
      return (
-       <Dialog open={isOpen}  onClose={()=>handleOpen()} >
-        <Box  m={4}>
-            <Flex mb={4}>
+       <Dialog open={isOpen}  onClose={()=>handleOpen()}   maxWidth="xl">
+        <Box  m={3}   minWidth={["500px","700px"]} minHeight="470px">
+            <Flex >
                   <Text>Edit profile</Text>
             </Flex>
-            <Flex>
             <FormEditProfile />
-            </Flex>
         </Box>
        </Dialog>
     )

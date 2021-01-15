@@ -16,7 +16,12 @@ export default function Follow({user}){
 
       },
       variables: {
-        input:  {userId: user.id, followerId: authUser.user.id}
+        input:  { userId: user.id, 
+                  firstNameUser:user.firstName,
+                  secondNameUser:user.secondName,
+                  firstNameFollower:authUser.user.firstName,
+                  secondNameFollower:authUser.user.secondName,
+                  followerId: authUser.user.id}
       }
 
    })

@@ -7,6 +7,7 @@ import { Flex, Box, Text } from 'rebass';
 import { Form } from 'react-final-form'
 import { useMutation} from '@apollo/react-hooks'
 import styled from 'styled-components';
+import { useRouteMatch } from 'react-router-dom';
 
 import {CREATE_POST_MUTATION} from '../../apis/EventAPI'
 import PlacesAutocomplete from "./PlacesAutocomplete"
@@ -24,6 +25,13 @@ const AddEventWrapper = styled(Flex)`
 
 
 export default function AddEventWindow(props){
+  const [isOpen, setIsOpen] = useState(true)
+  const {url} =useRouteMatch()
+
+  function handleOpen(){
+        setIsOpen(!isOpen);
+        window.history.pushState('', '', `${url}`);
+  }
   const {eventWindow, handleEventWindow} = props;
   const [currentSide, setCurrentSide ] = useState(false);
   const [errors, setErrors] = useState([]);
@@ -89,7 +97,7 @@ export default function AddEventWindow(props){
 
   const [selectedDate, setSelectedDate] = useState(DatePicker());
     return(
-     <Dialog open={eventWindow}  onClose={handleEventWindow}  maxWidth="xl">
+     <Dialog open={isOpen}  onClose={handleOpen}  maxWidth="xl">
         <Form validate={errors=>{
           if(errors){return {errors}}
         }}onSubmit={onSubmit} render={({handleSubmit}) => (

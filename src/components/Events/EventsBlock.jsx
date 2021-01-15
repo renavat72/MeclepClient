@@ -83,7 +83,6 @@ export default function EventsBlock(props){
       function myFollowingHandle(){
             myFollowing ? setMyFollowing(null): setMyFollowing(authUser&&authUser.getAuthUser.following.map(user=> user.user))
       }
-      console.log(mergeData&&mergeData.map(post=>post.isOnline=== true))
       const showMore = () => {
           fetchMore({
             variables: { limit:mergeData.length+10 },
@@ -105,7 +104,7 @@ export default function EventsBlock(props){
                         </Flex>
                         <Flex width={1} flexDirection={["column-reverse","row"]} >
                               <WrapperEvent mr={[0,5]}>
-                              <EventsList events={filteredEvents} user={user} panTo={props.panTo} handleEventsWindow={handleEventsWindow} showMore={showMore}/>
+                              <EventsList events={filteredEvents}handleOpen={handleOpen} user={user} panTo={props.panTo} handleEventsWindow={handleEventsWindow} showMore={showMore}/>
                               </WrapperEvent>
                               <Box width={[1,1/3,1/3]} >
                               <FilterBlock
@@ -126,12 +125,11 @@ export default function EventsBlock(props){
 
 
 
-function EventsList({events, user, panTo,handleEventsWindow,showMore}){
+function EventsList({events, user, panTo,showMore,handleOpen}){
       useEffect(()=>{
             setEventsData(events)
       },[events] )
       const [eventsData, setEventsData ] = useState();
-     
       return(
       <Box> {eventsData <= 0 ? 
             <Box mt="300px">
@@ -142,8 +140,8 @@ function EventsList({events, user, panTo,handleEventsWindow,showMore}){
             <Block item key={post.id}>
                   <Box my={3} ml={1}>
                         {post.website ? 
-                  <ParserEvent post={post} user={user} panTo={panTo} handleEventsWindow={handleEventsWindow}/>:
-                  <Event post={post} user={user} panTo={panTo} handleEventsWindow={handleEventsWindow}/>
+                  <ParserEvent post={post} user={user} panTo={panTo} handleOpen={handleOpen}/>:
+                  <Event post={post} user={user} panTo={panTo} />
                         }
                   </Box>
             </Block>
@@ -165,7 +163,6 @@ function FilterBlock(props){
                   <WrapperFilterEvent maxWidth={[null,"200px","170px"]} width={1}>
                <Box >
                      <TextField 
-                        maxWidth
                         placeholder="Find event" 
                         value={props.searchValue}
                         onChange={props.onSearchChange}/>

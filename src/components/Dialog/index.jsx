@@ -47,10 +47,7 @@ export default function DialogWindow(props){
       function handleOpen(){
             setIsOpen(false);
             window.history.pushState('', '', `${url}`);
-
       }
-
-
       const { user } = useContext(AuthContext);
       const [friendInfo, setFriendInfo] = useState('');
       if(friendInfo===undefined){
@@ -59,7 +56,7 @@ export default function DialogWindow(props){
       
       const variables = {
           authUserId: user.id,
-          userId: friendInfo
+          userId: friendInfo.id
         };
    
       const { subscribeToMore, data} = useQuery(GET_MESSAGES,{variables,fetchPolicy: 'network-only'});
@@ -87,7 +84,7 @@ export default function DialogWindow(props){
       useEffect(()=>{
          const unsubscribeToMore = subscribeToMore({
            document: GET_MESSAGES_SUBSCRIPTION,
-           variables: {authUserId: user.id, userId:friendInfo },
+           variables: {authUserId: user.id, userId:friendInfo.id },
            updateQuery:(prev, {subscriptionData}) =>{
              if(!subscriptionData.data) return prev;
              updateMessageSeen();
@@ -102,15 +99,13 @@ export default function DialogWindow(props){
           unsubscribeToMore();
          };
        },[ user.id, friendInfo, subscribeToMore]);
-      
+       console.log(friendInfo)
       return (
        <Dialog open={isOpen}  onClose={()=>handleOpen()} maxWidth="xl">
    
             <Flex flexDirection="row" minWidth={["500px","700px"]} minHeight="470px">
                <ConversationsSide setFriendInfo={setFriendInfo} authUser={user.id}/>
-               <ModalLink path={`/dialog/${user.id}`}/>
                <ChatSide friendInfo={friendInfo} authUser={user.id}  messages={data ? data.getMessages : []}/>
-              {/* </ModalLink> */}
             </Flex>         
     </Dialog>
     )

@@ -289,13 +289,19 @@ module.exports = {
 
         async createFollow(
           root,
-          { input: { userId, followerId }, context }
+          { input: { userId, followerId, firstNameFollower, secondNameFollower, firstNameUser, secondNameUser, userCoverImage, followerCoverImage}, context }
         )
         {
           
           const follow = await new Follow({
             user: userId,
+            userFirstName:firstNameUser,
+            userSecondName:secondNameUser,
             follower: followerId,
+            followerFirstName:firstNameFollower,
+            followerSecondName:secondNameFollower,
+            coverImageUser:userCoverImage,
+            coverImageFollower:followerCoverImage,
           }).save();
 
           await User.findOneAndUpdate(

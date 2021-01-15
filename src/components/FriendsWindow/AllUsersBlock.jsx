@@ -3,12 +3,14 @@ import { Button, Avatar, CircularProgress } from '@material-ui/core';
 import { generatePath, Link } from 'react-router-dom';
 import {Text, Flex} from 'rebass'
 import { useQuery } from '@apollo/react-hooks';
+import { ModalRoute, ModalLink} from 'react-router-modal';
 
 import {GET_ALL_USERS } from '../../apis/UserAPI'
 import Follow from '../Follow'
 import { AuthContext } from '../../context/auth'
 import * as Routes from '../../routes';
 import{DialogBlock, DialogFriend} from '../FriendsWindow'
+import ProfileWindow from '../Profile'
 
 
 
@@ -26,7 +28,6 @@ export default function  AllUsersBlock (){
       refetch()
     }, [ UserData]);
 
-    console.log(usersData)
     if (usersData === undefined){
         return <CircularProgress/>
      } else {
@@ -38,9 +39,9 @@ export default function  AllUsersBlock (){
             UserData <= 0 ? <Text textAlign="center" fontWeight='bold'  color="#aaa">No users</Text> :
             UserData.map(user => (
               <DialogFriend my={1} key={user.id} >
-                    <Link to={generatePath(Routes.USER_PROFILE, {id: user.id,})}>
-                          <Avatar >{user.firstName[0] + user.secondName[0]}</Avatar>
-                    </Link>
+                    <ModalLink path={`/id${user.id}`} component={ProfileWindow} props={user.id}>
+                                          <Avatar>{user.firstName[0] + user.secondName[0]}</Avatar>
+                   </ModalLink>
                     <Flex my="auto">
                           <Text mx={2} fontSize={[14,16]}>
                             {user.firstName}
@@ -51,7 +52,7 @@ export default function  AllUsersBlock (){
                     </Flex>
                     <Flex ml="auto">
                     <Follow user={user} />
-                    <Button>Send</Button>
+                    {/* <Button>Send</Button> */}
                     </Flex>
                </DialogFriend>
                 ))
