@@ -4,6 +4,7 @@ import { Avatar, Dialog, ListItem, ListItemAvatar, ListItemText, DialogTitle, Li
 import {  ModalLink} from 'react-router-modal';
 
 import ProfileWindow from '../Profile'
+import AvatarUser from '../AvatarUser'
 
 
 export function FollowingDialog (userInfo){
@@ -16,7 +17,10 @@ export function FollowingDialog (userInfo){
         setIsOpen(!isOpen)
     }
     console.log(followingInfo)
+    console.log(userInfo)
+
     if(!userInfo) return null
+    if(!followingInfo) return null
 
     return(
       <Dialog open={isOpen} onClose={()=>handleOpen()} width={1}>
@@ -32,7 +36,7 @@ export function FollowingDialog (userInfo){
                 <ModalLink path={`/id${user.user}`} component={ProfileWindow} props={user}>
                   <Flex flexDirection="row" my="auto"  width={1}>
                     <ListItemAvatar>
-                            <Avatar>{user.userFirstName[0] + user.userSecondName[0]}</Avatar>
+                            <AvatarUser props={user} following={true}/>
                     </ListItemAvatar>
                       <ListItemText>
                         <Flex flexDirection="row" my="auto"  width="200px">

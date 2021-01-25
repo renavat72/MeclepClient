@@ -27,7 +27,7 @@ export const GET_CONVERSATIONS_SUBSCRIPTION = gql`
    }
 `
 export const GET_MESSAGES_SUBSCRIPTION = gql`
-  subscription($authUserId: ID!, $userId: ID!) {
+  subscription($authUserId: ID!, $userId: ID) {
     messageCreated(authUserId: $authUserId, userId: $userId) {
       id
       receiver {
@@ -49,7 +49,7 @@ export const GET_MESSAGES_SUBSCRIPTION = gql`
   }
 `;
 export const GET_MESSAGES = gql`
-   query($authUserId: ID! $userId: ID!){
+   query($authUserId: ID! $userId: ID){
     getMessages(authUserId: $authUserId, userId: $userId){
         id
         receiver{

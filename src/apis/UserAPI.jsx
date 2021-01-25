@@ -5,8 +5,8 @@ const userPayload = `
   email
   firstName
   secondName
-  image
-  imagePublicId
+  images
+  imagesPublicId
   coverImage
   coverImagePublicId
   createdAt
@@ -86,8 +86,10 @@ export const GET_CURRENT_USER = gql`
                 id
                 follower
                 user
+                followerCoverImage
                 followerFirstName
                 followerSecondName
+                userCoverImage
                 userFirstName
                 userSecondName
             }
@@ -95,8 +97,10 @@ export const GET_CURRENT_USER = gql`
                 id
                 follower
                 user
+                followerCoverImage
                 followerFirstName
                 followerSecondName
+                userCoverImage
                 userFirstName
                 userSecondName
             }
@@ -114,7 +118,7 @@ export const GET_CURRENT_USER = gql`
 }
 `;
 export const FOLLOWING_USER = gql`
-     query{
+     query( $userId: String! $searchQuery: String!){
       followingUser{
         id
         firstName
@@ -123,8 +127,11 @@ export const FOLLOWING_USER = gql`
                 id
                 follower
                 user
+                userCoverImage
+                followerCoverImage
                 followerFirstName
                 followerSecondName
+                userCoverImage
                 userFirstName
                 userSecondName
             }
@@ -132,8 +139,10 @@ export const FOLLOWING_USER = gql`
                 id
                 follower
                 user
+                followerCoverImage
                 followerFirstName
                 followerSecondName
+                userCoverImage
                 userFirstName
                 userSecondName
             }
@@ -162,8 +171,10 @@ export const FOLLOWERS_USER = gql`
                 id
                 follower
                 user
+                followerCoverImage
                 followerFirstName
                 followerSecondName
+                userCoverImage
                 userFirstName
                 userSecondName
             }
@@ -171,8 +182,10 @@ export const FOLLOWERS_USER = gql`
                 id
                 follower
                 user
+                followerCoverImage
                 followerFirstName
                 followerSecondName
+                userCoverImage
                 userFirstName
                 userSecondName
             }
@@ -261,8 +274,10 @@ export const GET_AUTH_USER = gql`
                 id
                 follower
                 user
+                followerCoverImage
                 followerFirstName
                 followerSecondName
+                userCoverImage
                 userFirstName
                 userSecondName
             }
@@ -270,8 +285,10 @@ export const GET_AUTH_USER = gql`
                 id
                 follower
                 user
+                followerCoverImage
                 followerFirstName
                 followerSecondName
+                userCoverImage
                 userFirstName
                 userSecondName
             }
@@ -290,7 +307,25 @@ export const SEARCH_USERS = gql`
 export const UPLOAD_PHOTO = gql`
   mutation($input: UploadUserPhotoInput!) {
     uploadUserPhoto(input: $input) {
-      id image imagePublicId
+      id
+    }
+  }
+`;
+
+export const UPLOAD_PHOTOS = gql`
+  mutation uploadUserPhotos($id: ID!
+    $images:Upload) 
+    {
+    uploadUserPhotos(id: $id, images: $images,){
+      images
+    }
+  }
+`;
+export const IS_USER_ONLINE_SUBSCRIPTION = gql`
+  subscription($authUserId: String!, $userId: String!) {
+    isUserOnline(authUserId: $authUserId, userId: $userId) {
+      userId
+      isOnline
     }
   }
 `;

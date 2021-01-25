@@ -17,6 +17,7 @@ border: 1px solid #e5e5e5;
 const DialogBlock = styled(Flex)`
 flex-direction:column;
 height: 400px;
+padding-bottom: 14px;
 overflow-x: hidden;
 `
 const Message = styled(Text)`
@@ -27,8 +28,8 @@ padding: 10px;
 `
 
 export default function ChatSide(props){
-  const {friendInfo, authUser, messages} = props;
-  const [textMessage, setTextMessage ] = useState();
+  const {friendInfo, authUser, messages, isUserOnline} = props;
+  const [textMessage, setTextMessage ] = useState('');
   const bottomRef = useRef(null);
   const [createMessage] = useMutation(CREATE_MESSAGE, {
         update(_, result){
@@ -81,7 +82,6 @@ export default function ChatSide(props){
               </Flex> :
                       messages.map((message) =>{
                       const isAuthUserReceiver = authUser === message.sender.id;
-                      console.log(message)
                       return(
                       <Flex flexDirection="column" width={1} px={3}  userMessage={isAuthUserReceiver} key={message.id} pt={3}>
                         

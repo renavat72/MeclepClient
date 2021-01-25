@@ -5,26 +5,28 @@ import { useQuery } from '@apollo/react-hooks';
 import { ModalLink} from 'react-router-modal';
 import { useRouteMatch } from 'react-router-dom';
 
-import { FOLLOWING_USER} from '../../apis/UserAPI'
+import { GET_AUTH_USER} from '../../apis/UserAPI'
 import Follow from '../Follow'
 import ProfileWindow from '../Profile'
 import ChatWindow from '../Dialog/ChatWindow'
-
 import{DialogBlock, DialogFriend} from '../FriendsWindow'
+import AvatarUser from '../AvatarUser'
 
 
-export default function FollowingBlock({handleClick},authUser){
-      const {data, loading, refetch} = useQuery(FOLLOWING_USER);
+export default function FollowingBlock({handleClick,authUser,searchFollowing}){
+      const {data, loading, refetch} = useQuery(GET_AUTH_USER);
+
       useEffect(()=>{
              setFollowingState(FollowingData);
              refetch()
       }, [ data]);
 
-
+      console.log({searchFollowing})
       const [followingState, setFollowingState] = useState(FollowingData);
       const [isOpen, setIsOpen] = useState(false)
       const [infoFriend, setInfoFriend] = useState()
-      const FollowingData = data&&data.followingUser;
+      const FollowingData = data&&data.getAuthUser.following;
+      const MergeData= FollowingData&&FollowingData.filter(user=>(!searchFollowing || user.userFirstName===searchFollowing||user.userSecondName===searchFollowing))
       const {url} =useRouteMatch();
       const handleOpen = (user) => {
             setInfoFriend(user)
@@ -36,22 +38,22 @@ export default function FollowingBlock({handleClick},authUser){
         return(
             <DialogBlock >
                   { isOpen ?
-                  <ChatWindow handleOpen={handleOpen} authUser={authUser} user={infoFriend} alert={handleClick}/>:null
+                  <ChatWindow handleOpen={handleOpen} authUser={{authUser}} user={infoFriend} alert={handleClick}/>:null
             }
                   { loading ? (
                         <CircularProgress/>
-                        ) : ( followingState  <= 0  ? <Text textAlign="center" fontWeight='bold'  color="#aaa">No following</Text> :
-                  followingState.map(user => (
+                        ) : ( MergeData  <= 0  ? <Text textAlign="center" fontWeight='bold'  color="#aaa">No following</Text> :
+                        MergeData.map(user => (
                               <DialogFriend my={1} key={user.id} >
-                                    <ModalLink path={`/id${user.id}`} component={ProfileWindow} props={user.id}>
-                                          <Avatar>{user.firstName[0] + user.secondName[0]}</Avatar>
+                                    <ModalLink path={`/id${user.user}`} component={ProfileWindow} props={user.user,handleClick}>
+                                       <AvatarUser props={user} following={true}/>
                                     </ModalLink>
                                     <Flex my="auto">
                                           <Text mx={2} fontSize={[14,16]}>
-                                          {user.firstName}
+                                          {user.userFirstName}
                                           </Text>
                                           <Text fontSize={[14,16]}>
-                                          {user.secondName}
+                                          {user.userSecondName}
                                           </Text>
                                     </Flex>
                                     <Flex ml="auto">

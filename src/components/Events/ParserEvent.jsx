@@ -4,6 +4,7 @@ import {IconButton, Button, Link, Collapse} from '@material-ui/core';
 import {Text, Box, Flex} from 'rebass'
 import styled from 'styled-components';
 import ShareIcon from '@material-ui/icons/Share';
+import ModalImage from "react-modal-image";
 
 import {panTo} from '../Map'
 import LikeButton from '../Buttons/LikeButton'

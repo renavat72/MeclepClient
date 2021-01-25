@@ -2,12 +2,12 @@ import React, {useContext, useState, useCallback, useEffect} from 'react'
 import { Dialog } from '@material-ui/core';
 import {Flex} from 'rebass'
 import styled from 'styled-components';
-import { useQuery,useMutation } from '@apollo/react-hooks';
+import { useQuery,useMutation,useSubscription } from '@apollo/react-hooks';
 import { useRouteMatch } from 'react-router-dom';
 import { ModalContainer, ModalLink,ModalRoute } from 'react-router-modal';
 
 import {GET_CONVERSATIONS, GET_MESSAGES, GET_MESSAGES_SUBSCRIPTION, UPDATE_MESSAGE_SEEN} from '../../apis/MessageAPI'
-import {GET_AUTH_USER} from '../../apis/UserAPI'
+import {GET_AUTH_USER, IS_USER_ONLINE_SUBSCRIPTION} from '../../apis/UserAPI'
 
 import { AuthContext } from '../../context/auth'
 import ConversationsSide from './ConversationsSide'
@@ -40,27 +40,25 @@ export const FriendsBlock = styled(Flex)`
 `
 
 export default function DialogWindow(props){
-      const {url} =useRouteMatch()
-          
+      const {url} =useRouteMatch()          
       const [isOpen, setIsOpen] = useState(true)
+      const { user } = useContext(AuthContext);
+      const [friendInfo, setFriendInfo] = useState('');
 
       function handleOpen(){
             setIsOpen(false);
             window.history.pushState('', '', `${url}`);
       }
-      const { user } = useContext(AuthContext);
-      const [friendInfo, setFriendInfo] = useState('');
       if(friendInfo===undefined){
         return  <ConversationsSide setFriendInfo={setFriendInfo} authUser={user.id}/>
       }
-      
       const variables = {
-          authUserId: user.id,
-          userId: friendInfo.id
-        };
-   
+        authUserId: user.id,
+        userId: friendInfo.id
+      };
+      
       const { subscribeToMore, data} = useQuery(GET_MESSAGES,{variables,fetchPolicy: 'network-only'});
-
+  
       const updateMessageSeen = useCallback(async () => {
         ()=>useMutation(UPDATE_MESSAGE_SEEN, {
           update(_, result){
@@ -99,13 +97,28 @@ export default function DialogWindow(props){
           unsubscribeToMore();
          };
        },[ user.id, friendInfo, subscribeToMore]);
-       console.log(friendInfo)
+      //  const { data:{userIsOnline}, loading } = useSubscription(IS_USER_ONLINE_SUBSCRIPTION, {
+      //   variables:{ authUserId:  user.id, userId: friendInfo.id }
+      // });
+      // let isUserOnline = friendInfo.isOnline;
+      // if (!loading && userIsOnline) {
+      //   isUserOnline = userIsOnline.isUserOnline;
+      // }
       return (
        <Dialog open={isOpen}  onClose={()=>handleOpen()} maxWidth="xl">
    
             <Flex flexDirection="row" minWidth={["500px","700px"]} minHeight="470px">
-               <ConversationsSide setFriendInfo={setFriendInfo} authUser={user.id}/>
-               <ChatSide friendInfo={friendInfo} authUser={user.id}  messages={data ? data.getMessages : []}/>
+               <ConversationsSide 
+                  setFriendInfo={setFriendInfo} 
+                  authUser={user.id} 
+                  // isUserOnline={isUserOnline}
+                  />
+               <ChatSide 
+                  friendInfo={friendInfo} 
+                  authUser={user.id} 
+                  // isUserOnline={isUserOnline}  
+                  messages={data ? data.getMessages : []}
+                  />
             </Flex>         
     </Dialog>
     )

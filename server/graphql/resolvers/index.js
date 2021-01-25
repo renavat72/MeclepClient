@@ -4,7 +4,7 @@ const commentsResolvers = require('./comments');
 const messagesResolvers = require('./messages');
 const notificationsResolvers = require('./notifications');
 const parserEventResolvers = require('./parserEvent');
-
+const editUserResolvers = require('./editUser')
 
 module.exports = {
     UserPayload:{
@@ -32,8 +32,8 @@ module.exports = {
         ...commentsResolvers.Mutation,
         ...messagesResolvers.Mutation,
         ...notificationsResolvers.Mutation,
-        ...parserEventResolvers.Mutation
-
+        ...parserEventResolvers.Mutation,
+        ...editUserResolvers.Mutation,
     },
     Subscription:{
         ...postsResolvers.Subscription,

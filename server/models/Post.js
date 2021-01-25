@@ -15,8 +15,8 @@ const postSchema = new Schema ({
     privateEvent: Boolean,
     notifyFriends: Boolean,
     adultEvent: Boolean,
-    image: String,
-    imagePublicId: String,
+    image: [String],
+    imagePublicId: [String],
     locationOfEvent: {
           address:String,
           lat: String,

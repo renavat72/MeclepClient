@@ -11,7 +11,7 @@ const User = require('../../models/User');
 const Message = require('../../models/Message');
 const Follow = require('../../models/Follow');
 // const Notification = require('../../models/Notification');
-const { uploadToCloudinary } =require ('../../util/cloudinary');
+const { uploadToCloudinary, deleteFromCloudinary } =require ('../../util/cloudinary');
 
 function generateToken(user){
   return jwt.sign({
@@ -127,16 +127,25 @@ module.exports = {
           } catch (err) {
             throw new Error(err);
           }
-        },
-        async followingUser(_,args, context){
-          const authUser = checkAuth(context);
-
+        }, 
+        async followingUser(_,{userId,searchQuery}, context){
+          const authUser = await User.findOne({ _id:userId })
+          
+          if(!searchQuery){
+            return [];
+          }
           const userFollowing = [];
+          // const query = {
+          //   $or: [{ firstNameUser: new RegExp(searchQuery, 'i') }],
+          //   _id: {
+          //     $ne: authUser.id,
+          //   },
+          // };
           const query = {
             $and: [{ _id: { $ne: authUser.id } }, { _id: { $in: userFollowing } }],
           };
           try {
-            const follow = await Follow.find({ follower: authUser.id }, { _id: 0 }).select('user');
+            const follow = await Follow.find({userFirstName:new RegExp(searchQuery, 'i') }, { _id: 0 }).select('user');
             follow.map((f) => userFollowing.push(f.user));
 
             const users = await User.find(query)
@@ -147,17 +156,23 @@ module.exports = {
           } catch (err) {
             throw new Error(err);
           }
+          
         },
         
-        async followersUser(_,args, context){
-          const authUser = checkAuth(context);
-
+        async followersUser(_,{userId,searchQuery}, context){
+          const authUser = await User.findOne({ _id:userId })
+          if(!searchQuery){
+            return [];
+          }
           const userFollowers = [];
+
           const query = {
-            $and: [{ _id: { $ne: authUser.id } }, { _id: { $nin: userFollowers } }],
+            $and: [{ _id: { $ne: authUser.id } }, { _id: { $in: userFollowers } }],
           };
+          console.log(query)
+
           try {
-            const follow = await User.find({ user: authUser.id }, { _id: 0 }).select('user');
+            const follow = await Follow.find({followerFirstName:new RegExp(searchQuery, 'i') },{ _id: 0 }).select('user');
             follow.map((f) => userFollowers.push(f.user));
 
             const users = await User.find(query)
@@ -200,9 +215,10 @@ module.exports = {
 
           return user;
         },
-        },
         async searchUsers(_,{searchQuery}, context){
           const authUser = checkAuth(context);
+          console.log({authUser})
+
           if(!searchQuery){
             return [];
           }
@@ -214,9 +230,8 @@ module.exports = {
             }).limit(50);
             return users;
         },
-        
-      
-
+        },
+ 
     Mutation: {
        async login(_, {email, password}){
            const {errors, valid} = validateLoginInput(email, password);
@@ -289,19 +304,19 @@ module.exports = {
 
         async createFollow(
           root,
-          { input: { userId, followerId, firstNameFollower, secondNameFollower, firstNameUser, secondNameUser, userCoverImage, followerCoverImage}, context }
+          { input: { userId, followerId, firstNameFollower, secondNameFollower, firstNameUser, secondNameUser, coverImageUser, coverImageFollower}, context }
         )
         {
           
           const follow = await new Follow({
             user: userId,
+            userCoverImage:coverImageUser,
             userFirstName:firstNameUser,
             userSecondName:secondNameUser,
             follower: followerId,
             followerFirstName:firstNameFollower,
             followerSecondName:secondNameFollower,
-            coverImageUser:userCoverImage,
-            coverImageFollower:followerCoverImage,
+            followerCoverImage: coverImageFollower,
           }).save();
 
           await User.findOneAndUpdate(
@@ -329,52 +344,66 @@ module.exports = {
           );
           return follow
         },
+        uploadUserPhotos: async (root, {id, images}) =>{
+          const { createReadStream } = await images;
+          const stream = createReadStream();
+          const uploadImage = await uploadToCloudinary(stream, 'user');
+          if(!uploadImage) console.log('Something went wrong while uploading image.');
+          
+          let userImages, userImagesPublicId
 
-      async changeFirstName(root,{ currentFirstName, newFirstName  }){
+          if (uploadImage.secure_url) {
+            userImages = uploadImage.secure_url;
+             userImagesPublicId = uploadImage.public_id;
 
-        const user = await User.findOneAndModify({ firstName: currentFirstName }, { $set: { firstName: newFirstName } }, { new: true });
-        if (!user) {
-          throw new Error('User Not Found');
+          const updatedUser = await User.findOneAndUpdate({ _id: id }, {$push:{ images:[userImages], imagesPublicId:[userImagesPublicId] }})
+            .populate('posts')
+            .populate('likes');
+      
+          return updatedUser;
         }
-        return user;
+        throw new Error('Something went wrong while uploading image to Cloudinary.');
       },
-      async changeSecondName(root,{ currentSecondName, newSecondName  }){
-
-        const user = await User.findOneAndModify({ secondName: currentSecondName }, { $set: { secondName: newSecondName } }, { new: true });
-        if (!user) {
-          throw new Error('User Not Found');
-        }
-        return user;
-      },
-    },
-    
-    uploadUserPhoto: async (root, { input: { id, image, imagePublicId, isCover }}) => {
-      const { createReadStream } = await image;
-      if(!createReadStream){
-        throw new Error("No image")
-      }
-      const stream = createReadStream();
-      const uploadImage = await uploadToCloudinary(stream, 'user', imagePublicId);
-      if (uploadImage.secure_url) {
-        const fieldsToUpdate = {};
-        if (isCover) {
-          fieldsToUpdate.coverImage = uploadImage.secure_url;
-          fieldsToUpdate.coverImagePublicId = uploadImage.public_id;
-        } else {
-          fieldsToUpdate.image = uploadImage.secure_url;
-          fieldsToUpdate.imagePublicId = uploadImage.public_id;
-        }
-  
-        const updatedUser = await User.findOneAndUpdate({ _id: id }, { ...fieldsToUpdate }, { new: true })
+      deleteUserPhotos: async (root, {id, imagesPublicId}) =>{
+        const publicId = await imagesPublicId 
+        const deleteImage = await deleteFromCloudinary(publicId);
+        if(!deleteImage) console.log('Something went wrong while uploading image.');
+        
+        let userImages, userImagesPublicId
+        
+        console.log(deleteImage)
+        if (deleteImage.secure_url) {
+          userImages = deleteImage.secure_url;
+          userImagesPublicId = deleteImage.public_id;
+          const updatedUser = await User.findByIdAndRemove({ _id: id }, {$pull:{ images:[userImages], imagesPublicId:imagesPublicId }})
           .populate('posts')
           .populate('likes');
-  
-        return updatedUser.save();
-      }
-  
-      throw new Error('Something went wrong while uploading image to Cloudinary.');
+          
+          return updatedUser;
+        }
     },
 
+    uploadUserPhoto: async (root, { input: { id, coverImage, coverImagePublicId, isCover }}) => {
+
+      const { createReadStream } = await coverImage;
+      const stream = createReadStream();
+      const uploadImage = await uploadToCloudinary(stream, 'user');
+      if(!uploadImage) throw new Error('Something went wrong while uploading image.');
+
+      if (uploadImage.secure_url) {
+        const fieldsToUpdate = {};
+        fieldsToUpdate.coverImage = uploadImage.secure_url;
+        fieldsToUpdate.coverImagePublicId = uploadImage.public_id;
+
+      const updatedUser = await User.findOneAndUpdate({ _id: id }, { ...fieldsToUpdate }, { new: true })
+        .populate('posts')
+        .populate('likes');
+
+      return updatedUser.save();
+    }
+    throw new Error('Something went wrong while uploading image to Cloudinary.');
+  },
+  },
     Subscription:{
       isUserOnline: {
         subscribe: withFilter(

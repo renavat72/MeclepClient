@@ -10,14 +10,17 @@ import Follow from '../Follow'
 import ProfileWindow from '../Profile'
 import { DialogBlock, DialogFriend } from '../FriendsWindow'
 import ChatWindow from '../Dialog/ChatWindow'
+import AvatarUser from '../AvatarUser'
 
 
 
-export default function FollowersBlock({handleClick},authUser){
+export default function FollowersBlock({handleClick,authUser, searchFollowing}){
     const {data, loading} = useQuery(GET_AUTH_USER);
     const FollowersData = data&&data.getAuthUser.followers;
-    const [isOpen, setIsOpen] = useState(false)
-    const [infoFriend, setInfoFriend] = useState()
+    const [isOpen, setIsOpen] = useState(false);
+    const [infoFriend, setInfoFriend] = useState();
+    const MergeData= FollowersData&&FollowersData.filter(user=>(!searchFollowing || user.followerFirstName===searchFollowing||user.followerSecondName===searchFollowing))
+
     const {url} =useRouteMatch();
     const handleOpen = (user) => {
           setInfoFriend(user)
@@ -27,16 +30,16 @@ export default function FollowersBlock({handleClick},authUser){
     return(
           <DialogBlock>
                    { isOpen ?
-                  <ChatWindow handleOpen={handleOpen} authUser={authUser} user={infoFriend} alert={handleClick}/>:null
+                  <ChatWindow handleOpen={handleOpen} authUser={{authUser}} user={infoFriend.follower} alert={handleClick}/>:null
             }
           { loading ? (
                 <CircularProgress/>
-          ) : ( FollowersData <= 0  ? <Text textAlign="center" fontWeight='bold'  color="#aaa">No followers</Text> :
-                      FollowersData.map(user => (
+          ) : ( MergeData <= 0  ? <Text textAlign="center" fontWeight='bold'  color="#aaa">No followers</Text> :
+                       MergeData.map(user => (
                         <DialogFriend my={1} key={user.id} >
-                       <ModalLink path={`/id${user.id}`} component={ProfileWindow} props={user.id}>
-                                          <Avatar>{user.followerFirstName[0] + user.followerSecondName[0]}</Avatar>
-                        </ModalLink>
+                       <ModalLink path={`/id${user.follower}`} component={ProfileWindow} props={user.follower}>
+                     <AvatarUser props={user} size="small" followers={true}/>
+                   </ModalLink>
                         <Flex my="auto">
                               <Text mx={2} fontSize={[14,16]}>
                                  {user.followerFirstName}
@@ -48,10 +51,10 @@ export default function FollowersBlock({handleClick},authUser){
                         <Flex ml="auto" my="auto">
                               <Flex ml="auto">
                                     <Follow user={user} />
-                                          <Button onClick={()=>handleOpen(user)}>
-                                                Send
-                                          </Button>
-                              </Flex>                        
+                                    <Button onClick={()=>handleOpen(user)}>
+                                          Send
+                                    </Button>
+                              </Flex>
                         </Flex>
                   </DialogFriend>
                 )))}

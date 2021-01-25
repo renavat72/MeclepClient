@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { CardActions,IconButton,Link, Collapse, Button, MobileStepper } from '@material-ui/core';
-import ShareIcon from '@material-ui/icons/Share';
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import { CardActions,Link, Collapse, Button } from '@material-ui/core';
 import {Text, Box, Flex} from 'rebass';
 
 import LikeButton from '../../Buttons/LikeButton'
@@ -40,8 +38,7 @@ export default function AnotherEventWindow (props){
             {post.headerDescription}
             </Text>
           </Flex>
-          <Slider images={post.images}/>
-          {/* {post.images != 0 ?   <Flex mt={3} flexDirection="row"> </Flex>: null}           */}
+          <Slider images={post.images} window={true}/>
           {post.description!= 0 ? <Flex mr="auto">
           {open ? <Button onClick={handleClick}>Hide</Button>:<Button onClick={handleClick}>Show more</Button>  }
           </Flex>:null}
@@ -56,17 +53,6 @@ export default function AnotherEventWindow (props){
           <Flex>
           <CardActions >
             <LikeButton post={post}postId={post.id}/>
-           
-            {/* <IconButton>
-              <ShareIcon />
-            </IconButton> */}
-            {/* <IconButton
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
-            >
-              <ExpandMoreIcon />
-            </IconButton> */}
-
           </CardActions>
             <Flex my="auto" ml="auto">
              <Box ml="auto" >

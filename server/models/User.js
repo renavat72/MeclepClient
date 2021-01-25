@@ -6,8 +6,8 @@ const userSchema = new Schema ({
     password: String,
     email: String,
     createdAt: String,
-    image: String,
-    imagePublicId: String,
+    images: [String],
+    imagesPublicId: [String],
     coverImage: String,
     coverImagePublicId: String,
     isOnline: {

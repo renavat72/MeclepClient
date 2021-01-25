@@ -1,19 +1,11 @@
 import React from 'react';
-import { Box, Flex, Image } from 'rebass';
-import {GridList, GridListTile, MobileStepper, Button} from '@material-ui/core';
-import styled from 'styled-components';
+import { Box, Flex} from 'rebass';
+import { MobileStepper, Button} from '@material-ui/core';
+import ModalImage from "react-modal-image";
 
-
-
-const SliderRoot = styled(Flex)`    
-    flex-wrap: wrap;
-    justify-content:space-around;
-    overflow: hidden;
-
-`
 
 export default function Slider(props){
-    const {images}=props;
+    const {images, window}=props;
     const [activeStep, setActiveStep] = React.useState(0);
     const maxSteps = images.length;
   
@@ -29,9 +21,13 @@ export default function Slider(props){
     }
     return(
         images != 0 ? <Box>
-        <Flex m="auto" width={1}>
-         <img style={{maxWidth:300, height:200, width:"100%"}} src={images[activeStep]}/>
-        </Flex>
+          <Flex m="auto" width={1}>
+            {window?
+            <img style={{maxWidth:300, height:200, width:"100%"}} src={images[activeStep]}/>:
+              <ModalImage large={images[activeStep]} small={images[activeStep]} />
+            }
+
+          </Flex>
            <MobileStepper
           steps={maxSteps}
           position="static"

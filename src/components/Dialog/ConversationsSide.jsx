@@ -37,7 +37,7 @@ const FriendsBlock = styled(Flex)`
 `
 
 export default function ConversationsSide(props){
-    const {authUser, setFriendInfo} = props;
+    const {authUser, setFriendInfo,isUserOnline} = props;
     const variables = {
         authUserId: authUser,
       };
@@ -73,7 +73,11 @@ export default function ConversationsSide(props){
         <Box mt={2} width={1}>
             {data && data.getConversations.map((user) =>
                 <FriendsBlock flexDirection="row" p={[0,2]} mb={1} key={user.id} onClick={(()=>setFriendInfo(user))} backgroundColor={user.seen ? "Gray": "#8dabd9"}>
-                        <BadgeIsOnline variant="dot" color="primary" anchorOrigin={{ vertical: 'bottom', horizontal: 'right'}} invisible={user.isOnline? true:false}>
+                        <BadgeIsOnline 
+                            variant="dot" color="primary" 
+                            anchorOrigin={{ vertical: 'bottom', horizontal: 'right'}} 
+                            // invisible={isUserOnline? true:false}
+                            >
                              <Avatar >{user.firstName[0] + user.secondName[0]}</Avatar>
                             </BadgeIsOnline>
                     <Flex ml={3} flexDirection="column">

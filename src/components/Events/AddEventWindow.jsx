@@ -61,9 +61,9 @@ export default function AddEventWindow(props){
     createPostCallback()
   }
 
-  const [createPost, {error}] = useMutation(CREATE_POST_MUTATION, {
+  const [createPost, {data,error}] = useMutation(CREATE_POST_MUTATION, {
     update(_, result){
-      console.log(result)
+      console.log(data)
     },
     variables: values,
   })
@@ -76,7 +76,6 @@ export default function AddEventWindow(props){
       return false;
     }
     createPost();
-    handleEventWindow()
   };
   
   function DatePicker(){
@@ -264,6 +263,7 @@ function UploadFile(props) {
   console.log(values)
   return (
     <div>
+
     <input multiple name="image" onChange={handlePostImageUpload} type="file" id="post-image" accept="image/x-png,image/jpeg"  style={{ display: 'none' }}/>
     <label htmlFor="post-image">
     <PhotoCamera color="primary" />

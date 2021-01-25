@@ -22,8 +22,8 @@ type Post {
     privateEvent: Boolean
     notifyFriends: Boolean
     adultEvent: Boolean
-    image: File
-    imagePublicId: String
+    image: [File]
+    imagePublicId: [String]
     locationOfEvent: String!
     infoPost: String
   }
@@ -47,8 +47,8 @@ type Post {
     privateEvent: Boolean
     notifyFriends: Boolean
     adultEvent: Boolean
-    image: String
-    imagePublicId: String
+    image: [String]
+    imagePublicId: [String]
     locationOfEvent: String!
     infoPost: String
   }
@@ -60,7 +60,7 @@ type Post {
     privateEvent: Boolean
     notifyFriends: Boolean
     adultEvent: Boolean
-    imagePublicId: String
+    imagePublicId: [String]
     image: Upload
 
   }

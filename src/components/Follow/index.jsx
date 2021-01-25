@@ -1,31 +1,36 @@
 import React, {useContext} from 'react'
 import { useQuery } from '@apollo/react-hooks';
-import { Button} from '@material-ui/core';
+import { Button, Fab} from '@material-ui/core';
 import { useMutation } from "@apollo/react-hooks"
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 import {GET_AUTH_USER, CREATE_FOLLOW, DELETE_FOLLOW} from '../../apis/UserAPI'
 import { AuthContext } from '../../context/auth'
-import { Flex } from 'rebass';
+import { Box, Flex, Text } from 'rebass';
 
-export default function Follow({user}){
+export default function Follow({user,onFollowBtn,followBtn} ){
     const authUser = useContext(AuthContext)
     const {data} = useQuery(GET_AUTH_USER)
-    const isFollowing = data && data.getAuthUser.following.find((f) => f.user === user.id)
+    const isFollowing = data && data.getAuthUser.following.find((f) => f.id === user.id )
+
+
     const [followUser] = useMutation(CREATE_FOLLOW, {
       update(){
-
       },
       variables: {
         input:  { userId: user.id, 
+                  coverImageUser:user.coverImage,
                   firstNameUser:user.firstName,
                   secondNameUser:user.secondName,
+                  coverImageFollower:data && data.getAuthUser.coverImage,
                   firstNameFollower:authUser.user.firstName,
                   secondNameFollower:authUser.user.secondName,
                   followerId: authUser.user.id}
       }
 
    })
-   const [onFollowUser] = useMutation(DELETE_FOLLOW, {
+   const [unFollowUser] = useMutation(DELETE_FOLLOW, {
     update(_, result){
       console.log(result)
     },
@@ -36,13 +41,13 @@ export default function Follow({user}){
       return (
       <Flex my="auto">
         { isFollowing  ?
-          <Button onClick={onFollowUser}  >
-          onFollow
-          </Button>
+          <Box onClick={unFollowUser}  >
+          {onFollowBtn ? <Fab color="secondary"> <CancelIcon fontSize="large"/></Fab>: <Button >Unfollow</Button>}
+          </Box>
           :
-            <Button onClick={followUser}>
-            Follow
-            </Button>
+            <Box onClick={followUser}>
+           {followBtn ? <Fab color="primary" > <GroupAddIcon fontSize="large"/></Fab> : <Button>Follow</Button>}
+            </Box>
         }
       </Flex>
       );
