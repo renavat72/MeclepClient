@@ -4,21 +4,23 @@ import AddIcon from '@material-ui/icons/Add';
 import { Box, Flex } from 'rebass';
 import { useRouteMatch } from "react-router-dom";
 import {  ModalLink } from 'react-router-modal';
+import { useQuery } from '@apollo/react-hooks';
 
+import {GET_AUTH_USER} from '../../apis/UserAPI'
 import Map from '../Map'
 import AddEventWindow from '../Events/AddEventWindow'
 import Sidebar from '../Sidebar';
 import { AuthContext } from '../../context/auth'
 
 export default function Dashboard(){
-     const { user, logout } = useContext(AuthContext);
+     const { logout } = useContext(AuthContext);
+     const { data} = useQuery(GET_AUTH_USER);
 
     const [eventWindow,setEventWindow] = useState(false)
     const handleEventWindow = () => {
       setEventWindow(!eventWindow);
     };
     const mapRef = React.useRef();
-    const { url } = useRouteMatch();
 
     const panTo = React.useCallback(({ lat, lng }) => {
       mapRef.current.panTo({ lat, lng });
@@ -29,7 +31,7 @@ export default function Dashboard(){
           <Map mapRef={mapRef} >
             <Flex>
               <Flex>
-               <Sidebar user={user}panTo={panTo} logout={logout}/>
+               <Sidebar user={data&&data.getAuthUser}panTo={panTo} logout={logout}/>
               </Flex>
               <Flex ml="auto" mr={4} mt={2} >
               <ModalLink path={`/createEvent`}component={AddEventWindow}>
@@ -39,7 +41,6 @@ export default function Dashboard(){
                   </Tooltip>
                 </Fab>
               </ModalLink>
-
               </Flex>
           </Flex>
           </Map>

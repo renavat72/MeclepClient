@@ -1,5 +1,5 @@
 import React,{useContext,useEffect,useState} from 'react'
-import { Dialog, TextField, Checkbox, Accordion, AccordionDetails, AccordionSummary, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
+import { Dialog, TextField, Checkbox, Accordion, AccordionDetails, AccordionSummary, FormControlLabel, Radio, RadioGroup, IconButton } from '@material-ui/core';
 import {Text, Box, Flex, Button} from 'rebass'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import styled from 'styled-components';
@@ -8,12 +8,11 @@ import { useQuery } from '@apollo/react-hooks';
 // import ShareIcon from '@material-ui/icons/Share';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { useRouteMatch } from 'react-router-dom';
+import CloseIcon from '@material-ui/icons/Close';
 
 import {FETCH_POSTS_QUERY} from '../../apis/EventAPI'
 import {FETCH_ALL_EVENTS_QUERY} from '../../apis/ParserEventAPI';
-
 import { useStore } from '../../context/store';
-
 import { AuthContext } from '../../context/auth';
 import ParserEvent from './ParserEvent'
 import Event from './Event'
@@ -22,16 +21,13 @@ import DataCity from '../../content/City.json'
 const WrapperEvent = styled(Box)`
 width:100%;
 min-height: 720px;
-
-
 `
 const WrapperFilterEvent = styled(Box)`
 /* position: fixed; */
 `
-const WrapperBlock = styled(Box)`
+const WrapperBlock = styled(Flex)`
 /* overflow:hidden; */
 `
-
 
 const Block = ({children }) => (
       <Box>
@@ -45,7 +41,7 @@ export default function EventsBlock(props){
       const [favorite, setFavorite] = useState();
       const [myFollowing, setMyFollowing] = useState();
       const [onlineEvents, setOnlineEvents] = useState();
-      const [searchValue, setSearchValue] = useState();
+      const [searchValue, setSearchValue] = useState('');
       const [{geolocation}] = useStore();
 
       const [isOpen, setIsOpen] = useState(true);
@@ -97,10 +93,13 @@ export default function EventsBlock(props){
       });
       }
       return (
-            <Dialog open={isOpen}  onClose={()=>handleOpen()} width={1} maxWidth="xl"  >
-                  <WrapperBlock m={[3,4]} minWidth={[null,"650px"]} >
-                        <Flex mb={4}>
-                              <Text  fontWeight='bold'>Events</Text>
+            <Dialog open={isOpen}  onClose={()=>handleOpen()} width={1} maxWidth="xl" >
+                  <WrapperBlock mx={[3,4]} my={[3,1]} minWidth={[null,"650px"]} flexDirection="column">
+                        <Flex mb={3} justifyContent="space-between"  >
+                              <Text  fontWeight='bold' my="auto">Events</Text>
+                              <IconButton onClick={()=>handleOpen()} >
+                                    <CloseIcon variant="second"/>
+                              </IconButton>
                         </Flex>
                         <Flex width={1} flexDirection={["column-reverse","row"]} >
                               <WrapperEvent mr={[0,5]}>
@@ -129,7 +128,7 @@ function EventsList({events, user, panTo,showMore,handleOpen}){
       useEffect(()=>{
             setEventsData(events)
       },[events] )
-      const [eventsData, setEventsData ] = useState();
+      const [eventsData, setEventsData ] = useState('');
       return(
       <Box> {eventsData <= 0 ? 
             <Box mt="300px">

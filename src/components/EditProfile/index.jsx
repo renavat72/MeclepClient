@@ -1,19 +1,19 @@
 import React,{useState} from 'react'
-import { Dialog, TextField, CircularProgress, Button, Chip } from '@material-ui/core';
+import { Dialog, TextField, CircularProgress, Button, Chip, IconButton } from '@material-ui/core';
 import {Text, Box, Flex} from 'rebass'
 import { Form } from 'react-final-form';
 import { useMutation, useQuery} from '@apollo/react-hooks'
 import { useRouteMatch } from 'react-router-dom';
+import CloseIcon from '@material-ui/icons/Close';
 
 import {CHANGE_FIRSTNAME, GET_AUTH_USER} from '../../apis/UserAPI'
 import { useForm } from "../../util/hooks"
 import UploadPhoto from '../UploadPhoto'
 
 
-function FormEditProfile(props){
-    const {data} = useQuery(GET_AUTH_USER);
+function FormEditProfile({data}){
     const { onChange, onSubmit, values } = useForm(editProfileCallback, {
-        currentFirstName: data&& data.getAuthUser.firstName,
+        currentFirstName: data && data.getAuthUser.firstName,
         newFirstName: '',
         secondName: '',
         photo:''
@@ -37,7 +37,7 @@ function FormEditProfile(props){
         <Box>
             <Form onSubmit={onSubmit} render={({handleSubmit}, form)=>(
                 <form onSubmit={handleSubmit}  noValidate className={error ? <CircularProgress/> : ""}>
-                    <Flex flexDirection="column" width={1/2} mt={5}>
+                    <Flex flexDirection="column"  mt={5}>
                         <Flex flexDirection="column">
                           <Flex flexDirection="column">
                           <TextField 
@@ -54,7 +54,7 @@ function FormEditProfile(props){
                             <TextField type="password" label="Change password"/>
                             <TextField type="password" label="Confirm password"/>
                           </Flex>
-                          <Flex flexDirection="row">
+                          <Flex mt={3} flexDirection="row">
                            <Text my="auto" mr={2}>I like:</Text>
                            <Chip color="primary" label={`Party`}/>
                             
@@ -67,7 +67,6 @@ function FormEditProfile(props){
                     </Flex>
                 </form>
             )} />
-            <UploadPhoto authUser={data.getAuthUser}/>
         </Box>
     )
   }
@@ -75,7 +74,9 @@ function FormEditProfile(props){
 
 export default function EditProfile(props){
   const [isOpen, setIsOpen] = useState(true);
+  const {data} = useQuery(GET_AUTH_USER);
     const {url} =useRouteMatch()
+    if(!data) return null
 
     function handleOpen(){
           setIsOpen(false);
@@ -83,11 +84,24 @@ export default function EditProfile(props){
     }   
      return (
        <Dialog open={isOpen}  onClose={()=>handleOpen()}   maxWidth="xl">
-        <Box  m={3}   minWidth={["500px","700px"]} minHeight="470px">
-            <Flex >
-                  <Text>Edit profile</Text>
+         <Box mx={3} my={2}>
+           <Flex mb={1} justifyContent="space-between"  >
+              <Text  fontWeight='bold' my="auto">Edit profile</Text>
+                <IconButton onClick={()=>handleOpen()} >
+                  <CloseIcon variant="second"/>
+                </IconButton>
+           </Flex>
+        <Box   minWidth={["500px","700px"]} minHeight="470px">
+            <Flex flexDirection="row" width={1}>
+              <Box width={1/2}>
+            
+                <FormEditProfile data={data}/>
+              </Box>
+              <Box width={1/2}>
+                <UploadPhoto data={data}/>
+              </Box>
             </Flex>
-            <FormEditProfile />
+        </Box>
         </Box>
        </Dialog>
     )

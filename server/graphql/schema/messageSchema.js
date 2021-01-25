@@ -43,7 +43,7 @@ module.exports = gql`
   }
 
 type Query {
-    getMessages(authUserId: ID!, userId: ID!): [MessagePayload]
+    getMessages(authUserId: ID!, userId: ID): [MessagePayload]
     getConversations(authUserId: ID!): [ConversationsPayload]
 }
   type Mutation {
@@ -51,7 +51,7 @@ type Query {
     updateMessageSeen(input: UpdateMessageSeenInput!): Boolean
 }
 type Subscription {
-    messageCreated(authUserId: ID!, userId: ID!): MessagePayload
+    messageCreated(authUserId: ID!, userId: ID): MessagePayload
     newConversation: ConversationsPayload
 }
 

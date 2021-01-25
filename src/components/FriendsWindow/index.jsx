@@ -1,15 +1,15 @@
 import React, {useState, useContext} from 'react'
-import { Dialog, Tabs, Tab } from '@material-ui/core';
+import { Dialog, Tabs, Tab,IconButton } from '@material-ui/core';
 import {Text, Box, Flex} from 'rebass'
 import styled from 'styled-components';
 import { useRouteMatch } from 'react-router-dom';
+import CloseIcon from '@material-ui/icons/Close';
 
 import FilterFriendsBlock from './FilterFriendsBlock'
 import FollowingBlock from './FollowingBlock'
 import FollowersBlock from './FollowersBlock'
 import AllUsersBlock from './AllUsersBlock'
 import { AuthContext } from '../../context/auth'
-import ChatWindow from '../Dialog/ChatWindow';
 
 export const FriendsWindowBlock = styled(Box)`
 max-width: 1024px;
@@ -35,14 +35,14 @@ height: 720px;
 export default function FriendsWindow({handleClick}){
       const {url} =useRouteMatch()
       const { user } = useContext(AuthContext);
-
       const [isOpen, setIsOpen] = useState(true);
+      const [searchFollowing, setSearchFollowing] = useState('');
+
       function handleOpen(){
             setIsOpen(false);
             window.history.pushState('', '', `${url}`);
 
       }
-  
       const TabsUsers = () =>{
             const [tab, setTab] = useState(0);
             const handleChange = (e, newTab) => {
@@ -62,13 +62,13 @@ export default function FriendsWindow({handleClick}){
                         <Tab label="All users" />
                   </Tabs>
                   <TabPanel tab={tab} index={0}>
-                        <FollowingBlock url={url} authUser={user.id} handleClick={handleClick}/>
+                        <FollowingBlock url={url} authUser={user.id} handleClick={handleClick} searchFollowing={searchFollowing}/>
                   </TabPanel>
                   <TabPanel tab={tab}index={1} url={url}>
-                        <FollowersBlock  authUser={user.id} handleClick={handleClick}/>
+                        <FollowersBlock  authUser={user.id} handleClick={handleClick} searchFollowing={searchFollowing}/>
                   </TabPanel>
                   <TabPanel tab={tab} index={2} url={url}>
-                        <AllUsersBlock/> 
+                        <AllUsersBlock searchFollowing={searchFollowing}/> 
                   </TabPanel>
               </Box>
             )
@@ -93,17 +93,24 @@ export default function FriendsWindow({handleClick}){
       }
 
       return (
-            <Dialog open={isOpen}  onClose={()=>handleOpen()} maxWidth="xl">
-            <FriendsWindowBlock m={[1,4]} minWidth={[null,"700px"]} >
-                  <Flex flexDirection={["column-reverse","row"]}>
-                  <WrapperFriends >
-                  <TabsUsers />
-                  </WrapperFriends>
-                  <Box width={[1,2/7]} mx={[0,3]}my={[2,0]}>
-                        <FilterFriendsBlock  width="170px"/>
-                  </Box> 
-            </Flex>
-            </FriendsWindowBlock>
+            <Dialog open={isOpen}  onClose={()=>handleOpen()} maxWidth="xl" >
+               <Flex m={[1,2]}  minWidth={[null,"700px"]} flexDirection="column">
+                  <Flex ml="auto" >
+                        <IconButton onClick={()=>handleOpen()}>
+                              <CloseIcon variant="second"/>
+                        </IconButton>
+                  </Flex>
+                  <FriendsWindowBlock  >
+                    <Flex flexDirection={["column-reverse","row"]}>
+                        <WrapperFriends >
+                        <TabsUsers />
+                        </WrapperFriends>
+                        <Box width={[1,2/7]} mx={[0,3]}my={[2,0]}>
+                              <FilterFriendsBlock  width="170px" searchFollowing={searchFollowing} setSearchFollowing={setSearchFollowing}/>
+                        </Box> 
+                    </Flex>
+                  </FriendsWindowBlock>
+              </Flex>
             </Dialog>
     )
 }

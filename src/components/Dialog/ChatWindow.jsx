@@ -9,8 +9,8 @@ import { useRouteMatch } from 'react-router-dom';
 
 import {  CREATE_MESSAGE} from '../../apis/MessageAPI'
 
-export default function ChatWindow(user, authUser, handleOpen,handleOpenChat,alert){
-    const [textMessage, setTextMessage ] = useState();
+export default function ChatWindow(user, {authUser}, handleOpen,handleOpenChat,alert){
+    const [textMessage, setTextMessage ] = useState('');
     const {url} =useRouteMatch()
           
     const [isOpen, setIsOpen] = useState(true)
@@ -20,30 +20,27 @@ export default function ChatWindow(user, authUser, handleOpen,handleOpenChat,ale
           window.history.pushState('', '', `${url}`);
 
     }
-    console.log(user.alert)
-    console.log(alert)
-
-
     const [createMessage] = useMutation(CREATE_MESSAGE, {
           update(_, result){
           console.log(result)
         },
         variables: {
           input: {
-            sender: user.authUser.authUser,
-            receiver: user.user.id ? user.user.id : null,
+            sender: user.authUser.authUser||user.authUser,
+            receiver: user.user ?user.user.id||user.user : null,
             message: textMessage,
           }
           },
       },)
+      console.log(user)
 
       const onSubmit =() =>{
         if (!textMessage) return;
         createMessage()
         setTextMessage('');
-        user.alert()
+        // user.alert()
       }
-  
+
       const onEnterPress = (e) => {
         if (e.keyCode === 13 && e.shiftKey === false) {
           onSubmit();

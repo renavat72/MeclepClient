@@ -8,7 +8,6 @@ import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 import EventIcon from '@material-ui/icons/Event';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined';
-import { useQuery } from '@apollo/react-hooks';
 import {  ModalLink } from 'react-router-modal';
 import styled from 'styled-components';
 
@@ -17,11 +16,11 @@ import EventsBlock from '../Events/EventsBlock'
 import EditProfile from '../EditProfile'
 import DialogWindow from '../Dialog'
 import FriendsWindow from '../FriendsWindow'
-import {GET_AUTH_USER} from '../../apis/UserAPI'
 import CityWindow from '../CityWindow';
 import { useStore } from '../../context/store';
 import ProfileWindow from '../Profile'
 import MyProfileWindow from '../Profile/MyProfile'
+import AvatarUser from '../AvatarUser'
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -33,7 +32,6 @@ function Alert(props) {
 
 
 const Sidebar = ({panTo, user, logout}) => {
-    const { data} = useQuery(GET_AUTH_USER);
     const localCity = localStorage.getItem("City");
     const [{geolocation}, dispatch] = useStore();
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -44,7 +42,6 @@ const Sidebar = ({panTo, user, logout}) => {
     const [editProfileWindow,setEditProfileWindow] = useState(false);
     const [selectedCity, setSelectedCity ] = useState(localCity);
     const [open, setOpen] = useState(false);
-
     useEffect(() => {
         localStorage.setItem("City", selectedCity)
         dispatch({ type: SET_CITY, payload: selectedCity });
@@ -171,21 +168,22 @@ const Sidebar = ({panTo, user, logout}) => {
         const handleClick = () => {
             setOpen(!open);
         };
-    const IsDesktopDrawer = () =>{
+    const IsDesktopDrawer = ({user}) =>{
+        if(!{user})return null
         return(
          <Drawer anchor="left" variant="permanent" onClose={openHandler} open={sidebarOpen} >
             <Flex flexDirection="column" px={2}>
             <ModalLink path={`/myProfile`} component={MyProfileWindow} > 
                 <Flex mx={3} my={4} >
-                    <Avatar>{InitialsWords}</Avatar>
-                    <Flex my="auto">
-                    <Box width={1/3} ml={2}>
-                        {user.firstName}
-                    </Box>
-                    <Box width={1/3}>
-                        {user.secondName}
-                    </Box>
-                    </Flex>
+                      <AvatarUser props={user}/>
+                    <Flex my="auto"  justifyContent="space-evenly" width={1} >
+                        <Box >
+                            {user.firstName}
+                        </Box>
+                        <Box>
+                            {user.secondName}
+                        </Box>
+                        </Flex>
                 </Flex>
             </ModalLink>
             <Flex flexDirection="column">
@@ -226,9 +224,8 @@ const Sidebar = ({panTo, user, logout}) => {
     </Drawer>
     )
     }
-    const InitialsWords = user.firstName[0] + user.secondName[0];
     if (window.innerWidth < 768) return <IsMobileDrawer/>;
-    else return <IsDesktopDrawer/>
+    else return <IsDesktopDrawer user={user}/>
 
     }
     return (

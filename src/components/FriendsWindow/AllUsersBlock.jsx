@@ -11,10 +11,11 @@ import { AuthContext } from '../../context/auth'
 import * as Routes from '../../routes';
 import{DialogBlock, DialogFriend} from '../FriendsWindow'
 import ProfileWindow from '../Profile'
+import AvatarUser from '../AvatarUser'
 
 
 
-export default function  AllUsersBlock (){
+export default function  AllUsersBlock ({searchFollowing}){
     const authUser = useContext(AuthContext);
     const variables = {
         userId: authUser.user.id,
@@ -22,6 +23,7 @@ export default function  AllUsersBlock (){
     const {data, loading, refetch } = useQuery(GET_ALL_USERS,{variables});
     const UserData = data&&data.getUsers;
     const [usersData, setUsersData] = useState();
+    const MergeData= UserData&&UserData.filter(user=>(!searchFollowing || user.firstName===searchFollowing||user.secondName===searchFollowing))
 
     useEffect(()=>{
       setUsersData(UserData); 
@@ -36,11 +38,11 @@ export default function  AllUsersBlock (){
           { loading ? (
                 <CircularProgress/>
           ) : (
-            UserData <= 0 ? <Text textAlign="center" fontWeight='bold'  color="#aaa">No users</Text> :
-            UserData.map(user => (
+            MergeData <= 0 ? <Text textAlign="center" fontWeight='bold'  color="#aaa">No users</Text> :
+            MergeData.map(user => (
               <DialogFriend my={1} key={user.id} >
                     <ModalLink path={`/id${user.id}`} component={ProfileWindow} props={user.id}>
-                                          <Avatar>{user.firstName[0] + user.secondName[0]}</Avatar>
+                     <AvatarUser props={user} size="small"/>
                    </ModalLink>
                     <Flex my="auto">
                           <Text mx={2} fontSize={[14,16]}>
