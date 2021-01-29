@@ -28,7 +28,7 @@ padding: 10px;
 `
 
 export default function ChatSide(props){
-  const {friendInfo, authUser, messages, isUserOnline} = props;
+  const {friendInfo, authUser, messages} = props;
   const [textMessage, setTextMessage ] = useState('');
   const bottomRef = useRef(null);
   const [createMessage] = useMutation(CREATE_MESSAGE, {
@@ -61,9 +61,8 @@ export default function ChatSide(props){
         onSubmit();
       }
     };
-    console.log()
     return(
-        <Flex flexDirection="column" width={5/6}>
+        <Flex flexDirection="column" width={[1,5/6]}>
         <DialogBlock >
           {messages<= 0 ? null:
             <Flex width={2/3} mx="auto" p={2} sx={{borderBottomWidth: 0.5, borderBottomStyle: "solid", borderBottomColor: '#aaa', }}>
@@ -84,7 +83,6 @@ export default function ChatSide(props){
                       const isAuthUserReceiver = authUser === message.sender.id;
                       return(
                       <Flex flexDirection="column" width={1} px={3}  userMessage={isAuthUserReceiver} key={message.id} pt={3}>
-                        
                             {isAuthUserReceiver ? 
                                   <Text mb={2} ml="auto">{message.sender.firstName}</Text>
                                   : <Text mb={2} mr="auto">{message.sender.firstName}</Text>
@@ -124,4 +122,4 @@ export default function ChatSide(props){
               </InputBlock>}
    </Flex>
     )
-        }
+}

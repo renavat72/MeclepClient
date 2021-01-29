@@ -1,12 +1,10 @@
 import React, {useState} from 'react';
-import Countdown from 'react-countdown'
-import {IconButton, Button, Link, Collapse} from '@material-ui/core';
+import { Button, Link, Collapse} from '@material-ui/core';
 import {Text, Box, Flex} from 'rebass'
 import styled from 'styled-components';
-import ShareIcon from '@material-ui/icons/Share';
-import ModalImage from "react-modal-image";
 
-import {panTo} from '../Map'
+
+// import {panTo} from '../Map'
 import LikeButton from '../Buttons/LikeButton'
 import Slider from '../Slider';
 
@@ -32,7 +30,7 @@ export default function ParserEvent (props){
               lng: post.lng,
             });
           },
-        ),handleOpen()}
+        );handleOpen()}
 
       return (
         <Text fontSize={[12,14]}
@@ -42,7 +40,6 @@ export default function ParserEvent (props){
          </Text>
       );
     }
-    console.log()
     return(
           <WrapperCard maxWidth="500px">
                 <Flex  m={3} flexDirection="column"  width={[null, 500]}>
@@ -56,12 +53,11 @@ export default function ParserEvent (props){
                     </Text>
                     <LocateToAddress panTo={props.panTo}/>
                     <Text my={1}>{post.time}</Text>
-                    
                   </Flex>
                   <Flex my={3} flexDirection="row" >
                      <Slider images={post.images}/>
                   </Flex>
-                  {post.description!= 0 ?  <Flex mr="auto" width="320px">
+                  {post.description!== 0 ?  <Flex mr="auto" width="320px">
                     {open ? <Button onClick={handleModal}>Hide</Button>:<Button onClick={handleModal}>Show more</Button>  }
                     </Flex>  : null }
                         <Collapse in={open} timeout="auto" unmountOnExit  >
@@ -77,7 +73,6 @@ export default function ParserEvent (props){
                         <Text  textAlign="right" fontSize={14}>{post.period}</Text>
                       </Flex>
                    </Flex>
-                
                     <Box ml="auto" mt="auto" >
                     <Text fontSize={16}><Link href={post.urlContent}> {post.website}</Link></Text>
                     </Box>

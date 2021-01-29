@@ -1,14 +1,12 @@
-import React, {useContext, useState, useCallback, useEffect} from 'react'
+import React, { useState} from 'react'
 import { Dialog } from '@material-ui/core';
 import {Box, Flex, Text} from 'rebass'
 import { useRouteMatch } from 'react-router-dom';
 
 import DataCity from '../../content/City.json'
-import { AuthContext } from '../../context/auth'
-import SearchAddress from '../Map/SearchAddress';
 
 export default function CityWindow(props){
-      const {cityWindow, setSelectedCity, panTo, handleCityWindow} = props;
+      const { setSelectedCity, panTo} = props;
       const [isOpen, setIsOpen] = useState(true);
       const {url} =useRouteMatch()
   
@@ -28,7 +26,6 @@ export default function CityWindow(props){
             });
           },
         )
-       
       }
 
       return(
@@ -42,7 +39,6 @@ export default function CityWindow(props){
             </Box>
              )}
             </Flex>
-         
        </Dialog>
     )
 }

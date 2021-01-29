@@ -1,7 +1,6 @@
 import React, { useState} from 'react'
 import {Text, Box, Flex} from 'rebass'
 import styled from 'styled-components';
-import {media} from '../../rootLayout/theme'
 
 import Login from '../Login'
 import SignUp from '../SignUp'
@@ -9,7 +8,6 @@ import SliderText from '../SliderText'
 import People from '../../images/People.jpg'
 
 const WrapperDialog = styled(Flex)`
-    /* transform: translateY(20%); */
     width:100%;
 
     top:200%;
@@ -39,19 +37,17 @@ export default function Authorization(props){
              <Box ml={2} display={["none","none", "block"]}>
               <SliderText />
               </Box>
-      
         <WrapperDialog mb="auto"ml={[null,"auto"]}sx={{
             position: ['relative','absolute'],
             maxWidth: ['300px'],
             right:[0,'1%'],   
-
             float: [null,'right'],
             mt:[100,0],
             mx: ["auto"],
          }} >
               <Flex flexDirection="column">
                     <Text mx="auto">
-                        myEvent
+                        Meclep
                     </Text>
             {isLogin ? <Login setIsLogin={setIsLogin}/>: <SignUp setIsLogin={setIsLogin}/>}
             </Flex>

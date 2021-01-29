@@ -18,8 +18,13 @@ body {
 }
 :link{
   text-decoration:none;
-  color: #000 !important;
+  /* color: inherit; */
+  color: #000;
+
+  /* color: #000 ; */
 }
+a:visited { color: inherit; }
+
 #root {
   position: relative;
   min-height: 100vh;

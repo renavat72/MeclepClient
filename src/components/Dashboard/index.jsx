@@ -2,7 +2,6 @@ import React, { useState, useContext} from 'react'
 import {Fab, Tooltip} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { Box, Flex } from 'rebass';
-import { useRouteMatch } from "react-router-dom";
 import {  ModalLink } from 'react-router-modal';
 import { useQuery } from '@apollo/react-hooks';
 
@@ -16,7 +15,7 @@ export default function Dashboard(){
      const { logout } = useContext(AuthContext);
      const { data} = useQuery(GET_AUTH_USER);
 
-    const [eventWindow,setEventWindow] = useState(false)
+     const [eventWindow,setEventWindow] = useState(false)
     const handleEventWindow = () => {
       setEventWindow(!eventWindow);
     };
@@ -33,15 +32,15 @@ export default function Dashboard(){
               <Flex>
                <Sidebar user={data&&data.getAuthUser}panTo={panTo} logout={logout}/>
               </Flex>
-              <Flex ml="auto" mr={4} mt={2} >
-              <ModalLink path={`/createEvent`}component={AddEventWindow}>
-                <Fab color="primary">
-                  <Tooltip title="Create event">
-                    <AddIcon onClick={handleEventWindow}/>
-                  </Tooltip>
-                </Fab>
-              </ModalLink>
-              </Flex>
+              {window.innerWidth > 768? <Flex ml="auto" mr={4} mt={2} >
+                <ModalLink path={`/createEvent`}component={AddEventWindow}>
+                  <Fab color="primary">
+                    <Tooltip title="Create event">
+                      <AddIcon onClick={handleEventWindow}/>
+                    </Tooltip>
+                  </Fab>
+                </ModalLink>
+              </Flex>:null}
           </Flex>
           </Map>
       </Box>

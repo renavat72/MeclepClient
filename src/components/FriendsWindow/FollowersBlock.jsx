@@ -1,9 +1,8 @@
 import React,{useState} from 'react'
-import { Button, Avatar, CircularProgress } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
 import { useQuery } from '@apollo/react-hooks';
 import {Text, Flex} from 'rebass'
-import { ModalRoute, ModalLink} from 'react-router-modal';
-import { useRouteMatch } from 'react-router-dom';
+import {ModalLink} from 'react-router-modal';
 
 import {GET_AUTH_USER} from '../../apis/UserAPI'
 import Follow from '../Follow'
@@ -20,12 +19,9 @@ export default function FollowersBlock({handleClick,authUser, searchFollowing}){
     const [isOpen, setIsOpen] = useState(false);
     const [infoFriend, setInfoFriend] = useState();
     const MergeData= FollowersData&&FollowersData.filter(user=>(!searchFollowing || user.followerFirstName===searchFollowing||user.followerSecondName===searchFollowing))
-
-    const {url} =useRouteMatch();
     const handleOpen = (user) => {
           setInfoFriend(user)
           setIsOpen(!isOpen);
-          console.log(user)
     }
     return(
           <DialogBlock>

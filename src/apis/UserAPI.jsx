@@ -5,8 +5,6 @@ const userPayload = `
   email
   firstName
   secondName
-  images
-  imagesPublicId
   coverImage
   coverImagePublicId
   createdAt
@@ -55,21 +53,6 @@ mutation login(
 }
 `
 
-export const CHANGE_FIRSTNAME = gql`
-    mutation($currentFirstName: String!, $newFirstName: String!){
-        changeFirstName(currentFirstName: $currentFirstName, newFirstName: $newFirstName){
-            firstName
-        }
-    }
-`;
-
-export const CHANGE_SECONDNAME = gql`
-    mutation($currentSecondName: String! $newSecondName: String!){
-        changeInfo( currentSecondName: $currentSecondName, newSecondName: $newSecondName){
-            secondName
-        }
-    }
-`;
 
 export const GET_CURRENT_USER = gql`
     query( $userId: String!) {
@@ -263,6 +246,11 @@ export const GET_AUTH_USER = gql`
     query {
         getAuthUser{
             ${userPayload}
+            images{
+              id
+              image
+              imagePublicId
+            }
             newConversations{
               id
               firstName
@@ -304,23 +292,7 @@ export const SEARCH_USERS = gql`
         }
         }
 `
-export const UPLOAD_PHOTO = gql`
-  mutation($input: UploadUserPhotoInput!) {
-    uploadUserPhoto(input: $input) {
-      id
-    }
-  }
-`;
 
-export const UPLOAD_PHOTOS = gql`
-  mutation uploadUserPhotos($id: ID!
-    $images:Upload) 
-    {
-    uploadUserPhotos(id: $id, images: $images,){
-      images
-    }
-  }
-`;
 export const IS_USER_ONLINE_SUBSCRIPTION = gql`
   subscription($authUserId: String!, $userId: String!) {
     isUserOnline(authUserId: $authUserId, userId: $userId) {

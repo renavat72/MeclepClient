@@ -15,7 +15,6 @@ export default function SignUp(props){
     const {setIsLogin} = props;
     const context = useContext(AuthContext)
     const [errors, setErrors] = useState([]);
-    
     const {onChange, onSubmit, values } = useForm(registerUser, {
         firstName: '',
         secondName: '',
@@ -23,7 +22,6 @@ export default function SignUp(props){
         password: '',
         confirmPassword: '',  
     })
-    
     const [ addUser, {loading }] = useMutation(REGISTER_USER, {
         update(_, {data: {register: userData}}){
             context.login(userData)
@@ -40,7 +38,6 @@ export default function SignUp(props){
           }
         addUser();
     }
-    console.log(errors)
     return(
      <Box>
        <Form onSubmit={onSubmit} render={({handleSubmit, form}) => (
@@ -104,7 +101,6 @@ export default function SignUp(props){
           </Flex>
         </form>
        )}/>
-       
             <Flex pt={3}>
             <Box mx="auto" >
             <Button  onClick={()=>setIsLogin(true)}>

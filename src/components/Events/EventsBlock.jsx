@@ -1,6 +1,6 @@
 import React,{useContext,useEffect,useState} from 'react'
 import { Dialog, TextField, Checkbox, Accordion, AccordionDetails, AccordionSummary, FormControlLabel, Radio, RadioGroup, IconButton } from '@material-ui/core';
-import {Text, Box, Flex, Button} from 'rebass'
+import {Text, Box, Flex} from 'rebass'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
@@ -10,13 +10,12 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { useRouteMatch } from 'react-router-dom';
 import CloseIcon from '@material-ui/icons/Close';
 
-import {FETCH_POSTS_QUERY} from '../../apis/EventAPI'
 import {FETCH_ALL_EVENTS_QUERY} from '../../apis/ParserEventAPI';
-import { useStore } from '../../context/store';
+// import { useStore } from '../../context/store';
 import { AuthContext } from '../../context/auth';
 import ParserEvent from './ParserEvent'
 import Event from './Event'
-import DataCity from '../../content/City.json'
+// import DataCity from '../../content/City.json'
 
 const WrapperEvent = styled(Box)`
 width:100%;
@@ -36,13 +35,12 @@ const Block = ({children }) => (
 );
 
 export default function EventsBlock(props){
-      const {eventsWindow, handleEventsWindow,authUser} = props;
+      const { handleEventsWindow,authUser} = props;
       const [typeValue, setTypeValue] = useState("");
       const [favorite, setFavorite] = useState();
       const [myFollowing, setMyFollowing] = useState();
       const [onlineEvents, setOnlineEvents] = useState();
       const [searchValue, setSearchValue] = useState('');
-      const [{geolocation}] = useStore();
 
       const [isOpen, setIsOpen] = useState(true);
       const {url} =useRouteMatch()
@@ -63,7 +61,7 @@ export default function EventsBlock(props){
       const mergeData = data && data.getParserEvents.concat(data.getPosts)
       const {user} = useContext(AuthContext);
       const filteredEvents =  mergeData&&mergeData.filter(post => ( 
-            (post.city === geolocation.city || post.city === "")&& //Добавить логику контент от страны  
+            // (post.city === geolocation.city || post.city === "")&& //Добавить логику контент от страны  
             (!typeValue || post.typeOfEvent === typeValue) && 
            (!onlineEvents || post.isOnline === true)&&
             (!searchValue || post.nameOfEvent === searchValue) &&  //Доработать ввод 

@@ -14,7 +14,7 @@ export default function AnotherEventWindow (props){
       setOpen(!open);
     };
     return(
-        <Box width="250px">
+        <Box minWidth="200px" width="100%">
           <Flex flexDirection="column">
             <Flex flexDirection='column' mr="auto" mb={3}>
              <Text fontWeight='bold' fontSize={18} textAlign="left" width="250px" mb={2}>
@@ -22,7 +22,6 @@ export default function AnotherEventWindow (props){
               </Text>
               <Text fontSize={14} textAlign="left" width="200px" mb={1}>
               {post.address}
-
               </Text>
               <Flex my={1}  flexDirection="row" justifyContent="space-between" >
                   <Box>
@@ -39,10 +38,9 @@ export default function AnotherEventWindow (props){
             </Text>
           </Flex>
           <Slider images={post.images} window={true}/>
-          {post.description!= 0 ? <Flex mr="auto">
+          {post.description!== 0 ? <Flex mr="auto">
           {open ? <Button onClick={handleClick}>Hide</Button>:<Button onClick={handleClick}>Show more</Button>  }
           </Flex>:null}
-          
             <Collapse in={open} timeout="auto" unmountOnExit>
                 <Flex my={1} maxWidth="250px" flexDirection="column">
                     <Text color="textSecondary" textAlign="left">

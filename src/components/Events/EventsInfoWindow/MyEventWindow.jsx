@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Countdown from 'react-countdown'
 import { CardActions } from '@material-ui/core';
 import {Text, Box, Flex} from 'rebass';
@@ -13,7 +13,7 @@ import ProfileWindow from '../../Profile'
 
 export default function MyEventWindow (props){
     const {post, user} = props
-    const [expanded, setExpanded] = useState(false);
+    // const [expanded, setExpanded] = useState(false);
     const variables = {
       postId: post.id,
     }; 
@@ -22,9 +22,9 @@ export default function MyEventWindow (props){
       },
       variables
       })
-    const handleExpandClick = () => {
-      setExpanded(!expanded);
-      };
+    // const handleExpandClick = () => {
+    //   setExpanded(!expanded);
+    //   };
       const parseDate = Date.parse(post.timeOfEvent);
       const completedDate = parseDate + 43200000;
 

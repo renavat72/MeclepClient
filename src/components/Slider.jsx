@@ -20,13 +20,12 @@ export default function Slider(props){
         return null
     }
     return(
-        images != 0 ? <Box>
+        images !== 0 ? <Box>
           <Flex m="auto" width={1}>
             {window?
-            <img style={{maxWidth:300, height:200, width:"100%"}} src={images[activeStep]}/>:
+            <img alt="images" style={{maxWidth:300, height:200, width:"100%"}} src={images[activeStep]}/>:
               <ModalImage large={images[activeStep]} small={images[activeStep]} />
             }
-
           </Flex>
            <MobileStepper
           steps={maxSteps}
@@ -45,6 +44,5 @@ export default function Slider(props){
           }
           />
     </Box>: null 
-
     )
 }

@@ -30,7 +30,7 @@ export default function Event (props){
               lng: post.lng,
             });
           },
-        ),handleEventsWindow()}
+        );handleEventsWindow()};
 
       return (
         <Text fontSize={[12,14]}

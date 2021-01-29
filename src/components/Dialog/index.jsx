@@ -2,12 +2,11 @@ import React, {useContext, useState, useCallback, useEffect} from 'react'
 import { Dialog } from '@material-ui/core';
 import {Flex} from 'rebass'
 import styled from 'styled-components';
-import { useQuery,useMutation,useSubscription } from '@apollo/react-hooks';
+import { useQuery,useMutation } from '@apollo/react-hooks';
 import { useRouteMatch } from 'react-router-dom';
-import { ModalContainer, ModalLink,ModalRoute } from 'react-router-modal';
 
 import {GET_CONVERSATIONS, GET_MESSAGES, GET_MESSAGES_SUBSCRIPTION, UPDATE_MESSAGE_SEEN} from '../../apis/MessageAPI'
-import {GET_AUTH_USER, IS_USER_ONLINE_SUBSCRIPTION} from '../../apis/UserAPI'
+import {GET_AUTH_USER} from '../../apis/UserAPI'
 
 import { AuthContext } from '../../context/auth'
 import ConversationsSide from './ConversationsSide'
@@ -60,7 +59,7 @@ export default function DialogWindow(props){
       const { subscribeToMore, data} = useQuery(GET_MESSAGES,{variables,fetchPolicy: 'network-only'});
   
       const updateMessageSeen = useCallback(async () => {
-        ()=>useMutation(UPDATE_MESSAGE_SEEN, {
+        useMutation(UPDATE_MESSAGE_SEEN, {
           update(_, result){
           console.log(result)
         },
@@ -104,7 +103,10 @@ export default function DialogWindow(props){
       // if (!loading && userIsOnline) {
       //   isUserOnline = userIsOnline.isUserOnline;
       // }
-      return (
+      if (window.innerWidth < 768) return (<Dialog open={isOpen}  onClose={()=>handleOpen()} maxWidth="xl">
+        <MobileDialog setFriendInfo={setFriendInfo}  authUser={user.id} friendInfo={friendInfo}  messages={data ? data.getMessages : []}/>
+      </Dialog>)
+      else return (
        <Dialog open={isOpen}  onClose={()=>handleOpen()} maxWidth="xl">
    
             <Flex flexDirection="row" minWidth={["500px","700px"]} minHeight="470px">
@@ -115,6 +117,7 @@ export default function DialogWindow(props){
                   />
                <ChatSide 
                   friendInfo={friendInfo} 
+                  setFriendInfo={setFriendInfo} 
                   authUser={user.id} 
                   // isUserOnline={isUserOnline}  
                   messages={data ? data.getMessages : []}

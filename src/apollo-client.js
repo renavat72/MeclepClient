@@ -6,14 +6,10 @@ import { createUploadLink } from 'apollo-upload-client';
 import { getMainDefinition } from '@apollo/client/utilities'
 import { split } from '@apollo/react-hooks';
 import ApolloClient from 'apollo-client';
-import { createHttpLink } from 'apollo-link-http';
-
-
 
 export default function createApolloClient(urlServer, websocketApiUrl){
 
   let uploadLink = createUploadLink({ uri: urlServer }); 
-  // let httpLink = createHttpLink({uri: urlServer})
   const token =  localStorage.getItem('jwtToken')
 
   const authLink = setContext((_, { headers }) => {
@@ -44,8 +40,6 @@ export default function createApolloClient(urlServer, websocketApiUrl){
     },
     wsLink,
     uploadLink = authLink.concat(uploadLink),
-    // uploadLink,
-  
   )
   return new ApolloClient({
     link:splitLink,

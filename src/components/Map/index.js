@@ -1,8 +1,8 @@
-import React, {useContext, useEffect, useState, useRef, useCallback} from "react";
-import { GoogleMap, useLoadScript, Marker, InfoWindow, MarkerClusterer } from "@react-google-maps/api";
+import React, {useContext, useEffect, useState,  useCallback} from "react";
+import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useQuery } from '@apollo/react-hooks';
-import Supercluster from 'supercluster';
+import styled from 'styled-components';
 
 import {FETCH_ALL_EVENTS_QUERY} from '../../apis/ParserEventAPI'
 import AnotherEventWindow from '../Events/EventsInfoWindow/AnotherEventWindow';
@@ -13,11 +13,15 @@ import Club from '../../icons/Markers/club.svg'
 import Meeting from '../../icons/Markers/meeting.svg'
 import Exhibition from '../../icons/Markers/exhibition.svg'
 import ParserMarker from '../../icons/Markers/parserMarker.svg'
-import { Box, Flex } from "rebass";
+import { Flex } from "rebass";
 
 
 
-
+export const Loading = styled(Flex)`
+  position:absolute;
+  left:50%;
+  transform: translate(100%, 1000%);
+`
 const libraries = ["places"];
 const mapContainerStyle = {
   position: 'absolute',
@@ -25,8 +29,6 @@ const mapContainerStyle = {
   width: "100vw",
 };
 const options = {
-  // heading:false,
-
   mapId:"bd64955c38ef83ac",
   disableDefaultUI: true,
   zoomControl: false,
@@ -34,7 +36,6 @@ const options = {
 
 };
 const center = {
-  
   lat: 55.751244,
   lng: 37.618423,
 };
@@ -69,10 +70,16 @@ export default function Map({children,mapRef}) {
     mapRef.current = map;
   }, []);
 
-  if (loading) return <CircularProgress />
+  if (loading) return <Loading>
+       <CircularProgress />
+      </Loading>
   if (loadError) return "Error";
-  if (!isLoaded) return <CircularProgress />
-  if (markers === undefined) return <CircularProgress />
+  if (!isLoaded) return <Loading m="auto">
+  <CircularProgress />
+  </Loading>
+  if (markers === undefined) return<Loading m="auto">
+  <CircularProgress />
+  </Loading>
 
   return (
     <div>
