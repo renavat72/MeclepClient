@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {Button, Drawer, List, ListItem, ListItemText, Avatar, Snackbar, ListItemIcon } from '@material-ui/core';
+import {Button, Drawer, List, ListItem, ListItemText, Snackbar, ListItemIcon } from '@material-ui/core';
 import { Box, Flex, Text } from 'rebass';
 import MuiAlert from '@material-ui/lab/Alert';
 import AccountBoxOutlinedIcon from '@material-ui/icons/AccountBoxOutlined';
@@ -10,15 +10,16 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined';
 import {  ModalLink } from 'react-router-modal';
 import styled from 'styled-components';
+import ReorderIcon from '@material-ui/icons/Reorder';
 
 import {  SET_CITY } from '../../reducers/geolocation'
 import EventsBlock from '../Events/EventsBlock'
 import EditProfile from '../EditProfile'
 import DialogWindow from '../Dialog'
 import FriendsWindow from '../FriendsWindow'
-import CityWindow from '../CityWindow';
+// import CityWindow from '../CityWindow';
 import { useStore } from '../../context/store';
-import ProfileWindow from '../Profile'
+import MobileSidebar from './MobileSidebar'
 import MyProfileWindow from '../Profile/MyProfile'
 import AvatarUser from '../AvatarUser'
 
@@ -35,11 +36,7 @@ const Sidebar = ({panTo, user, logout}) => {
     const localCity = localStorage.getItem("City");
     const [{geolocation}, dispatch] = useStore();
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [eventsWindow, setEventsWindow] = useState(false);
-    const [dialogWindow, setDialogWindow] = useState(false);
-    // const [cityWindow, setCityWindow] = useState(false);
-    // const [friendsWindow, setFriendsWindow] = useState(false);
-    const [editProfileWindow,setEditProfileWindow] = useState(false);
+    const [mobSidebarOpen,setMobSidebarOpen] = useState(false);
     const [selectedCity, setSelectedCity ] = useState(localCity);
     const [open, setOpen] = useState(false);
     useEffect(() => {
@@ -50,23 +47,13 @@ const Sidebar = ({panTo, user, logout}) => {
     const handleClick = () => {
         setOpen(!open);
       };
-     
-    const handleEventsWindow = () => {
-        setEventsWindow(!eventsWindow);
-      };
-
-    const handleDialogWindow = () => {
-        setDialogWindow(!dialogWindow);
-      };
-
-    const handleEditProfileWindow = () => {
-        setEditProfileWindow(!editProfileWindow);
+    const handleMobSidebar = () => {
+        setMobSidebarOpen(!mobSidebarOpen);
       };
 
     const openHandler = () =>{
         setSidebarOpen(!sidebarOpen)
      };
-
     const Logout = () => {
         return (
             <Box>
@@ -74,7 +61,6 @@ const Sidebar = ({panTo, user, logout}) => {
             </Box>
         )
     }
-
     const EventsBlockWindow = () => {
         return (
             <Box>
@@ -105,14 +91,24 @@ const Sidebar = ({panTo, user, logout}) => {
         };
         return (
             <Box>
-                <CustomModalLink path={`/city`} component={CityWindow } props={{setSelectedCity, panTo}} >
-                   <Button >
-                      <RoomOutlinedIcon onClick={toLocate}/>
+                {/* <CustomModalLink 
+                    path={`/city`} 
+                    component={CityWindow } 
+                    props={{setSelectedCity, panTo}} 
+                > */}
+                   <Button disabled>
+                    <Flex mr={4}>
+                      <RoomOutlinedIcon 
+                    //   onClick={toLocate}
+                    />
+                    </Flex>
                     <Text  mr="auto"  >
-                        {selectedCity}
+                        {/* {selectedCity} */} 
+                        {/* Доделать выбор города*/}
+                    Moscow
                     </Text>
                    </Button>
-            </CustomModalLink>
+            {/* </CustomModalLink> */}
               </Box>
         );
       }
@@ -208,9 +204,9 @@ const Sidebar = ({panTo, user, logout}) => {
                 <List>
                     <Flex>
                     {[<ModalLink path={`/friends`} component={FriendsWindow}><PeopleOutlineIcon ml={3}/></ModalLink>,
-                        <MailIcon onClick={handleDialogWindow}/>,
-                        <EventIcon onClick={handleEventsWindow}/>,
-                        <AccountBoxOutlinedIcon  onClick={handleEditProfileWindow}/>
+                        <ModalLink path={`/dialog`} component={DialogWindow}><MailIcon ml={3}/></ModalLink>,
+                        <ModalLink path={`/events`} component={EventsBlock}><EventIcon ml={3}/></ModalLink>,
+                        <ReorderIcon onClick={handleMobSidebar}/>
                     ].map((block, index) => (
                         <Flex key={index} onClick={handleClick} my={1} mx="auto">
                             <ListItemText primary={block} />
@@ -218,30 +214,27 @@ const Sidebar = ({panTo, user, logout}) => {
                     ))}
                     </Flex>
                 </List>
-            {/* <Flex mx={4} mt="auto" mb={4}>
-                    <Logout/>
-            </Flex> */}
-    </Drawer>
+        </Drawer>
     )
     }
     if (window.innerWidth < 768) return <IsMobileDrawer/>;
     else return <IsDesktopDrawer user={user}/>
-
     }
     return (
-
-        <div>                     
-             {/* <ModalContainer/> */}
+        <div>
             <DrawerSide/>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClick}>
                 <Alert onClose={handleClick} severity="success">
                 Your message has been sent
                 </Alert>
             </Snackbar>
-            {/* <EditProfile editProfileWindow={editProfileWindow}  handleEditProfileWindow={handleEditProfileWindow}/> */}
-            {/* <EventsBlock eventsWindow={eventsWindow}  handleEventsWindow={handleEventsWindow} authUser={data} panTo={panTo}/> */}
-           {/* <ModalLink path="/friends" component={FriendsWindow}> */}
-            {/* <CityWindow  panTo={panTo}  setSelectedCity={setSelectedCity}/> */}
+            <MobileSidebar 
+                handleMobSidebar={handleMobSidebar} 
+                mobSidebarOpen={mobSidebarOpen} 
+                user={user} 
+                Logout={Logout} 
+                Locate={Locate}
+                EditProfileBlock={EditProfileBlock}/>
         </div>
 
     )

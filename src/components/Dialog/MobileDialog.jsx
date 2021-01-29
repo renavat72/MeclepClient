@@ -1,19 +1,39 @@
-import React,{useState} from 'react';
+import React from 'react';
 import { Box, Flex } from 'rebass';
-import styled from 'styled-components';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+
 import ChatSide from './ChatSide';
 import ConversationsSide from './ConversationsSide';
 
-
 export default function MobileDialog(props){
-    console.log(props)
-    const [isOpen,setIsOpen] = useState(false)
     return(
         <Box >
-            <Flex width="500px" >
-             <ConversationsSide setFriendInfo={props.setFriendInfo} authUser={props.authUser} />
-             <ChatSide  friendInfo={props.friendInfo} authUser={props.authUser}  messages={props.messages.data ? props.messages.data.getMessages : []}/>
+            <Flex maxWidth="500px"  minWidth="310px" minHeight="470px"  flexDirection="row">
+            {props.friendInfo?
+           <MobileChatSide props={props}/>
+           :
+           <MobileConversationsSide props={props}/>
+            }
             </Flex>
         </Box>
+    )
+}
+function MobileChatSide({props}){
+    return(
+        <Box>
+            <Flex flexDirection="column">
+                <Flex mr="auto">
+                  <ArrowBackIcon onClick={()=>props.setFriendInfo('')}/>
+                </Flex>
+            </Flex>
+                <ChatSide  friendInfo={props.friendInfo} authUser={props.authUser}  messages={props.messages ? props.messages : []}/>
+        </Box>
+    )
+}
+function MobileConversationsSide({props}){
+    return(
+        <Box width="100%" >
+        <ConversationsSide setFriendInfo={props.setFriendInfo} authUser={props.authUser} />
+    </Box>
     )
 }

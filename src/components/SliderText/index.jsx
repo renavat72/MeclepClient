@@ -5,7 +5,6 @@ import styled from 'styled-components';
 const SliderWrapper = styled(Flex)`
  position:relative;
     float: right;
-    /* transform: translateY(20%); */
     top:500%;
     font-size: 54px;
     color:#aaa;
@@ -52,7 +51,7 @@ export default function SliderText(){
     return(
         <SliderWrapper flexDirection="row">
         <Box>
-          <Text>My event is: </Text>
+          <Text>Meclep is: </Text>
          </Box>
          <Slider  pl="15px">
             <SlideText css="animation: slide 10s running linear infinite;">Create your event</SlideText>

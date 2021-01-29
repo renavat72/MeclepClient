@@ -20,7 +20,6 @@ export default function SliderBackground(){
               <span>Slide 2</span>
             </div>
           </div>
-    
         </Slide>
         </Box>
     )

@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default  function AvatarUser(props){
     const classes = useStyles();
-    console.log(props)
 
     if(!props) return null
     const altFirstName = props.followers? props.props.followerFirstName: props.following ? props.props.userFirstName: props.props.firstName

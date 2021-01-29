@@ -102,22 +102,22 @@ export default function AddEventWindow(props){
         }}onSubmit={onSubmit} render={({handleSubmit}) => (
           <form onSubmit={handleSubmit} noValidate className={error ? <CircularProgress/> : ""}>
              <AddEventWrapper flexDirection="column">
-               <Flex flexDirection="row">
+               <Flex flexDirection={["column","row"]}>
                  <Flex flexDirection="column">
                     <Box  mr="auto">
                       <DialogTitle>Create event</DialogTitle>
                     </Box>
-                    <Box ml={4}>
-                    <Flex pt={4}>
-                    <TextField
-                        fullWidth
-                        name="nameOfEvent"
-                        placeholder="Name of event"
-                        type="text"
-                        values={values.nameOfEvent}
-                        onChange={onChange}
-                       />
-                    </Flex>
+                    <Box ml={[3,4]} mr={[3,0]}>
+                      <Flex pt={4}>
+                      <TextField
+                          fullWidth
+                          name="nameOfEvent"
+                          placeholder="Name of event"
+                          type="text"
+                          values={values.nameOfEvent}
+                          onChange={onChange}
+                        />
+                      </Flex>
                     <Flex pt={3} flexDirection="column" maxWidth="235px">
                     <InputLabel htmlFor="typeOfEvent">Type</InputLabel>
                     <NativeSelect
@@ -167,7 +167,7 @@ export default function AddEventWindow(props){
                         {errors}
                       </Text>
                     </Flex>
-                    <Flex ml="auto" mb={3} flexDirection="row"  >
+                    <Flex ml={[null,"auto"]} mb={3} flexDirection="row"  >
                     <Box my="auto" >
                         <Button onClick={handleEventWindow} color="primary">
                           Cancel
@@ -189,6 +189,7 @@ export default function AddEventWindow(props){
                         </Button>
                       }
                   </Flex>
+
                   { currentSide ?
                <CurrentInfo values={values} onChange={onChange} setValues={setValues}/> : null}
               </Flex>
@@ -252,7 +253,6 @@ function CurrentInfo(props){
 };
 function UploadFile(props) {
   const {values, setValues} = props;
-
   const handlePostImageUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -260,7 +260,6 @@ function UploadFile(props) {
     setValues({ ...values, image:file})
     e.target.value = null;
   };
-  console.log(values)
   return (
     <div>
 

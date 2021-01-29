@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { Box, Text,Flex } from 'rebass';
 import {  useQuery } from '@apollo/react-hooks';
-import { Dialog, Chip, IconButton,Button} from '@material-ui/core';
+import { Dialog, IconButton,Button} from '@material-ui/core';
 import { useRouteMatch } from 'react-router-dom';
 import CloseIcon from '@material-ui/icons/Close';
 import styled from 'styled-components';
@@ -17,7 +17,9 @@ const BackgroundImage = styled(Flex)`
 position: absolute;
 height:30vh;
 
-background-image: url( ${(p) => p.imageBackground ? p.imageBackground:'#e5e5e5'});
+background-image: url( ${(p) => p.imageBackground ? p.imageBackground:`#ABCEE8`});
+background-color: ${(p) => p.imageBackground ? p.imageBackground:`#ABCEE8`};
+
 background-size: cover;
 background-position:center;
 
@@ -34,11 +36,8 @@ export default function MyProfileWindow(props){
     function handleOpen(){
           setIsOpen(false);
           window.history.pushState('', '', `${url}`);
-    }     
-    const InitialsWords = data&&data.getAuthUser.firstName[0] + data.getAuthUser.secondName[0];
-    
+    };
       return(
-        
         <Dialog open={isOpen} onClose={()=>handleOpen()}  maxWidth="xl"   >
           {
             dialogWindow === 0 ? <FollowersDialog userInfo={data&&data.getAuthUser.followers}/> : dialogWindow === 1 ?<FollowingDialog userInfo={data&&data.getAuthUser.following}/> : null
@@ -53,8 +52,6 @@ export default function MyProfileWindow(props){
                 <Flex  flexDirection="column" mx="auto" width="300px" sx={{zIndex:100}}>
                 <Flex mx="auto"my={4}>
                   <AvatarUser props={data&&data.getAuthUser} size="large"/>
-               
-                    
                 </Flex>
                 <Flex flexDirection="row" mx="auto" mb={3} justifyContent="center" width={1} >
                       <Text fontSize={24} mr={2} textAlign="center" color="white">{data&&data.getAuthUser.firstName}</Text>
@@ -94,12 +91,12 @@ export default function MyProfileWindow(props){
                           )}
                   </Flex>
                 </Box>
-                <Flex flexDirection="row" >
+                {/* <Flex flexDirection="row" >
                   <Text my="auto" mr={2}>
                     I like:
                   </Text>
                       <Chip color="primary" label={`Party`}/>
-                </Flex>
+                </Flex> */}
               </Flex>
           </Flex>
         </Dialog>

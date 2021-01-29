@@ -1,6 +1,6 @@
 import React,{useState, useEffect} from 'react';
 import {Text,Flex } from 'rebass';
-import { Avatar, Dialog, ListItem, ListItemAvatar, ListItemText, DialogTitle, List} from '@material-ui/core';
+import { Dialog, ListItem, ListItemAvatar, ListItemText, DialogTitle, List} from '@material-ui/core';
 import {  ModalLink} from 'react-router-modal';
 
 import ProfileWindow from '../Profile'
@@ -8,7 +8,6 @@ import AvatarUser from '../AvatarUser'
 
 
 export function FollowersDialog(userInfo){
- 
     const [isOpen, setIsOpen] = useState(true);
     const [followersInfo, setFollowersInfo] = useState(userInfo);
     useEffect(()=>{
@@ -17,7 +16,6 @@ export function FollowersDialog(userInfo){
     const handleOpen = () =>{
         setIsOpen(!userInfo)
     };
-    
     if(!userInfo) return null
     return(
       <Dialog open={isOpen} onClose={()=>handleOpen()} >

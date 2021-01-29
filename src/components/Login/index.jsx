@@ -20,7 +20,7 @@ export default function Login(props){
     const [loginUser, {loading}] = useMutation (LOGIN_USER, {
         update(_, {data:{login: userData}}){
             context.login(userData)
-            // props.history.push('/login')
+            props.history.push('/login')
         },
         onError(error){
             setError(error.graphQLErrors[0].message);

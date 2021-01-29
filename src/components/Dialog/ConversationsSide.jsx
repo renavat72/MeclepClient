@@ -1,5 +1,5 @@
 import React,{useEffect} from 'react'
-import { Avatar,Badge } from '@material-ui/core';
+import { Avatar} from '@material-ui/core';
 import {Text, Box, Flex} from 'rebass'
 import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
@@ -9,13 +9,10 @@ import {GET_CONVERSATIONS,GET_CONVERSATIONS_SUBSCRIPTION} from '../../apis/Messa
 
 
 const FriendsSide = styled(Flex)`
-    /* width:300px; */
     background-color: #f8f8f8;
     box-shadow: 0 0 15px rgba(0,0,0,0.08);
 `
-const BadgeIsOnline = styled(Badge)`
 
-`
 const FriendsBlock = styled(Flex)`
 
      border-bottom: 1px solid #e5e5e5;
@@ -37,7 +34,7 @@ const FriendsBlock = styled(Flex)`
 `
 
 export default function ConversationsSide(props){
-    const {authUser, setFriendInfo,isUserOnline} = props;
+    const {authUser, setFriendInfo} = props;
     const variables = {
         authUserId: authUser,
       };
@@ -72,14 +69,8 @@ export default function ConversationsSide(props){
         <FriendsSide variables={variables}width={[1,2/6]}>
         <Box mt={2} width={1}>
             {data && data.getConversations.map((user) =>
-                <FriendsBlock flexDirection="row" p={[0,2]} mb={1} key={user.id} onClick={(()=>setFriendInfo(user))} backgroundColor={user.seen ? "Gray": "#8dabd9"}>
-                        <BadgeIsOnline 
-                            variant="dot" color="primary" 
-                            anchorOrigin={{ vertical: 'bottom', horizontal: 'right'}} 
-                            // invisible={isUserOnline? true:false}
-                            >
+                <FriendsBlock flexDirection="row" p={[0,2]} mb={1} py={1}key={user.id} onClick={(()=>setFriendInfo(user))} backgroundColor={user.seen ? "Gray": "#8dabd9"}>
                              <Avatar >{user.firstName[0] + user.secondName[0]}</Avatar>
-                            </BadgeIsOnline>
                     <Flex ml={3} flexDirection="column">
                         <Flex flexDirection="row" my="auto">
                             <Text mr={2} fontSize={14}>{user.firstName}</Text>

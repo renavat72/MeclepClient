@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from 'react'
-import {  Button, Avatar, CircularProgress,  } from '@material-ui/core';
+import {  Button, CircularProgress} from '@material-ui/core';
 import {Text, Flex} from 'rebass'
 import { useQuery } from '@apollo/react-hooks';
 import { ModalLink} from 'react-router-modal';
-import { useRouteMatch } from 'react-router-dom';
 
 import { GET_AUTH_USER} from '../../apis/UserAPI'
 import Follow from '../Follow'
@@ -21,24 +20,35 @@ export default function FollowingBlock({handleClick,authUser,searchFollowing}){
              refetch()
       }, [ data]);
 
-      console.log({searchFollowing})
+      const FollowingData = data&&data.getAuthUser.following;
       const [followingState, setFollowingState] = useState(FollowingData);
       const [isOpen, setIsOpen] = useState(false)
       const [infoFriend, setInfoFriend] = useState()
-      const FollowingData = data&&data.getAuthUser.following;
       const MergeData= FollowingData&&FollowingData.filter(user=>(!searchFollowing || user.userFirstName===searchFollowing||user.userSecondName===searchFollowing))
-      const {url} =useRouteMatch();
       const handleOpen = (user) => {
             setInfoFriend(user)
             setIsOpen(!isOpen);
       }
+      // const showMore = () => {
+      //       fetchMore({
+      //         variables: { limit:MergeData.length+10 },
+      //         updateQuery: (prevResult, { fetchMoreResult }) => {
+      //                   console.log(fetchMoreResult)
+  
+      //               if (!fetchMoreResult) return prevResult;
+      //               return {
+      //                     ...prevResult, ...fetchMoreResult
+      //                   };
+      //         }
+      //   });
+      //   }
       if (followingState === undefined){
             return  null
       } else {
         return(
             <DialogBlock >
                   { isOpen ?
-                  <ChatWindow handleOpen={handleOpen} authUser={{authUser}} user={infoFriend} alert={handleClick}/>:null
+                  <ChatWindow handleOpen={handleOpen} authUser={{authUser}} user={infoFriend.user} alert={handleClick}/>:null
             }
                   { loading ? (
                         <CircularProgress/>

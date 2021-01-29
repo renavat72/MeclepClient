@@ -7,12 +7,8 @@ export default function DeleteButton({postId}){
     const variables = {
         postId: postId,
     }; 
-    const [deletePost] = useMutation(DELETE_POST,{
-        update(){
-
-        },
-        variables
-    })
+    const [deletePost] = useMutation(DELETE_POST,{variables});
+    
     return (
     <Button onClick={deletePost}color="secondary" >
         Delete

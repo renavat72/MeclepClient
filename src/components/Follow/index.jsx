@@ -7,7 +7,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 
 import {GET_AUTH_USER, CREATE_FOLLOW, DELETE_FOLLOW} from '../../apis/UserAPI'
 import { AuthContext } from '../../context/auth'
-import { Box, Flex, Text } from 'rebass';
+import { Box, Flex} from 'rebass';
 
 export default function Follow({user,onFollowBtn,followBtn} ){
     const authUser = useContext(AuthContext)

@@ -1,14 +1,12 @@
 import React, {useState, useContext, useEffect} from 'react'
-import { Button, Avatar, CircularProgress } from '@material-ui/core';
-import { generatePath, Link } from 'react-router-dom';
+import {  CircularProgress } from '@material-ui/core';
 import {Text, Flex} from 'rebass'
 import { useQuery } from '@apollo/react-hooks';
-import { ModalRoute, ModalLink} from 'react-router-modal';
+import {ModalLink} from 'react-router-modal';
 
 import {GET_ALL_USERS } from '../../apis/UserAPI'
 import Follow from '../Follow'
 import { AuthContext } from '../../context/auth'
-import * as Routes from '../../routes';
 import{DialogBlock, DialogFriend} from '../FriendsWindow'
 import ProfileWindow from '../Profile'
 import AvatarUser from '../AvatarUser'

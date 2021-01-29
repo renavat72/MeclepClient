@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
-import {Button,TextField } from '@material-ui/core';
-import { Box } from 'rebass'
+import React from 'react'
+import {TextField } from '@material-ui/core';
 
 import{FilterFriends} from '../FriendsWindow'
 
