@@ -26,7 +26,6 @@
     "websocket.io": "^0.2.1"
   },
   "scripts": {
-    "parser": "nodemon server/parser/index.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -41,7 +40,6 @@
   "browserslist": {
     "production": [
       ">0.2%",
-      "not dead",
       "not op_mini all"
     ],
     "development": [
