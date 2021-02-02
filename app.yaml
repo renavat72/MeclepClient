@@ -8,11 +8,7 @@ resources:
   memory_gb: 0.5
   disk_size_gb: 10
 
-  handlers:
-
-- url: src/images
-  static_dir: build/es6-bundled/images
-  secure: always
+handlers:
 
 - url: /node_modules
   static_dir: build/es6-bundled/node_modules
