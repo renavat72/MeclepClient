@@ -7,36 +7,3 @@ resources:
   cpu: 1
   memory_gb: 0.5
   disk_size_gb: 10
-
-handlers:
-
-- url: /node_modules
-  static_dir: build/es6-bundled/node_modules
-  secure: always
-
-- url: /src
-  static_dir: build/es6-bundled/src
-  secure: always
-
-- url: /manifest.json
-  static_files: build/es6-bundled/manifest.json
-  upload: build/es6-bundled/manifest.json
-  secure: always
-
-- url: src/service-worker.js
-  static_files: build/es5-bundled/service-worker.js
-  upload: build/es5-bundled/service-worker.js
-  secure: always
-
-- url: /.*
-  static_files: build/es5-bundled/index.html
-  upload: build/es5-bundled/index.html
-  secure: always
-
-skip_files:
-- build/es6-bundled/
-- build/esm-bundled/
-- node_modules/
-- server/
-- src/
-- test/
