@@ -1,24 +1,10 @@
-runtime: python27
-api_version: 1
-threadsafe: true
-skip_files:
-- ^(.*/)?#.*#$
-- ^(.*/)?.*~$
-- ^(.*/)?.*\.js[co]$
-- ^(.*/)?.*\.jsx[co]$
-- ^(.*/)?.*/RCS/.*$
-- ^(.*/)?\..*$
-
-manual_scaling:
-  instances: 1
-resources:
-  cpu: 1
-  memory_gb: 0.5
-  disk_size_gb: 10
-
+runtime: nodejs12
 handlers:
-- url: /
-  static_files: build/index.html
-  upload: build/index.html
-- url: /
-  static_dir: build
+  # Serve all static files with url ending with a file extension
+  - url: /(.*\..+)$
+    static_files: build/\1
+    upload: build/(.*\..+)$
+  # Catch all handler to index.html
+  - url: /.*
+    static_files: build/index.html
+    upload: build/index.htm
