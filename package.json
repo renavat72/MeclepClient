@@ -14,7 +14,6 @@
     "cherio": "^1.0.0-rc.2",
     "cloudinary": "^1.23.0",
     "dotenv": "^8.2.0",
-    "puppeteer": "^5.4.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "1.1.4",
