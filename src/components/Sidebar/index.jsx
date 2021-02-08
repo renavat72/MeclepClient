@@ -165,7 +165,7 @@ const Sidebar = ({panTo, user, logout}) => {
             setOpen(!open);
         };
     const IsDesktopDrawer = ({user}) =>{
-        if(!{user})return null
+        if(user===undefined) return null
         return(
          <Drawer anchor="left" variant="permanent" onClose={openHandler} open={sidebarOpen} >
             <Flex flexDirection="column" px={2}>
