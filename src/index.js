@@ -10,8 +10,8 @@ import App from './App'
 import {GlobalStyle} from './rootLayout/GlobalStyle'
 import './rootLayout/fonts.css';
 
-const API_URL = 'http://augmented-path-304210.ey.r.appspot.com/graphql'||'http://localhost:5000/graphql'||'http://localhost:8080/graphql'
-const WEBSOCKET_API_URL ='ws://augmented-path-304210.ey.r.appspot.com/graphql'||'ws://localhost:5000/graphql'||'ws://localhost:8080/graphql'
+const API_URL = 'http://augmented-path-304210.ey.r.appspot.com/graphql'||'http://localhost:5000/graphql'||'http://localhost:8081/graphql'
+const WEBSOCKET_API_URL ='ws://augmented-path-304210.ey.r.appspot.com/graphql'||'ws://localhost:5000/graphql'||'ws://localhost:8081/graphql'
 
 
 const websocketApiUrl = WEBSOCKET_API_URL
