@@ -16,7 +16,7 @@ const WEBSOCKET_API_URL ='ws://augmented-path-304210.ey.r.appspot.com/graphql'
 
 const websocketApiUrl = WEBSOCKET_API_URL
 ? WEBSOCKET_API_URL
-: API_URL.replace('https://', 'ws://').replace('http://', 'ws://');
+: API_URL.replace('https://', 'wss://').replace('http://', 'wss://');
 
 
 const apolloClient = createApolloClient(API_URL, websocketApiUrl);
