@@ -11,7 +11,7 @@ import {GlobalStyle} from './rootLayout/GlobalStyle'
 import './rootLayout/fonts.css';
 
 const API_URL = 'https://augmented-path-304210.ey.r.appspot.com/graphql'
-const WEBSOCKET_API_URL ='ws://augmented-path-304210.ey.r.appspot.com/graphql'
+const WEBSOCKET_API_URL ='wss://augmented-path-304210.ey.r.appspot.com/graphql'
 
 
 const websocketApiUrl = WEBSOCKET_API_URL
