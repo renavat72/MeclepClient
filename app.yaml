@@ -11,7 +11,7 @@ handlers:
     upload: build/(.*\..+)$
   - url: /.*
     static_files: build/index.html
-    upload: build/index.html
+    upload: build/index.htm
 manual_scaling:
   instances: 1
 resources:
