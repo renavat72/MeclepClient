@@ -17,8 +17,8 @@ const BackgroundImage = styled(Flex)`
 position: absolute;
 height:30vh;
 
-background-image: url( ${(p) => p.imageBackground ? p.imageBackground:`#ABCEE8`});
-background-color: ${(p) => p.imageBackground ? p.imageBackground:`#ABCEE8`};
+background-image: url( ${(p) => p.imageBackground ? p.imageBackground:`#9fa0a1`});
+background-color: ${(p) => p.imageBackground ? p.imageBackground:`#9fa0a1`};
 
 background-size: cover;
 background-position:center;

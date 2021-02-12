@@ -17,7 +17,7 @@ export default function AnotherEventWindow (props){
         <Box minWidth="200px" width="100%">
           <Flex flexDirection="column">
             <Flex flexDirection='column' mr="auto" mb={3}>
-             <Text fontWeight='bold' fontSize={18} textAlign="left" width="250px" mb={2}>
+             <Text fontWeight='bold' fontSize={[16,18]} textAlign="left" width={["200px","250px"]} mb={2}>
              {post.title}
               </Text>
               <Text fontSize={14} textAlign="left" width="200px" mb={1}>
@@ -32,7 +32,7 @@ export default function AnotherEventWindow (props){
                 </Flex>
               </Flex>
           </Flex>
-          <Flex my={1} maxWidth="250px">
+          <Flex my={1} maxWidth={["200px","250px"]}>
             <Text color="textSecondary" textAlign="left">
             {post.headerDescription}
             </Text>
@@ -42,7 +42,7 @@ export default function AnotherEventWindow (props){
           {open ? <Button onClick={handleClick}>Hide</Button>:<Button onClick={handleClick}>Show more</Button>  }
           </Flex>:null}
             <Collapse in={open} timeout="auto" unmountOnExit>
-                <Flex my={1} maxWidth="250px" flexDirection="column">
+                <Flex my={1} maxWidth={["200px","250px"]} flexDirection="column">
                     <Text color="textSecondary" textAlign="left">
                     {post.description}
                     </Text>

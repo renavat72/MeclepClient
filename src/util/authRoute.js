@@ -12,7 +12,7 @@ function AuthRoute ({component: Component, ...rest}){
         <Route
             {...rest}
             render={props =>
-                user ? <Route to="/" component={Dashboard}/> : <Route exact path="/authorization" component={Authorization}/>
+                localStorage.getItem('jwtToken')  ? <Route to="/" component={Dashboard}/> : <Route exact to="/authorization" component={Authorization}/>
             }
         />
     )

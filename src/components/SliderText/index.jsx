@@ -7,7 +7,7 @@ const SliderWrapper = styled(Flex)`
     float: right;
     top:500%;
     font-size: 54px;
-    color:#aaa;
+    color:#4f62cc;
     font-weight: bold;
     text-transform: uppercase;
     display: flex;
@@ -39,7 +39,8 @@ const Slider = styled(Box)`
 }
 `
 const SlideText = styled(Text)`
-  color: black;
+  color: #d6d6d6;
+  text-shadow:0px 0.5px 0 #9c9c9c;
   height: 70px;
   margin-bottom: 10px;
   padding: 0px 15px;

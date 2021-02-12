@@ -46,7 +46,7 @@ export default function Authorization(props){
             mx: ["auto"],
          }} >
               <Flex flexDirection="column">
-                    <Text mx="auto">
+                    <Text mx="auto" fontSize={24} fontWeight='bold' color="#3f51b5">
                         Meclep
                     </Text>
             {isLogin ? <Login setIsLogin={setIsLogin}/>: <SignUp setIsLogin={setIsLogin}/>}
