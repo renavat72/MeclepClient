@@ -76,10 +76,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "nodemon server/index.js",
     "webpack": "node_modules/.bin/webpack -w",
-    "wds": "webpack-dev-server",
-    "webTest": "webpack serve --open"
+    "wds": "webpack serve --mode development"
   },
   "eslintConfig": {
     "extends": "react-app"

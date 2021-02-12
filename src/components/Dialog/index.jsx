@@ -43,7 +43,6 @@ export default function DialogWindow(props){
       const [isOpen, setIsOpen] = useState(true)
       const { user } = useContext(AuthContext);
       const [friendInfo, setFriendInfo] = useState('');
-
       function handleOpen(){
             setIsOpen(false);
             window.history.pushState('', '', `${url}`);

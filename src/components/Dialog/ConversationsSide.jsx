@@ -65,6 +65,7 @@ export default function ConversationsSide(props){
                 unsubscribe();
             };
           },[ subscribeToMore]);
+    console.log(authUser)
     return(
         <FriendsSide variables={variables}width={[1,2/6]}>
         <Box mt={2} width={1}>
