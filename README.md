@@ -1,16 +1,21 @@
-## Meclep client
+# Meclep
 
-In the project directory, you can run:
+[Website](http://www.meclep.ru/authorization) 
 
-### `Meclep sercer`
+### Feature:
+
+- Find events in your city
+- Create event 
+- Share events with friends
+
+### `Meclep server`
+
+Open [Meclep server](https://github.com/renavat72/MeclepServer) 
 
 
-Open [Meclep sercer](https://github.com/renavat72/MeclepServer) 
+# MIT License
 
-
-MIT License
-
-# Copyright (c) 2021 Panteleev Egor
+## Copyright (c) 2021 Panteleev Egor
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
