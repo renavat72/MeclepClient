@@ -3,6 +3,7 @@ import { GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useQuery } from '@apollo/react-hooks';
 import styled from 'styled-components';
+import { Flex } from "rebass";
 
 import {FETCH_ALL_EVENTS_QUERY} from '../../apis/ParserEventAPI'
 import AnotherEventWindow from '../Events/EventsInfoWindow/AnotherEventWindow';
@@ -13,7 +14,7 @@ import Club from '../../icons/Markers/club.svg'
 import Meeting from '../../icons/Markers/meeting.svg'
 import Exhibition from '../../icons/Markers/exhibition.svg'
 import ParserMarker from '../../icons/Markers/parserMarker.svg'
-import { Flex } from "rebass";
+import mapStyles from "./mapStyles";
 
 
 
@@ -29,7 +30,7 @@ const mapContainerStyle = {
   width: "100vw",
 };
 const options = {
-  mapId:"bd64955c38ef83ac",
+  styles: mapStyles,
   disableDefaultUI: true,
   zoomControl: false,
   minZoom:16,
@@ -85,7 +86,7 @@ export default function Map({children,mapRef}) {
     <div>
     <GoogleMap
         mapContainerStyle={mapContainerStyle}
-        zoom={18}
+        zoom={10}
         center={center}
         options={options}
         onLoad={onMapLoad}
