@@ -10,7 +10,7 @@ Open [Meclep sercer](https://github.com/renavat72/MeclepServer)
 
 MIT License
 
-Copyright (c) 2021 Panteleev Egor
+# Copyright (c) 2021 Panteleev Egor
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
