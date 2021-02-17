@@ -1,24 +1,27 @@
 runtime: nodejs
 env: flex
+
 manual_scaling:
   instances: 1
 resources:
   cpu: 1
   memory_gb: 0.5
   disk_size_gb: 10
-env_variables:
-  NODE_ENV: production
+
+# env_variables:
+#   NODE_ENV: production
+
 network:
   forwarded_ports:
   - 65080
   instance_tag: websocket
   session_affinity: true
+
 handlers:
-  - url: /static
-    static_dir: static
-  # Serve all static files with url ending with a file extension
-  - url: /(.*\..+)$
-    static_files: build/\1
-    upload: build/(.*\..+)$
-  - url: /.*
-    script: auto
+ - url: /
+   static_files: build/index.html
+   upload: build/index.html
+
+ - url: /(.*)
+   static_files: build/\1
+   upload: build/(.*)
