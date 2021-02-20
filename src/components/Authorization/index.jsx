@@ -1,6 +1,7 @@
 import React, { useState} from 'react'
 import {Text, Box, Flex} from 'rebass'
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 
 import Login from '../Login'
 import SignUp from '../SignUp'
@@ -30,7 +31,9 @@ const WrapperDialog = styled(Flex)`
     filter: blur(8px) ;
    `
 export default function Authorization(props){
-    const [isLogin, setIsLogin] = useState(true)
+    const [isLogin, setIsLogin] = useState(true);
+    const { t } = useTranslation();
+
     return(
         <Flex >
                 <BackgroundImage/>
@@ -47,7 +50,7 @@ export default function Authorization(props){
          }} >
               <Flex flexDirection="column">
                     <Text mx="auto" fontSize={24} fontWeight='bold' color="#3f51b5">
-                        Meclep
+                    {t('common.meclep')}
                     </Text>
             {isLogin ? <Login setIsLogin={setIsLogin}/>: <SignUp setIsLogin={setIsLogin}/>}
             </Flex>

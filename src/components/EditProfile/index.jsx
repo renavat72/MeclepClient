@@ -5,6 +5,7 @@ import { Form } from 'react-final-form';
 import { useMutation, useQuery} from '@apollo/react-hooks'
 import { useRouteMatch } from 'react-router-dom';
 import CloseIcon from '@material-ui/icons/Close';
+import { useTranslation } from 'react-i18next';
 
 import {GET_AUTH_USER} from '../../apis/UserAPI'
 import {CHANGE_FIRSTNAME, CHANGE_SECONDNAME, CHANGE_EMAIL, CHANGE_PASSWORD} from '../../apis/EditUserAPI'
@@ -13,6 +14,7 @@ import UploadPhoto from '../UploadPhoto'
 
 
 function FormEditProfile({data}){
+    const { t } = useTranslation();
     const { onChange, onSubmit, values } = useForm(editProfileCallback, {
         id:data&&data.getAuthUser.id,
         firstName:'',
@@ -63,36 +65,36 @@ function FormEditProfile({data}){
                           <Flex flexDirection="column">
                           <TextField 
                               name="firstName"
-                              label="Change first name"
+                              label={t('editProfile.firstName')}
                               values={values.firstName}
                               onChange={onChange}/>
                           <TextField 
                               name="secondName"
-                              label="Change second name"
+                              label={t('editProfile.secondName')}
                               values={values.secondName}
                               onChange={onChange}/>
                           </Flex>
                           <TextField 
                               name="email"
-                              label="Change email"
+                              label={t('editProfile.email')}
                               values={values.email}
                               onChange={onChange}/>
                           <Flex flexDirection="column">
                             <TextField 
                               name="password"
                               type="password" 
-                              label="Change password"
+                              label={t('editProfile.password')}
                               values={values.password}
                               onChange={onChange}/>
                             <TextField name="confirmPassword"
                               type="password" 
-                              label="Confirm password"
+                              label={t('editProfile.confirmPassword')}
                               values={values.confirmPassword}
                               onChange={onChange}/>
                           </Flex>
                         </Flex>
                           <Flex ml="auto" mt={4}>
-                            <Button type="submit" variant="contained">Edit</Button>
+                            <Button type="submit" variant="contained">{t('editProfile.edit')}</Button>
                           </Flex>
                     </Flex>
                 </form>
@@ -104,6 +106,8 @@ function FormEditProfile({data}){
 
 export default function EditProfile(props){
   const [isOpen, setIsOpen] = useState(true);
+  const { t } = useTranslation();
+
   const {data} = useQuery(GET_AUTH_USER);
     const {url} =useRouteMatch()
     if(!data) return null
@@ -116,7 +120,7 @@ export default function EditProfile(props){
        <Dialog open={isOpen}  onClose={()=>handleOpen()}   maxWidth="xl">
          <Box mx={3} my={2}>
            <Flex mb={1} justifyContent="space-between"  >
-              <Text  fontWeight='bold' my="auto">Edit profile</Text>
+              <Text  fontWeight='bold' my="auto">{t('editProfile.title')}</Text>
                 <IconButton onClick={()=>handleOpen()} >
                   <CloseIcon variant="second"/>
                 </IconButton>

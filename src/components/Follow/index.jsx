@@ -4,6 +4,7 @@ import { Button, Fab} from '@material-ui/core';
 import { useMutation } from "@apollo/react-hooks"
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import CancelIcon from '@material-ui/icons/Cancel';
+import { useTranslation } from 'react-i18next';
 
 import {GET_AUTH_USER, CREATE_FOLLOW, DELETE_FOLLOW} from '../../apis/UserAPI'
 import { AuthContext } from '../../context/auth'
@@ -13,6 +14,7 @@ export default function Follow({user,onFollowBtn,followBtn} ){
     const authUser = useContext(AuthContext)
     const {data} = useQuery(GET_AUTH_USER)
     const isFollowing = data && data.getAuthUser.following.find((f) => f.id === user.id )
+    const { t } = useTranslation();
 
 
     const [followUser] = useMutation(CREATE_FOLLOW, {
@@ -42,11 +44,11 @@ export default function Follow({user,onFollowBtn,followBtn} ){
       <Flex my="auto">
         { isFollowing  ?
           <Box onClick={unFollowUser}  >
-          {onFollowBtn ? <Fab color="secondary"> <CancelIcon fontSize="large"/></Fab>: <Button >Unfollow</Button>}
+          {onFollowBtn ? <Fab color="secondary"> <CancelIcon fontSize="large"/></Fab>: <Button >{t('common.unFollow')}</Button>}
           </Box>
           :
             <Box onClick={followUser}>
-           {followBtn ? <Fab color="primary" > <GroupAddIcon fontSize="large"/></Fab> : <Button>Follow</Button>}
+           {followBtn ? <Fab color="primary" > <GroupAddIcon fontSize="large"/></Fab> : <Button>{t('common.follow')}</Button>}
             </Box>
         }
       </Flex>

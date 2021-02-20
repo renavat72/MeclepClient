@@ -4,6 +4,7 @@ import {Text, Box, Flex} from 'rebass'
 import styled from 'styled-components';
 import { useRouteMatch } from 'react-router-dom';
 import CloseIcon from '@material-ui/icons/Close';
+import { useTranslation } from 'react-i18next';
 
 import FilterFriendsBlock from './FilterFriendsBlock'
 import FollowingBlock from './FollowingBlock'
@@ -37,6 +38,7 @@ export default function FriendsWindow({handleClick}){
       const { user } = useContext(AuthContext);
       const [isOpen, setIsOpen] = useState(true);
       const [searchFollowing, setSearchFollowing] = useState('');
+      const { t } = useTranslation();
 
       function handleOpen(){
             setIsOpen(false);
@@ -57,9 +59,9 @@ export default function FriendsWindow({handleClick}){
                   indicatorColor="primary"
                   textColor="primary"
                   >
-                        <Tab label="Following" />
-                        <Tab label="Followers" />
-                        <Tab label="All users" />
+                        <Tab label={t('friends.following')} />
+                        <Tab label={t('friends.followers')} />
+                        <Tab label={t('friends.allUsers')} />
                   </Tabs>
                   <TabPanel tab={tab} index={0}>
                         <FollowingBlock url={url} authUser={user.id} handleClick={handleClick} searchFollowing={searchFollowing}/>

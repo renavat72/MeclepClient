@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { Form } from 'react-final-form'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { useTranslation } from 'react-i18next';
 
 import {AuthContext} from '../../context/auth'
 import { useForm } from "../../util/hooks"
@@ -15,6 +16,7 @@ export default function SignUp(props){
     const {setIsLogin} = props;
     const context = useContext(AuthContext)
     const [errors, setErrors] = useState([]);
+    const { t } = useTranslation();
     const {onChange, onSubmit, values } = useForm(registerUser, {
         firstName: '',
         secondName: '',
@@ -46,14 +48,14 @@ export default function SignUp(props){
                 <Box  mx="auto">
                 <Flex pt={6}>
                 <TextField name="firstName"
-                    placeholder="First Name"
+                    placeholder={t('signUp.firstName')}
                     values={values.firstName}
                     onChange={onChange}
                     />
                 </Flex>
                 <Flex pt={3}>
                 <TextField name="secondName"
-                    placeholder="Second name"
+                    placeholder={t('signUp.secondName')}
                     type="text"
                     values={values.secondName}
                     onChange={onChange}/>
@@ -61,21 +63,21 @@ export default function SignUp(props){
                 <Flex pt={3}>
                 <TextField
                     name="email"
-                    placeholder="Email"
+                    placeholder={t('signUp.email')}
                     type="email"
                     values={values.email}
                     onChange={onChange}/>
                 </Flex>
                 <Flex pt={3}>
                 <TextField  name="password"
-                    placeholder="Password"
+                    placeholder={t('signUp.password')}
                     type="password"
                     values={values.password}
                     onChange={onChange}/> 
                 </Flex>
                 <Flex pt={3}>
                 <TextField name="confirmPassword"
-                    placeholder="Confirm password"
+                    placeholder={t('signUp.confirmPassword')}
                     type="password"
                     values={values.confirmPassword}
                     onChange={onChange}
@@ -93,7 +95,7 @@ export default function SignUp(props){
                 <Flex pt={5} >
                 <Box mx="auto">
                     <Button type="submit" variant="contained" color="primary" >
-                    Submit
+                    {t('common.submit')}
                     </Button>
                 </Box>
                 </Flex>
@@ -104,7 +106,7 @@ export default function SignUp(props){
             <Flex pt={3}>
             <Box mx="auto" >
             <Button  onClick={()=>setIsLogin(true)}>
-                Back
+            {t('common.back')}
             </Button>
             </Box>
         </Flex>

@@ -2,13 +2,15 @@ import React from 'react';
 import { Box, Flex} from 'rebass';
 import { MobileStepper, Button} from '@material-ui/core';
 import ModalImage from "react-modal-image";
+import { useTranslation } from 'react-i18next';
 
 
 export default function Slider(props){
     const {images, window}=props;
     const [activeStep, setActiveStep] = React.useState(0);
     const maxSteps = images.length;
-  
+    const { t } = useTranslation();
+
     const handleNext = () => {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
@@ -34,12 +36,12 @@ export default function Slider(props){
           activeStep={activeStep}
           nextButton={
               <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
-              Next
+              {t('common.next')}
             </Button>
           }
           backButton={
               <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-              Back
+              {t('common.back')}
             </Button>
           }
           />

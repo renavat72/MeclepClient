@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { CardActions,Link, Collapse, Button } from '@material-ui/core';
 import {Text, Box, Flex} from 'rebass';
+import { useTranslation } from 'react-i18next';
 
 import LikeButton from '../../Buttons/LikeButton'
 import Slider from '../../Slider' 
@@ -9,7 +10,8 @@ import Slider from '../../Slider'
 export default function AnotherEventWindow (props){
     const {post} = props
     const [open, setOpen] = useState(false);
- 
+    const { t } = useTranslation();
+
     const handleClick = () => {
       setOpen(!open);
     };
@@ -39,7 +41,7 @@ export default function AnotherEventWindow (props){
           </Flex>
           <Slider images={post.images} window={true}/>
           {post.description!== 0 ? <Flex mr="auto">
-          {open ? <Button onClick={handleClick}>Hide</Button>:<Button onClick={handleClick}>Show more</Button>  }
+          {open ? <Button onClick={handleClick}>{t('common.hide')}</Button>:<Button onClick={handleClick}>{t('common.showMore')}</Button>  }
           </Flex>:null}
             <Collapse in={open} timeout="auto" unmountOnExit>
                 <Flex my={1} maxWidth={["200px","250px"]} flexDirection="column">

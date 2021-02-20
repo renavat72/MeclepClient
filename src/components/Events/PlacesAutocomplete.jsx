@@ -5,10 +5,12 @@ import usePlacesAutocomplete, {
     getLatLng,
   } from "use-places-autocomplete";
 import { Box, Flex, Text } from 'rebass';
+import { useTranslation } from 'react-i18next';
 
 
 export default function PlacesAutocomplete(props){
-    const {values, setValues} = props
+    const {values, setValues} = props;
+    const { t } = useTranslation();
     const { ready, value, suggestions: { status, data }, setValue, clearSuggestions } = usePlacesAutocomplete({
       requestOptions:{},
       debounce: 300,
@@ -61,7 +63,7 @@ export default function PlacesAutocomplete(props){
             values={value}
             onChange={handleInput}
             disabled={!ready}
-            placeholder="Street of party"
+            placeholder={t('events.street')}
           />
 
         {status === "OK" &&<Box pt={2}>{renderSuggestions(value)}</Box>}

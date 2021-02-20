@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Button, Link, Collapse} from '@material-ui/core';
 import {Text, Box, Flex} from 'rebass'
 import styled from 'styled-components';
-
+import { useTranslation } from 'react-i18next';
 
 // import {panTo} from '../Map'
 import LikeButton from '../Buttons/LikeButton'
@@ -17,6 +17,7 @@ box-shadow: 0 0 6px rgba(0,0,0,0.2);
 
 export default function ParserEvent (props){
     const {post,handleOpen } = props;
+    const { t } = useTranslation();
     const [open, setOpen] = useState(false);
     const handleModal = () => {
       setOpen(!open);
@@ -58,7 +59,7 @@ export default function ParserEvent (props){
                      <Slider images={post.images}/>
                   </Flex>
                   {post.description!== 0 ?  <Flex mr="auto" width="320px">
-                    {open ? <Button onClick={handleModal}>Hide</Button>:<Button onClick={handleModal}>Show more</Button>  }
+                    {open ? <Button onClick={handleModal}>{t('common.hide')}</Button>:<Button onClick={handleModal}>{t('common.showMore')}</Button>  }
                     </Flex>  : null }
                         <Collapse in={open} timeout="auto" unmountOnExit  >
                             <Flex my={1} flexDirection="column">

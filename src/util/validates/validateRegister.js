@@ -1,4 +1,8 @@
+import { useTranslation } from 'react-i18next';
+
 export const Validate = (email,firstName,secondName, password, confirmPassword,errors) => {
+    const { t } = useTranslation();
+
     const NameEx=/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
     const EmailEx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const ForbiddenWords =['Fuck','anal',	'dyke',	'jerkoff',	'scrotum',
@@ -25,53 +29,53 @@ export const Validate = (email,firstName,secondName, password, confirmPassword,e
 
     //FirstName
     if (ForbiddenWords.includes(firstName)) {
-        return ("This isn't available. Please try another.");
-      }
+      return (`${t('validateRegister.availableName')}`);
+    }
   
       if (!NameEx.test(firstName)) {
-        return 'First name must be a valid';
+        return (`${t('validateRegister.validFistName')}`);
       }
       if (firstName.length > 10) {
-        return 'First name no more than 10 characters.';
+        return (`${t('validateRegister.firstNameMore')}`);
       }
       if (firstName.length < 2) {
-        return 'First name no less than 2 characters.';
+        return (`${t('validateRegister.firstNameLess')}`);
       }
   
       //SecondName
       if (ForbiddenWords.includes(secondName)) {
-        return ("This isn't available. Please try another.");
+        return (`${t('validateRegister.availableName')}`);
       }
   
       if (!NameEx.test(secondName)) {
-        return 'Second name must be a valid';
+        return (`${t('validateRegister.validSecondName')}`);
       }
       if (secondName.length > 10) {
-        return 'Second name no more than 10 characters.';
+        return (`${t('validateRegister.secondNameMore')}`);
       }
       if (secondName.length < 2) {
-        return 'Second name no less than 2 characters.';
+        return (`${t('validateRegister.secondNameLess')}`);
       }
   
       //Email
       if (ForbiddenWords.includes(email)) {
-        return ("This isn't available. Please try another.");
+        return (`${t('validateRegister.availableName')}`);
       }
   
       if (email.trim() === '') {
-        return 'Email must not be empty';
+        return (`${t('validateRegister.emptyEmail')}`);
       } else {
         if (!EmailEx.test(String(email).toLowerCase()))  {
-            return 'Email must be a valid email address';
+        return (`${t('validateRegister.validEmail')}`);
         }
       }
   
       //Password
   
       if (password.length < 6) {
-        return 'Password min 6 characters.';
+        return (`${t('validateRegister.passwordLess')}`);
       } else if (password !== confirmPassword) {
-        return 'Passwords must match';
+        return (`${t('validateRegister.passwordMath')}`);
       }
       
 }

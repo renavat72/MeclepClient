@@ -4,6 +4,7 @@ import {IconButton, Button} from '@material-ui/core';
 import {Text, Box, Flex} from 'rebass'
 import styled from 'styled-components';
 import ShareIcon from '@material-ui/icons/Share';
+import { useTranslation } from 'react-i18next';
 
 import DeleteButton from '../Buttons/DeleteButton'
 import LikeButton from '../Buttons/LikeButton'
@@ -18,6 +19,7 @@ box-shadow: 0 0 6px rgba(0,0,0,0.2);
 export default function Event (props){
     const {post, user,handleEventsWindow } = props;
     const parseDate = Date.parse(post.timeOfEvent);
+    const { t } = useTranslation();
 
     const [open, setOpen] = useState(false);
 
@@ -81,7 +83,7 @@ export default function Event (props){
 
                       {user && user.id === post.userId && (
                         open?
-                        <Button onClick={handleModal }>Back</Button>:<Button onClick={handleModal}>Delete</Button> 
+                        <Button onClick={handleModal }>{t('common.back')}</Button>:<Button onClick={handleModal}>{t('common.delete')}</Button> 
                         )}
                    </Flex>
                         {open ?

@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { useMutation } from '@apollo/react-hooks';
 import { Form } from 'react-final-form'
 import { ModalLink} from 'react-router-modal';
+import { useTranslation } from 'react-i18next';
 
 import {  CREATE_MESSAGE} from '../../apis/MessageAPI'
 import ProfileWindow from '../Profile'
@@ -31,6 +32,8 @@ export default function ChatSide(props){
   const {friendInfo, authUser, messages} = props;
   const [textMessage, setTextMessage ] = useState('');
   const bottomRef = useRef(null);
+  const { t } = useTranslation();
+
   const [createMessage] = useMutation(CREATE_MESSAGE, {
         update(_, result){
         console.log(result)
@@ -77,7 +80,7 @@ export default function ChatSide(props){
             </Flex>
             }
             {messages<= 0 ? <Flex m="auto" >
-                <Text textAlign="center" fontWeight='bold'  color="#e5e5e5">Select a chat</Text>
+                <Text textAlign="center" fontWeight='bold'  color="#e5e5e5">{t('dialog.selectChat')}</Text>
               </Flex> :
                       messages.map((message) =>{
                       const isAuthUserReceiver = authUser === message.sender.id;
@@ -93,7 +96,7 @@ export default function ChatSide(props){
                                       {message.message}
                                   </Message>
                                   <Flex ml="auto">
-                                  {message.seen ? <Text fontSize={12}>Send</Text>:null}
+                                  {message.seen ? <Text fontSize={12}>{t('common.send')}</Text>:null}
                                   </Flex>
                     </Flex>
                   )
@@ -114,7 +117,7 @@ export default function ChatSide(props){
                           onKeyDown={onEnterPress}
                           />
                       <Box px={3}>
-                        <Button variant="contained" color="primary" type="submit" >Send</Button>
+                        <Button variant="contained" color="primary" type="submit" >{t('common.send')}</Button>
                       </Box>
                       </Flex>
                   </form>

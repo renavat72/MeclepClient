@@ -3,6 +3,7 @@ import {Text, Box, Flex} from 'rebass'
 import {Button, TextField } from '@material-ui/core';
 import { Form } from 'react-final-form'
 import { useMutation } from '@apollo/react-hooks'
+import { useTranslation } from 'react-i18next';
 
 import {LOGIN_USER} from '../../apis/UserAPI'
 import { useForm } from "../../util/hooks"
@@ -10,7 +11,9 @@ import {AuthContext} from '../../context/auth'
 
 
 export default function Login(props){
-    const context = useContext(AuthContext)
+    const context = useContext(AuthContext);
+    const { t } = useTranslation();
+
     const {setIsLogin} = props;
     const {onChange, onSubmit, values } = useForm(loginUserCallback, {
         email: '',
@@ -25,7 +28,7 @@ export default function Login(props){
         onError(error){
             setError(error.graphQLErrors[0].message);
             if (!values.email || !values.password) {
-                setError('All fields are required');
+                setError(`${t('login.email')}`);
                 return;
               }
         },
@@ -44,7 +47,7 @@ export default function Login(props){
             <Box  mx="auto">
             <Flex pt={6}>
             <TextField name="email"
-              placeholder="Email"
+              placeholder={t('login.email')}
               type="email"
               value={values.email}
               onChange={onChange}
@@ -52,7 +55,7 @@ export default function Login(props){
             </Flex>
             <Flex pt={3}>
             <TextField name="password"
-               placeholder="Password"
+               placeholder={t('login.password')}
               type="password"
               value={values.password}
               onChange={onChange}
@@ -61,7 +64,7 @@ export default function Login(props){
             </Box>
             <Flex pt={5} >
                 <Box mx="auto">
-                  <Button type="submit"  variant="contained" color="primary" >Sign In</Button>
+                  <Button type="submit"  variant="contained" color="primary" >{t('login.button')}</Button>
                 </Box>
             </Flex>
         </form>
@@ -76,7 +79,7 @@ export default function Login(props){
             )}
             <Box mx="auto">
                 <Button color="primary" onClick={()=>setIsLogin(false)} >
-                Create account
+                {t('login.createAcc')}
                 </Button>  
             </Box>
         </Flex>

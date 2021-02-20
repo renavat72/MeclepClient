@@ -4,6 +4,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { Box, Flex } from 'rebass';
 import {  ModalLink } from 'react-router-modal';
 import { useQuery } from '@apollo/react-hooks';
+import { useTranslation } from 'react-i18next';
 
 import {GET_AUTH_USER} from '../../apis/UserAPI'
 import Map from '../Map'
@@ -14,6 +15,7 @@ import { AuthContext } from '../../context/auth'
 export default function Dashboard(){
      const { logout } = useContext(AuthContext);
      const { data} = useQuery(GET_AUTH_USER);
+     const { t } = useTranslation();
 
      const [eventWindow,setEventWindow] = useState(false)
     const handleEventWindow = () => {
@@ -35,7 +37,7 @@ export default function Dashboard(){
               {window.innerWidth > 768? <Flex ml="auto" mr={4} mt={2} >
                 <ModalLink path={`/createEvent`}component={AddEventWindow}>
                   <Fab color="primary">
-                    <Tooltip title="Create event">
+                    <Tooltip title={t('events.createEvent')}>
                       <AddIcon onClick={handleEventWindow}/>
                     </Tooltip>
                   </Fab>

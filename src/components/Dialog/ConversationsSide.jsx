@@ -3,6 +3,7 @@ import { Avatar} from '@material-ui/core';
 import {Text, Box, Flex} from 'rebass'
 import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
+import { useTranslation } from 'react-i18next';
 
 import {GET_CONVERSATIONS,GET_CONVERSATIONS_SUBSCRIPTION} from '../../apis/MessageAPI'
 
@@ -35,6 +36,7 @@ const FriendsBlock = styled(Flex)`
 
 export default function ConversationsSide(props){
     const {authUser, setFriendInfo} = props;
+    const { t } = useTranslation();
     const variables = {
         authUserId: authUser,
       };
@@ -78,7 +80,7 @@ export default function ConversationsSide(props){
                             <Text fontSize={14}>{user.secondName}</Text>
                         </Flex>
                         <Flex >
-                            {user.lastMessageSender ? <Text fontSize={14}>You: {user.lastMessage}</Text>:<Text fontSize={14}>{user.lastMessage}</Text>}
+                            {user.lastMessageSender ? <Text fontSize={14}>{t('common.you')}: {user.lastMessage}</Text>:<Text fontSize={14}>{user.lastMessage}</Text>}
                         </Flex>
                     </Flex>
                 </FriendsBlock>
