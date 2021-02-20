@@ -7,6 +7,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import styled from 'styled-components';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import ModalImage from "react-modal-image";
+import { useTranslation } from 'react-i18next';
 
 import {GET_CURRENT_USER} from '../../apis/UserAPI'
 import {FollowingDialog} from '../Profile/FollowingDialog'
@@ -35,6 +36,7 @@ export default function ProfileWindow(props){
     const [dialogWindow,setDialogWindow] = useState(false);
     const [isOpenChat, setIsOpenChat] = useState(false);
     const {url} =useRouteMatch();
+    const { t } = useTranslation();
     const userId = props.match.params.id;
     const variables = {
         userId: userId,
@@ -74,13 +76,13 @@ export default function ProfileWindow(props){
                 </Flex>
                 <Flex flexDirection="row" mx="auto" justifyContent="center" width={1}>
                     <Box >
-                      <Text color="white">Followers</Text>
+                      <Text color="white">{t('profile.followers')}</Text>
                       <Button size="small" onClick={()=>setDialogWindow(0,true)}>
                       <Text textAlign="center" color="white">{data&&data.getCurrentUser.followers.length}</Text>
                       </Button>
                     </Box>
                     <Box mx={3}>
-                      <Text color="white">Following</Text>
+                      <Text color="white">{t('profile.following')}</Text>
                       <Button size="small" onClick={()=>setDialogWindow(1,true)}>
                       <Text textAlign="center" color="white">{data&&data.getCurrentUser.following.length}</Text>
                       </Button>
@@ -94,7 +96,7 @@ export default function ProfileWindow(props){
               <Flex flexDirection="column" m={3}>
                 <Box my={5}>
                 <Text>
-                  Images: 
+                {t('profile.images')}: 
                     {data&&data.getCurrentUser.images?
                     <GridList cellHeight={160} cols={3}>
                     { data&&data.getCurrentUser.images.map(image=>

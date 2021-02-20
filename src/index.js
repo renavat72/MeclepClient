@@ -1,7 +1,8 @@
-import React from 'react'
+import React,{Suspense} from 'react'
 import {render} from 'react-dom';
 import { ThemeProvider } from 'styled-components';
 import {ApolloProvider} from '@apollo/react-hooks'
+import './i18n';
 
 import { StoreProvider } from './context/store';
 import createApolloClient from './apollo-client'
@@ -23,12 +24,14 @@ const apolloClient = createApolloClient(API_URL, websocketApiUrl);
 
 render(
     <ApolloProvider client={apolloClient}>
+        <Suspense fallback={<div>Loading...</div>}>
             <ThemeProvider theme={theme}>
             <GlobalStyle />
                 <StoreProvider>
                     <App/>
                 </StoreProvider>
             </ThemeProvider>
+        </Suspense>
     </ApolloProvider>,
     document.getElementById('root')
 )

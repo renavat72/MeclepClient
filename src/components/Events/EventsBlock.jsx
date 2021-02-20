@@ -9,6 +9,7 @@ import { useQuery } from '@apollo/react-hooks';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { useRouteMatch } from 'react-router-dom';
 import CloseIcon from '@material-ui/icons/Close';
+import { useTranslation } from 'react-i18next';
 
 import {FETCH_ALL_EVENTS_QUERY} from '../../apis/ParserEventAPI';
 // import { useStore } from '../../context/store';
@@ -41,6 +42,7 @@ export default function EventsBlock(props){
       const [myFollowing, setMyFollowing] = useState();
       const [onlineEvents, setOnlineEvents] = useState();
       const [searchValue, setSearchValue] = useState('');
+      const { t } = useTranslation();
 
       const [isOpen, setIsOpen] = useState(true);
       const {url} =useRouteMatch()
@@ -94,7 +96,7 @@ export default function EventsBlock(props){
             <Dialog open={isOpen}  onClose={()=>handleOpen()} width={1} maxWidth="xl" >
                   <WrapperBlock mx={[3,4]} my={[3,1]} minWidth={[null,"650px"]} flexDirection="column">
                         <Flex mb={3} justifyContent="space-between"  >
-                              <Text  fontWeight='bold' my="auto">Events</Text>
+                              <Text  fontWeight='bold' my="auto"> {t('common.events')}</Text>
                               <IconButton onClick={()=>handleOpen()} >
                                     <CloseIcon variant="second"/>
                               </IconButton>
@@ -127,10 +129,11 @@ function EventsList({events, user, panTo,showMore,handleOpen}){
             setEventsData(events)
       },[events] )
       const [eventsData, setEventsData ] = useState('');
+      const { t } = useTranslation();
       return(
       <Box> {eventsData <= 0 ? 
             <Box mt="300px">
-              <Text textAlign="center" fontWeight='bold'  color="#aaa">No events</Text>
+              <Text textAlign="center" fontWeight='bold'  color="#aaa">{t('common.noEvents')}</Text>
             </Box>
             :
             eventsData && eventsData.sort((a, b) => b.date - a.date).map(post => (
@@ -154,20 +157,21 @@ function EventsList({events, user, panTo,showMore,handleOpen}){
 }
 
 function FilterBlock(props){
+      const { t } = useTranslation();
       const {favoriteHandle, myFollowingHandle, onlineHandle} =props;
       return(
             <Flex ml="auto" >
                   <WrapperFilterEvent maxWidth={[null,"200px","170px"]} width={1}>
                <Box >
                      <TextField 
-                        placeholder="Find event" 
+                        placeholder={t('events.find')}
                         value={props.searchValue}
                         onChange={props.onSearchChange}/>
                <Accordion>
                   <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   >
-                  <Text textAlign="left">Types</Text>
+                  <Text textAlign="left">{t('common.type')}</Text>
                   </AccordionSummary>
                   <AccordionDetails>
                   <Flex flexDirection="column" mr="auto " >
@@ -175,11 +179,11 @@ function FilterBlock(props){
                      <FormControlLabel value="Party" control={
                            <Radio 
                            color="primary"/>}
-                           label="Party"/>
+                           label={t('common.party')}/>
                      <FormControlLabel value="Club" control={
                            <Radio 
                            color="primary"/>}
-                           label="Club"/>
+                           label={t('common.club')}/>
                      <FormControlLabel value="Meeting" control={
                            <Radio 
                            color="primary"/>}
@@ -187,7 +191,7 @@ function FilterBlock(props){
                       <FormControlLabel value="Exhibition" control={
                             <Radio 
                             color="primary"/>}
-                            label="Exhibition"/>
+                            label={t('common.exhibition')}/>
                     </RadioGroup>
                    </Flex>
                   </AccordionDetails>
@@ -198,17 +202,17 @@ function FilterBlock(props){
                         <Checkbox 
                         onChange={()=>favoriteHandle()} 
                         color="primary"/>}
-                        label="Favorite"/>
+                        label={t('common.favorite')}/>
                     <FormControlLabel control={
                         <Checkbox 
                         onChange={()=>myFollowingHandle()}
                         color="primary"/>}
-                        label="My friends"/>
+                        label={t('friends.myFriends')}/>
                      <FormControlLabel control={
                         <Checkbox 
                         onChange={()=>onlineHandle()}
                         color="primary"/>}
-                        label="Online events"/>     
+                        label={t('events.online')}/>     
                   </Flex>
             </WrapperFilterEvent>
             </Flex>

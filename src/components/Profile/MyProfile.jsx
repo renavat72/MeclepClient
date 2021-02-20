@@ -6,6 +6,7 @@ import { useRouteMatch } from 'react-router-dom';
 import CloseIcon from '@material-ui/icons/Close';
 import styled from 'styled-components';
 import ModalImage from "react-modal-image";
+import { useTranslation } from 'react-i18next';
 
 import AvatarUser from '../AvatarUser'
 import {GET_AUTH_USER} from '../../apis/UserAPI'
@@ -32,6 +33,7 @@ export default function MyProfileWindow(props){
     const [isOpen, setIsOpen] = useState(true);
     const {url} =useRouteMatch();
     const [dialogWindow,setDialogWindow] = useState(false);
+    const { t } = useTranslation();
 
     function handleOpen(){
           setIsOpen(false);
@@ -59,13 +61,13 @@ export default function MyProfileWindow(props){
                 </Flex>
                 <Flex flexDirection="row" mx="auto" justifyContent="center" width={1}>
                     <Box  >
-                      <Text color="white">Followers</Text>
+                      <Text color="white">{t('profile.followers')}</Text>
                       <Button size="small" onClick={()=>setDialogWindow(0,!isOpen)}>
                        <Text textAlign="center" color="white">{data&&data.getAuthUser.followers.length}</Text>
                       </Button>
                     </Box>
                     <Box mx={3}>
-                      <Text color="white">Following</Text>
+                      <Text color="white">{t('profile.following')}</Text>
                           <Button size="small" onClick={()=>setDialogWindow(1,!isOpen)}>
                       <Text textAlign="center" color="white">
                             {data&&data.getAuthUser.following.length}
@@ -82,7 +84,7 @@ export default function MyProfileWindow(props){
                 <Box my={5}>
                   <Flex  flexDirection="row">
                 <Text mr={2} my="auto">
-                Images:
+                {t('profile.images')}:
                 </Text>
                      {data&&data.getAuthUser.images.map(image=>
                           <Box key={image} style={{maxWidth:50, maxHeight:50, width:"100%"}} >

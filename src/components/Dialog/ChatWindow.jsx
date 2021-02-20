@@ -6,13 +6,15 @@ import { TextField } from '@material-ui/core';
 import { useMutation } from '@apollo/react-hooks';
 import { Form } from 'react-final-form'
 import { useRouteMatch } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import {  CREATE_MESSAGE} from '../../apis/MessageAPI'
 
 export default function ChatWindow(user){
     const [textMessage, setTextMessage ] = useState('');
-    const {url} =useRouteMatch()
-    const [isOpen, setIsOpen] = useState(true)
+    const {url} =useRouteMatch();
+    const { t } = useTranslation();
+    const [isOpen, setIsOpen] = useState(true);
     function handleOpen(){
           setIsOpen(false);
           window.history.pushState('', '', `${url}`);
@@ -60,7 +62,7 @@ export default function ChatWindow(user){
                           onKeyDown={onEnterPress}
                           />
                       <Box ml="auto">
-                        <Button variant="contained" color="primary" type="submit" onClick={handleOpen}>Send</Button>
+                        <Button variant="contained" color="primary" type="submit" onClick={handleOpen}>{t('common.send')}</Button>
                       </Box>
                       </Flex>
                   </form>

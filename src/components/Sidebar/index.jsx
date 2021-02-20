@@ -11,6 +11,7 @@ import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined';
 import {  ModalLink } from 'react-router-modal';
 import styled from 'styled-components';
 import ReorderIcon from '@material-ui/icons/Reorder';
+import { useTranslation } from 'react-i18next';
 
 import {  SET_CITY } from '../../reducers/geolocation'
 import EventsBlock from '../Events/EventsBlock'
@@ -38,6 +39,8 @@ const Sidebar = ({panTo, user, logout}) => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [mobSidebarOpen,setMobSidebarOpen] = useState(false);
     const [selectedCity, setSelectedCity ] = useState(localCity);
+    const { t } = useTranslation();
+
     const [open, setOpen] = useState(false);
     useEffect(() => {
         localStorage.setItem("City", selectedCity)
@@ -57,7 +60,7 @@ const Sidebar = ({panTo, user, logout}) => {
     const Logout = () => {
         return (
             <Box>
-            <Button variant="outlined"  onClick = { logout } href="/authorization"> <ListItemIcon> <ExitToAppIcon /></ListItemIcon> Logout </Button>
+            <Button variant="outlined"  onClick = { logout } href="/authorization"> <ListItemIcon> <ExitToAppIcon /></ListItemIcon> {t('common.logout')} </Button>
             </Box>
         )
     }
@@ -70,7 +73,7 @@ const Sidebar = ({panTo, user, logout}) => {
                         <EventIcon />
                     </ListItemIcon>
                     <Text>
-                    Events
+                    {t('common.events')}
                     </Text>
                     </Button>
                 </ModalLink>
@@ -119,7 +122,7 @@ const Sidebar = ({panTo, user, logout}) => {
                <Button >
                      <MailIcon />
                     <Box ml={4}>
-                    Dialog
+                    {t('sidebar.dialog')}
                     </Box>
                 </Button>
           </CustomModalLink>
@@ -136,7 +139,7 @@ const Sidebar = ({panTo, user, logout}) => {
                                 <PeopleOutlineIcon />
                         </ListItemIcon>
                         <Text sx={{textDecoration: 'none'}} >
-                            Friends
+                        {t('sidebar.friends')}
                         </Text>
                         </Button>
                 </ModalLink>
@@ -152,7 +155,7 @@ const Sidebar = ({panTo, user, logout}) => {
                         <AccountBoxOutlinedIcon />
                      </ListItemIcon>
                      <Text >
-                        Edit profile
+                     {t('sidebar.editProfile')}
                      </Text>
               </Button>
               </ModalLink>

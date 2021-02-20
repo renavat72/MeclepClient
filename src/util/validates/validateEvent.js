@@ -1,4 +1,8 @@
+import { useTranslation } from 'react-i18next';
+
 export const Validate = (nameOfEvent,aboutOfEvent,address, timeOfEvent) => {
+    const { t } = useTranslation();
+
     const ForbiddenWords =['Fuck','anal',	'dyke',	'jerkoff',	'scrotum',
     'ass',	'eatme',	'jewboy',	'shit',
     'bastard',	'fag',	'jizz',	'sitonmyface',
@@ -25,40 +29,40 @@ export const Validate = (nameOfEvent,aboutOfEvent,address, timeOfEvent) => {
       //Title
   
       if (ForbiddenWords.includes(nameOfEvent)) {
-        return ("This isn't available. Please try another.");
+        return (`${t('validateEvent.availableName')}`);
       }
       if (nameOfEvent.trim() === '') {
-        return 'Title must not be empty';
+        return (`${t('validateEvent.emptyTitle')}`);
       }
       
       if (nameOfEvent.length > 20) {
-        return 'Title no more than 12 characters.';
+        return (`${t('validateEvent.titleMore')}`);
       }
       if (nameOfEvent.length < 5) {
-        return 'Title no less than 5 characters.';
+        return (`${t('validateEvent.titleLess')}`);
       }
 
       if (timeOfEvent.trim() === '') {
-        return 'Time must not be empty';
+        return (`${t('validateEvent.emptyTime')}`);
       }
 
       if (address === undefined) {
-        return 'Address must not be empty';
+        return (`${t('validateEvent.emptyAddress')}`);
       }
 
        //Description
   
        if (ForbiddenWords.includes(aboutOfEvent)) {
-        return ("This isn't available. Please try another.");
+        return (`${t('validateEvent.availableName')}`);
       }
   
       if (aboutOfEvent.trim() === '') {
-        return 'Description must not be empty';
+        return (`${t('validateEvent.emptyDescription')}`);
       }
       if (aboutOfEvent.length > 100) {
-        return 'Description no more than 100 characters.';
+        return (`${t('validateEvent.descriptionMore')}`);
       }
       if (aboutOfEvent.length < 5) {
-        return 'Description no less than 5 characters.';
+        return (`${t('validateEvent.descriptionLess')}`);
       }
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import {Text, Box, Flex} from 'rebass'
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 
 const SliderWrapper = styled(Flex)`
  position:relative;
@@ -49,15 +50,17 @@ const SlideText = styled(Text)`
 `
 
 export default function SliderText(){
+  const { t } = useTranslation();
+
     return(
         <SliderWrapper flexDirection="row">
         <Box>
-          <Text>Meclep is: </Text>
+          <Text>{t('sliderText.title')}: </Text>
          </Box>
          <Slider  pl="15px">
-            <SlideText css="animation: slide 10s running linear infinite;">Create your event</SlideText>
-            <SlideText>Find happy</SlideText>
-            <SlideText>Connect to a party</SlideText>
+            <SlideText css="animation: slide 10s running linear infinite;">{t('sliderText.1stText')}</SlideText>
+            <SlideText>{t('sliderText.2ndText')}</SlideText>
+            <SlideText>{t('sliderText.3dText')}</SlideText>
         </Slider>
     </SliderWrapper>
     )

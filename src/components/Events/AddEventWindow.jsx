@@ -8,6 +8,7 @@ import { Form } from 'react-final-form'
 import { useMutation} from '@apollo/react-hooks'
 import styled from 'styled-components';
 import { useRouteMatch } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import {CREATE_POST_MUTATION} from '../../apis/EventAPI'
 import PlacesAutocomplete from "./PlacesAutocomplete"
@@ -25,8 +26,9 @@ const AddEventWrapper = styled(Flex)`
 
 
 export default function AddEventWindow(props){
-  const [isOpen, setIsOpen] = useState(true)
-  const {url} =useRouteMatch()
+  const [isOpen, setIsOpen] = useState(true);
+  const {url} =useRouteMatch();
+  const { t } = useTranslation();
 
   function handleOpen(){
         setIsOpen(!isOpen);
@@ -105,38 +107,38 @@ export default function AddEventWindow(props){
                <Flex flexDirection={["column","row"]}>
                  <Flex flexDirection="column">
                     <Box  mr="auto">
-                      <DialogTitle>Create event</DialogTitle>
+                      <DialogTitle>{t('events.title')}</DialogTitle>
                     </Box>
                     <Box ml={[3,4]} mr={[3,0]}>
                       <Flex pt={4}>
                       <TextField
                           fullWidth
                           name="nameOfEvent"
-                          placeholder="Name of event"
+                          placeholder={t('events.name')}
                           type="text"
                           values={values.nameOfEvent}
                           onChange={onChange}
                         />
                       </Flex>
                     <Flex pt={3} flexDirection="column" maxWidth="235px">
-                    <InputLabel htmlFor="typeOfEvent">Type</InputLabel>
+                    <InputLabel htmlFor="typeOfEvent">{t('events.title')}</InputLabel>
                     <NativeSelect
                      fullWidth
                       name="typeOfEvent"
                       values={values.typeOfEvent}
                       onChange={onChange}
                     >
-                      <option value="Party">Party</option>
-                      <option value="Club">Club</option>
-                      <option value="Meeting">Meeting</option>
-                      <option value="Exhibition">Exhibition</option>
+                      <option value="Party">{t('common.party')}</option>
+                      <option value="Club">{t('common.club')}</option>
+                      <option value="Meeting">{t('common.meeting')}</option>
+                      <option value="Exhibition">{t('common.exhibition')}</option>
                     </NativeSelect>
                     </Flex>
                     <Flex pt={3}  >
                     <TextField
                         fullWidth
                         name="timeOfEvent"
-                        placeholder="Time of event"
+                        placeholder={t('events.time')}
                         type="datetime-local"
                         // value={selectedDate}
                         inputProps={{
@@ -155,7 +157,7 @@ export default function AddEventWindow(props){
                     <TextField 
                         fullWidth
                         name="aboutOfEvent"
-                        placeholder="About of event"
+                        placeholder={t('events.about')}
                         type="text"
                         values={values.aboutOfEvent}
                         onChange={onChange}
@@ -170,10 +172,10 @@ export default function AddEventWindow(props){
                     <Flex ml={[null,"auto"]} mb={3} flexDirection="row"  >
                     <Box my="auto" >
                         <Button onClick={handleEventWindow} color="primary">
-                          Cancel
+                        {t('common.cancel')}
                         </Button>
                         <Button type="submit" variant="contained" color="primary" >
-                        Submit
+                        {t('common.submit')}
                         </Button>
                     </Box>
                 </Flex>
@@ -218,7 +220,7 @@ function CurrentInfo(props){
                 color="primary"
               />
             }
-            label="Private event"
+            label={t('events.private')}
           />
           <FormControlLabel
             control={
@@ -229,7 +231,7 @@ function CurrentInfo(props){
                 color="primary"
               />
             }
-            label="Adult event"
+            label={t('events.adult')}
           />
           <FormControlLabel
             control={
@@ -240,12 +242,11 @@ function CurrentInfo(props){
                 color="primary"
               />
             }
-            label="Notify friends"
+            label={t('events.notify')}
           />
         </Flex>
         <Flex mt="auto" ml="auto">
           <UploadFile values={values} setValues={setValues}/>
-          
         </Flex>
     </CurrentInfoSide>
   )

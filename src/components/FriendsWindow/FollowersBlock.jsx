@@ -3,6 +3,7 @@ import { Button, CircularProgress } from '@material-ui/core';
 import { useQuery } from '@apollo/react-hooks';
 import {Text, Flex} from 'rebass'
 import {ModalLink} from 'react-router-modal';
+import { useTranslation } from 'react-i18next';
 
 import {GET_AUTH_USER} from '../../apis/UserAPI'
 import Follow from '../Follow'
@@ -18,6 +19,7 @@ export default function FollowersBlock({handleClick,authUser, searchFollowing}){
     const FollowersData = data&&data.getAuthUser.followers;
     const [isOpen, setIsOpen] = useState(false);
     const [infoFriend, setInfoFriend] = useState();
+    const { t } = useTranslation();
     const MergeData= FollowersData&&FollowersData.filter(user=>(!searchFollowing || user.followerFirstName===searchFollowing||user.followerSecondName===searchFollowing))
     const handleOpen = (user) => {
           setInfoFriend(user)
@@ -30,7 +32,7 @@ export default function FollowersBlock({handleClick,authUser, searchFollowing}){
             }
           { loading ? (
                 <CircularProgress/>
-          ) : ( MergeData <= 0  ? <Text textAlign="center" fontWeight='bold'  color="#aaa">No followers</Text> :
+          ) : ( MergeData <= 0  ? <Text textAlign="center" fontWeight='bold'  color="#aaa">{t('friends.noFollowers')}</Text> :
                        MergeData.map(user => (
                         <DialogFriend my={1} key={user.id} >
                        <ModalLink path={`/id${user.follower}`} component={ProfileWindow} props={user.follower}>
@@ -48,7 +50,7 @@ export default function FollowersBlock({handleClick,authUser, searchFollowing}){
                               <Flex ml="auto">
                                     <Follow user={user} />
                                     <Button onClick={()=>handleOpen(user)}>
-                                          Send
+                                    {t('common.send')}
                                     </Button>
                               </Flex>
                         </Flex>

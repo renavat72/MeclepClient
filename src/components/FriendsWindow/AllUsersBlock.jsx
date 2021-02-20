@@ -3,6 +3,7 @@ import {  CircularProgress } from '@material-ui/core';
 import {Text, Flex} from 'rebass'
 import { useQuery } from '@apollo/react-hooks';
 import {ModalLink} from 'react-router-modal';
+import { useTranslation } from 'react-i18next';
 
 import {GET_ALL_USERS } from '../../apis/UserAPI'
 import Follow from '../Follow'
@@ -22,6 +23,7 @@ export default function  AllUsersBlock ({searchFollowing}){
     const UserData = data&&data.getUsers;
     const [usersData, setUsersData] = useState();
     const MergeData= UserData&&UserData.filter(user=>(!searchFollowing || user.firstName===searchFollowing||user.secondName===searchFollowing))
+    const { t } = useTranslation();
 
     useEffect(()=>{
       setUsersData(UserData); 
@@ -36,7 +38,7 @@ export default function  AllUsersBlock ({searchFollowing}){
           { loading ? (
                 <CircularProgress/>
           ) : (
-            MergeData <= 0 ? <Text textAlign="center" fontWeight='bold'  color="#aaa">No users</Text> :
+            MergeData <= 0 ? <Text textAlign="center" fontWeight='bold'  color="#aaa">{t('friends.noUsers')}</Text> :
             MergeData.map(user => (
               <DialogFriend my={1} key={user.id} >
                     <ModalLink path={`/id${user.id}`} component={ProfileWindow} props={user.id}>
