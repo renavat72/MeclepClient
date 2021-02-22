@@ -33,7 +33,7 @@ export default function SignUp(props){
     });
 
     function registerUser(){
-        const errors = Validate(values.email,values.firstName,values.secondName, values.password, values.confirmPassword);
+        const errors = Validate(values.email,values.firstName,values.secondName, values.password, values.confirmPassword, t);
         if (errors) {
             setErrors(errors);
             return false;
