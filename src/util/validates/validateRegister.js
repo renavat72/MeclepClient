@@ -1,7 +1,4 @@
-import { useTranslation } from 'react-i18next';
-
-export const Validate = (email,firstName,secondName, password, confirmPassword,errors) => {
-    const { t } = useTranslation();
+export const Validate = (email,firstName,secondName, password, confirmPassword,t) => {
 
     const NameEx=/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
     const EmailEx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

@@ -71,7 +71,7 @@ export default function AddEventWindow(props){
   })
 
   function createPostCallback(){
-    const errors = Validate(values.nameOfEvent,values.aboutOfEvent, values.address, values.timeOfEvent );
+    const errors = Validate(values.nameOfEvent,values.aboutOfEvent, values.address, values.timeOfEvent,t );
     console.log(errors)
     if (errors) {
       setErrors(errors);
@@ -171,7 +171,7 @@ export default function AddEventWindow(props){
                     </Flex>
                     <Flex ml={[null,"auto"]} mb={3} flexDirection="row"  >
                     <Box my="auto" >
-                        <Button onClick={handleEventWindow} color="primary">
+                        <Button onClick={handleOpen} color="primary">
                         {t('common.cancel')}
                         </Button>
                         <Button type="submit" variant="contained" color="primary" >

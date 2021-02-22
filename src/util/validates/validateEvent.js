@@ -1,7 +1,4 @@
-import { useTranslation } from 'react-i18next';
-
-export const Validate = (nameOfEvent,aboutOfEvent,address, timeOfEvent) => {
-    const { t } = useTranslation();
+export const Validate = (nameOfEvent,aboutOfEvent,address, timeOfEvent, t) => {
 
     const ForbiddenWords =['Fuck','anal',	'dyke',	'jerkoff',	'scrotum',
     'ass',	'eatme',	'jewboy',	'shit',
