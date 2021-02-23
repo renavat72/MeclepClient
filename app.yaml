@@ -13,15 +13,15 @@ resources:
 
 network:
   forwarded_ports:
-  - 65080
+    - 65080
   instance_tag: websocket
   session_affinity: true
 
 handlers:
- - url: /
-   static_files: build/index.html
-   upload: build/index.html
+  - url: /
+    static_files: build/index.html
+    upload: build/index.html
 
- - url: /(.*)
-   static_files: build/\1
-   upload: build/(.*)
+  - url: /(.*)
+    static_files: build/\1
+    upload: build/(.*)

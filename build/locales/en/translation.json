@@ -1,114 +1,114 @@
-{   
-    "sidebar":{
-        "friends":"Friends",
-        "dialog":"Dialog",
-        "editProfile":"Edit profile"
-    },
-    "friends":{
-        "followers":"Followers",
-        "noFollowers":"No followers",
-        "following":"Following",
-        "noFollowing":"No following",
-        "noUsers":"No users",
-        "find":"Find a friend",
-        "myFriends":"My friends",
-        "allUsers":"All users"
-    },
-    "events":{
-        "title":"Create event",
-        "find":"Find event",
-        "street":"Street",
-        "private":"Private event",
-        "adult":"Adult event",
-        "notify":"Notify friends",
-        "name":"Name of event",
-        "time":"Time of event",
-        "about":"About of event",
-        "online":"Online events",
-        "createEvent":"Create event"
-    },
-    "dialog":{
-        "selectChat":"Select a chat"
-    },
-    "login":{
-        "error":"All fields are required",
-        "button":"Sign in",
-        "createAcc":"Create account",
-        "email":"Email",
-        "password":"Password"
-    },
-    "signUp":{
-        "firstName":"First Name",
-        "secondName":"Second Name",
-        "email":"Email",
-        "password":"Password",
-        "confirmPassword":"Confirm password"
-    },
-    "profile":{
-        "images":"Images",
-        "followers":"Followers",
-        "following":"Following"
-    },
-    "editProfile":{
-        "title":"Edit profile",
-        "firstName":"Change first name",
-        "secondName":"Change second name",
-        "email":"Change email",
-        "password":"Change password",
-        "confirmPassword":"Change confirm password",
-        "edit":"Edit"
-    },
-    "sliderText":{
-        "title":"Meclep is",
-        "1stText":"Create your event",
-        "2ndText":"Find happy",
-        "3dText":"Connect to a party"
-    },
-    "validateEvent":{
-        "availableName":"This isn't available. Please try another.",
-        "titleMore":"Title no more than 12 characters.",
-        "titleLess":"Title no less than 5 characters.",
-        "emptyTitle":"Title must not be empty",
-        "emptyTime":"Time must not be empty",
-        "emptyAddress":"Address must not be empty",
-        "emptyDescription":"Description must not be empty",
-        "descriptionMore":"Description no more than 100 characters.",
-        "descriptionLess":"Description no less than 5 characters."
-    },
-    "validateRegister":{
-        "availableName":"This isn't available. Please try another.",
-        "validFistName":"First name must be a valid",
-        "firstNameMore":"First name no more than 10 characters.",
-        "firstNameLess":"First name no less than 2 characters.",
-        "validSecondName":"Second name must be a valid",
-        "secondNameMore":"Second name no more than 10 characters.",
-        "secondNameLess":"Second name no less than 2 characters.",
-        "emptyEmail":"Email must not be empty",
-        "validEmail":"Email must be a valid email address",
-        "passwordLess":"Password min 6 characters.",
-        "passwordMath":"Passwords must match"
-    },
-    "common":{
-        "meclep":"Meclep",
-        "favorite":"Favorite",
-        "events":"Events",
-        "noEvents":"No events",
-        "send": "Send",
-        "cancel":"Cancel",
-        "submit":"Submit",
-        "next":"Next",
-        "back":"Back",
-        "delete":"Delete",
-        "type":"Type",
-        "club":"Club",
-        "party":"Party",
-        "meeting":"Meeting",
-        "exhibition":"Exhibition",
-        "hide":"Hide",
-        "showMore":"Show more",
-        "logout":"Logout",
-        "follow":"Follow",
-        "unFollow":"Unfollow",
-        "you":"You"
-    }
+{
+  "sidebar": {
+    "friends": "Friends",
+    "dialog": "Dialog",
+    "editProfile": "Edit profile"
+  },
+  "friends": {
+    "followers": "Followers",
+    "noFollowers": "No followers",
+    "following": "Following",
+    "noFollowing": "No following",
+    "noUsers": "No users",
+    "find": "Find a friend",
+    "myFriends": "My friends",
+    "allUsers": "All users"
+  },
+  "events": {
+    "title": "Create event",
+    "find": "Find event",
+    "street": "Street",
+    "private": "Private event",
+    "adult": "Adult event",
+    "notify": "Notify friends",
+    "name": "Name of event",
+    "time": "Time of event",
+    "about": "About of event",
+    "online": "Online events",
+    "createEvent": "Create event"
+  },
+  "dialog": {
+    "selectChat": "Select a chat"
+  },
+  "login": {
+    "error": "All fields are required",
+    "button": "Sign in",
+    "createAcc": "Create account",
+    "email": "Email",
+    "password": "Password"
+  },
+  "signUp": {
+    "firstName": "First Name",
+    "secondName": "Second Name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password"
+  },
+  "profile": {
+    "images": "Images",
+    "followers": "Followers",
+    "following": "Following"
+  },
+  "editProfile": {
+    "title": "Edit profile",
+    "firstName": "Change first name",
+    "secondName": "Change second name",
+    "email": "Change email",
+    "password": "Change password",
+    "confirmPassword": "Change confirm password",
+    "edit": "Edit"
+  },
+  "sliderText": {
+    "title": "Meclep is",
+    "1stText": "Create your event",
+    "2ndText": "Find happy",
+    "3dText": "Connect to a party"
+  },
+  "validateEvent": {
+    "availableName": "This isn't available. Please try another.",
+    "titleMore": "Title no more than 12 characters.",
+    "titleLess": "Title no less than 5 characters.",
+    "emptyTitle": "Title must not be empty",
+    "emptyTime": "Time must not be empty",
+    "emptyAddress": "Address must not be empty",
+    "emptyDescription": "Description must not be empty",
+    "descriptionMore": "Description no more than 100 characters.",
+    "descriptionLess": "Description no less than 5 characters."
+  },
+  "validateRegister": {
+    "availableName": "This isn't available. Please try another.",
+    "validFistName": "First name must be a valid",
+    "firstNameMore": "First name no more than 10 characters.",
+    "firstNameLess": "First name no less than 2 characters.",
+    "validSecondName": "Second name must be a valid",
+    "secondNameMore": "Second name no more than 10 characters.",
+    "secondNameLess": "Second name no less than 2 characters.",
+    "emptyEmail": "Email must not be empty",
+    "validEmail": "Email must be a valid email address",
+    "passwordLess": "Password min 6 characters.",
+    "passwordMath": "Passwords must match"
+  },
+  "common": {
+    "meclep": "Meclep",
+    "favorite": "Favorite",
+    "events": "Events",
+    "noEvents": "No events",
+    "send": "Send",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "next": "Next",
+    "back": "Back",
+    "delete": "Delete",
+    "type": "Type",
+    "club": "Club",
+    "party": "Party",
+    "meeting": "Meeting",
+    "exhibition": "Exhibition",
+    "hide": "Hide",
+    "showMore": "Show more",
+    "logout": "Logout",
+    "follow": "Follow",
+    "unFollow": "Unfollow",
+    "you": "You"
+  }
 }
