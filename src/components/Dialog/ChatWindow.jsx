@@ -1,74 +1,78 @@
-import React, { useState} from 'react'
+import React, { useState } from 'react';
 import { Dialog } from '@material-ui/core';
-import {Text, Box, Flex} from 'rebass'
+import { Text, Box, Flex } from 'rebass';
 import Button from '@material-ui/core/Button';
 import { TextField } from '@material-ui/core';
 import { useMutation } from '@apollo/react-hooks';
-import { Form } from 'react-final-form'
+import { Form } from 'react-final-form';
 import { useRouteMatch } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import {  CREATE_MESSAGE} from '../../apis/MessageAPI'
+import { CREATE_MESSAGE } from '../../apis/MessageAPI';
 
-export default function ChatWindow(user){
-    const [textMessage, setTextMessage ] = useState('');
-    const {url} =useRouteMatch();
-    const { t } = useTranslation();
-    const [isOpen, setIsOpen] = useState(true);
-    function handleOpen(){
-          setIsOpen(false);
-          window.history.pushState('', '', `${url}`);
+export default function ChatWindow(user) {
+  const [textMessage, setTextMessage] = useState('');
+  const { url } = useRouteMatch();
+  const { t } = useTranslation();
+  const [isOpen, setIsOpen] = useState(true);
+  function handleOpen() {
+    setIsOpen(false);
+    window.history.pushState('', '', `${url}`);
+  }
+  const [createMessage] = useMutation(CREATE_MESSAGE, {
+    update(_, result) {
+      console.log(result);
+    },
+    variables: {
+      input: {
+        sender: user.authUser.authUser || user.authUser,
+        receiver: user.user ? user.user.id || user.user : null,
+        message: textMessage,
+      },
+    },
+  });
 
+  const onSubmit = () => {
+    if (!textMessage) return;
+    createMessage();
+    setTextMessage('');
+  };
+
+  const onEnterPress = (e) => {
+    if (e.keyCode === 13 && e.shiftKey === false) {
+      onSubmit();
     }
-    const [createMessage] = useMutation(CREATE_MESSAGE, {
-          update(_, result){
-          console.log(result)
-        },
-        variables: {
-          input: {
-            sender: user.authUser.authUser||user.authUser,
-            receiver: user.user ?user.user.id||user.user : null,
-            message: textMessage,
-          }
-          },
-      },)
+  };
 
-      const onSubmit =() =>{
-        if (!textMessage) return;
-        createMessage()
-        setTextMessage('');
-      }
-
-      const onEnterPress = (e) => {
-        if (e.keyCode === 13 && e.shiftKey === false) {
-          onSubmit();
-        }
-      };
-  
-    return(
-        <Dialog  maxWidth="xl" open={isOpen}  onClose={handleOpen}>
-        <Flex flexDirection="row" minWidth={["200px","300px"]} minHeight="200px" m={2}>
-            <Flex flexDirection="row">
-            <Text>{user.user.firstName}</Text>
-            <Text>{user.user.secondName}</Text>
-            </Flex>
+  return (
+    <Dialog maxWidth="xl" open={isOpen} onClose={handleOpen}>
+      <Flex flexDirection="row" minWidth={['200px', '300px']} minHeight="200px" m={2}>
+        <Flex flexDirection="row">
+          <Text>{user.user.firstName}</Text>
+          <Text>{user.user.secondName}</Text>
+        </Flex>
         <Flex mt="auto">
-        <Form onSubmit={onSubmit} render={({handleSubmit}) => (
-                  <form onSubmit={handleSubmit} >
-                    <Flex>
-                        <TextField 
-                          value={textMessage} 
-                          onChange={(e)=> setTextMessage(e.target.value)} 
-                          onKeyDown={onEnterPress}
-                          />
-                      <Box ml="auto">
-                        <Button variant="contained" color="primary" type="submit" onClick={handleOpen}>{t('common.send')}</Button>
-                      </Box>
-                      </Flex>
-                  </form>
-                )}/>
+          <Form
+            onSubmit={onSubmit}
+            render={({ handleSubmit }) => (
+              <form onSubmit={handleSubmit}>
+                <Flex>
+                  <TextField
+                    value={textMessage}
+                    onChange={(e) => setTextMessage(e.target.value)}
+                    onKeyDown={onEnterPress}
+                  />
+                  <Box ml="auto">
+                    <Button variant="contained" color="primary" type="submit" onClick={handleOpen}>
+                      {t('common.send')}
+                    </Button>
+                  </Box>
+                </Flex>
+              </form>
+            )}
+          />
         </Flex>
-        </Flex>
-        </Dialog>
-    )
+      </Flex>
+    </Dialog>
+  );
 }

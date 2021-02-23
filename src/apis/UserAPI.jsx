@@ -1,4 +1,4 @@
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 
 const userPayload = `
   id
@@ -12,47 +12,44 @@ const userPayload = `
 `;
 
 export const REGISTER_USER = gql`
-mutation register(
-   $firstName: String!
-   $secondName: String!
-   $email: String!
-   $password: String!
-   $confirmPassword: String!
-) {
-    register(
-        registerInput: {
-            firstName: $firstName
-            secondName: $secondName
-            email: $email
-            password: $password
-            confirmPassword: $confirmPassword
-        }
-    ){
-        id email firstName secondName createdAt token
-    }
-}
-`
-
-export const LOGIN_USER = gql`
-mutation login(
+  mutation register(
+    $firstName: String!
+    $secondName: String!
     $email: String!
     $password: String!
-) {
-    login (
-            email: $email
-            password: $password
+    $confirmPassword: String!
+  ) {
+    register(
+      registerInput: {
+        firstName: $firstName
+        secondName: $secondName
+        email: $email
+        password: $password
+        confirmPassword: $confirmPassword
+      }
     ) {
-        id
-        email
-        firstName
-        secondName
-        createdAt
-        token
-        
+      id
+      email
+      firstName
+      secondName
+      createdAt
+      token
     }
-}
-`
+  }
+`;
 
+export const LOGIN_USER = gql`
+  mutation login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      id
+      email
+      firstName
+      secondName
+      createdAt
+      token
+    }
+  }
+`;
 
 export const GET_CURRENT_USER = gql`
     query( $userId: String!) {
@@ -101,131 +98,128 @@ export const GET_CURRENT_USER = gql`
 }
 `;
 export const FOLLOWING_USER = gql`
-     query( $userId: String! $searchQuery: String!){
-      followingUser{
+  query($userId: String!, $searchQuery: String!) {
+    followingUser {
+      id
+      firstName
+      secondName
+      following {
         id
-        firstName
-        secondName
-        following{
-                id
-                follower
-                user
-                userCoverImage
-                followerCoverImage
-                followerFirstName
-                followerSecondName
-                userCoverImage
-                userFirstName
-                userSecondName
-            }
-        followers{
-                id
-                follower
-                user
-                followerCoverImage
-                followerFirstName
-                followerSecondName
-                userCoverImage
-                userFirstName
-                userSecondName
-            }
-        # notifications {
-        #   id
-        #   author {
-        #     id
-        #     firstName
-        #      secondName
-        #   }
-        #   follow {
-        #     id
-        #   }
-        # }
-
+        follower
+        user
+        userCoverImage
+        followerCoverImage
+        followerFirstName
+        followerSecondName
+        userCoverImage
+        userFirstName
+        userSecondName
+      }
+      followers {
+        id
+        follower
+        user
+        followerCoverImage
+        followerFirstName
+        followerSecondName
+        userCoverImage
+        userFirstName
+        userSecondName
+      }
+      # notifications {
+      #   id
+      #   author {
+      #     id
+      #     firstName
+      #      secondName
+      #   }
+      #   follow {
+      #     id
+      #   }
+      # }
     }
   }
-`
+`;
 export const FOLLOWERS_USER = gql`
-     query{
-      followersUser {
+  query {
+    followersUser {
+      id
+      firstName
+      secondName
+      following {
         id
-        firstName
-        secondName
-        following{
-                id
-                follower
-                user
-                followerCoverImage
-                followerFirstName
-                followerSecondName
-                userCoverImage
-                userFirstName
-                userSecondName
-            }
-        followers{
-                id
-                follower
-                user
-                followerCoverImage
-                followerFirstName
-                followerSecondName
-                userCoverImage
-                userFirstName
-                userSecondName
-            }
-        # notifications {
-        #   id
-        #   author {
-        #     id
-        #     firstName
-        #      secondName
-        #   }
-        #   follow {
-        #     id
-        #   }
-        # }
-
+        follower
+        user
+        followerCoverImage
+        followerFirstName
+        followerSecondName
+        userCoverImage
+        userFirstName
+        userSecondName
+      }
+      followers {
+        id
+        follower
+        user
+        followerCoverImage
+        followerFirstName
+        followerSecondName
+        userCoverImage
+        userFirstName
+        userSecondName
+      }
+      # notifications {
+      #   id
+      #   author {
+      #     id
+      #     firstName
+      #      secondName
+      #   }
+      #   follow {
+      #     id
+      #   }
+      # }
     }
   }
-`
+`;
 export const GET_ALL_USERS = gql`
-     query($userId: String!) {
-        getUsers(userId: $userId) {          
+  query($userId: String!) {
+    getUsers(userId: $userId) {
+      id
+      firstName
+      secondName
+      following {
         id
-        firstName
-        secondName
-        following{
-                id
-                follower
-                user
-                followerFirstName
-                followerSecondName
-                userFirstName
-                userSecondName
-            }
-        followers{
-                id
-                follower
-                user
-                followerFirstName
-                followerSecondName
-                userFirstName
-                userSecondName
-            }
-        # notifications {
-        #   id
-        #   author {
-        #     id
-        #     firstName
-        #      secondName
-        #   }
-        #   follow {
-        #     id
-        #   }
-        # }
-
+        follower
+        user
+        followerFirstName
+        followerSecondName
+        userFirstName
+        userSecondName
+      }
+      followers {
+        id
+        follower
+        user
+        followerFirstName
+        followerSecondName
+        userFirstName
+        userSecondName
+      }
+      # notifications {
+      #   id
+      #   author {
+      #     id
+      #     firstName
+      #      secondName
+      #   }
+      #   follow {
+      #     id
+      #   }
+      # }
     }
   }
-`
+`;
 
 export const CREATE_FOLLOW = gql`
   mutation($input: CreateFollowInput!) {
@@ -282,16 +276,16 @@ export const GET_AUTH_USER = gql`
             }
         }
     }
-`
+`;
 
 export const SEARCH_USERS = gql`
-    query($searchQuery: String!) {
-        searchUsers(searchQuery: $searchQuery){
-          firstName
-          secondName
-        }
-        }
-`
+  query($searchQuery: String!) {
+    searchUsers(searchQuery: $searchQuery) {
+      firstName
+      secondName
+    }
+  }
+`;
 
 export const IS_USER_ONLINE_SUBSCRIPTION = gql`
   subscription($authUserId: String!, $userId: String!) {

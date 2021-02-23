@@ -1,17 +1,16 @@
 # Meclep
 
-[Website](http://www.meclep.ru/authorization) 
+[Website](http://www.meclep.ru/authorization)
 
 ### Feature:
 
 - Find events in your city
-- Create event 
+- Create event
 - Share events with friends
 
 ### `Meclep server`
 
-Open [Meclep server](https://github.com/renavat72/MeclepServer) 
-
+Open [Meclep server](https://github.com/renavat72/MeclepServer)
 
 # MIT License
 
