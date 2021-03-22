@@ -41,11 +41,15 @@ export default function ParserEvent(props) {
     <WrapperCard maxWidth="500px">
       <Flex m={3} flexDirection="column" width={[null, 500]}>
         <Flex flexDirection="column">
-          <Text fontWeight="bold" fontSize={[16, 20]}>
+          <Text mb={1} fontWeight="bold" fontSize={[16, 20]}>
             {post.title}
           </Text>
           <Text fontSize={[14, 18]}>{post.headerDescription}</Text>
-          <LocateToAddress panTo={props.panTo} />
+          <Box my={2}>
+            <Text color="#3f51b5">
+              <LocateToAddress panTo={props.panTo} />
+            </Text>
+          </Box>
           <Text my={1}>{post.time}</Text>
         </Flex>
         <Flex my={3} flexDirection="row">

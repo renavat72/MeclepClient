@@ -96,7 +96,7 @@ export default function FriendsWindow({ handleClick }) {
 
   return (
     <Dialog open={isOpen} onClose={() => handleOpen()} maxWidth="xl">
-      <Flex m={[1, 2]} minWidth={[null, '700px']} flexDirection="column">
+      <Flex m={[1, 2]} minWidth={[null, null, '700px']} flexDirection="column">
         <Flex ml="auto">
           <IconButton onClick={() => handleOpen()}>
             <CloseIcon variant="second" />
