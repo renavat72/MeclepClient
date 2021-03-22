@@ -36,7 +36,7 @@ export default function Authorization(props) {
   return (
     <Flex>
       <BackgroundImage />
-      <Box ml={2} display={['none', 'none', 'block']}>
+      <Box ml={2} display={['none', 'none', 'none', 'block']}>
         <SliderText />
       </Box>
       <WrapperDialog
@@ -47,7 +47,7 @@ export default function Authorization(props) {
           maxWidth: ['300px'],
           right: [0, '1%'],
           float: [null, 'right'],
-          mt: [100, 0],
+          mt: [150, 150,0],
           mx: ['auto'],
         }}
       >

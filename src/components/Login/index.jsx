@@ -4,6 +4,7 @@ import { Button, TextField } from '@material-ui/core';
 import { Form } from 'react-final-form';
 import { useMutation } from '@apollo/react-hooks';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from "react-router-dom";
 
 import { LOGIN_USER } from '../../apis/UserAPI';
 import { useForm } from '../../util/hooks';
@@ -12,6 +13,7 @@ import { AuthContext } from '../../context/auth';
 export default function Login(props) {
   const context = useContext(AuthContext);
   const { t } = useTranslation();
+  let history = useHistory();
 
   const { setIsLogin } = props;
   const { onChange, onSubmit, values } = useForm(loginUserCallback, {
@@ -22,7 +24,8 @@ export default function Login(props) {
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     update(_, { data: { login: userData } }) {
       context.login(userData);
-      props.history.push('/login');
+      history.push('/');
+
     },
     onError(error) {
       setError(error.graphQLErrors[0].message);

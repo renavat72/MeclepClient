@@ -133,8 +133,8 @@ export default function EditProfile(props) {
   }
   return (
     <Dialog open={isOpen} onClose={() => handleOpen()} maxWidth="xl">
-      <Box mx={3} my={2}>
-        <Flex mb={1} justifyContent="space-between">
+      <Box>
+        <Flex mb={1} justifyContent="space-between"  mx={3} my={2}>
           <Text fontWeight="bold" my="auto">
             {t('editProfile.title')}
           </Text>
@@ -142,12 +142,12 @@ export default function EditProfile(props) {
             <CloseIcon variant="second" />
           </IconButton>
         </Flex>
-        <Box minWidth={['270px', '700px']} minHeight="470px">
+        <Box minWidth={['270px', '700px']} minHeight="470px" mx={3}>
           <Flex flexDirection={['column-reverse', 'row']} width={1}>
-            <Box width={[1, 1 / 2]}>
+            <Box width={[1, 1 / 2]} m={1}>
               <FormEditProfile data={data} />
             </Box>
-            <Box width={[1, 1 / 2]}>
+            <Box width={[1, 1 / 2]} m={1}>
               <UploadPhoto data={data} />
             </Box>
           </Flex>

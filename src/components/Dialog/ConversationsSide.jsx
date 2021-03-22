@@ -41,6 +41,7 @@ export default function ConversationsSide(props) {
     return null;
   }
   const { subscribeToMore, data } = useQuery(GET_CONVERSATIONS, { variables });
+  console.log(data)
   useEffect(() => {
     const unsubscribe = subscribeToMore({
       document: GET_CONVERSATIONS_SUBSCRIPTION,

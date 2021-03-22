@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import { Form } from 'react-final-form';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from "react-router-dom";
 
 import { AuthContext } from '../../context/auth';
 import { useForm } from '../../util/hooks';
@@ -17,6 +18,8 @@ export default function SignUp(props) {
   const context = useContext(AuthContext);
   const [errors, setErrors] = useState([]);
   const { t } = useTranslation();
+  let history = useHistory();
+
   const { onChange, onSubmit, values } = useForm(registerUser, {
     firstName: '',
     secondName: '',
@@ -27,7 +30,7 @@ export default function SignUp(props) {
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     update(_, { data: { register: userData } }) {
       context.login(userData);
-      props.history.push('/');
+      history.push('/');
     },
     variables: values,
   });
