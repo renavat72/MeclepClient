@@ -1,6 +1,6 @@
 # Meclep
 
-[Website](http://www.meclep.ru/authorization)
+[Website](http://www.meclep.ru/authorization)(The Website is not working as I am switching to a new host)
 
 ### Feature:
 
@@ -8,9 +8,14 @@
 - Create event
 - Share events with friends
 
+### Fix:
+- Map
+- Adaptive design
+- Optimization 
+
 ### `Meclep server`
 
-Open [Meclep server](https://github.com/renavat72/MeclepServer)
+[Meclep server](https://github.com/renavat72/MeclepServer) (At the moment I hid it)
 
 # MIT License
 
