@@ -55,7 +55,7 @@ const TypeMarker = (post) => {
 
 export default function Map({ children, mapRef }) {
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    googleMapsApiKey: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyDJs516b-y8v3lE0CIka0uZMBxEW7lqDOo",
     libraries,
   });
   const [markers, setMarkers] = useState('');

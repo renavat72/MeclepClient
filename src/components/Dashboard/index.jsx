@@ -31,9 +31,9 @@ export default function Dashboard() {
     <Box>
       <Map mapRef={mapRef}>
         <Flex>
-          <Flex>
             <Sidebar user={data && data.getAuthUser} panTo={panTo} logout={logout} />
           </Flex>
+          <Flex>
           {window.innerWidth > 768 ? (
             <Flex ml="auto" mr={4} mt={2}>
               <ModalLink path={`/createEvent`} component={AddEventWindow}>

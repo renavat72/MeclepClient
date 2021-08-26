@@ -7,6 +7,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { Form } from 'react-final-form';
 import { useRouteMatch } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import SendIcon from '@material-ui/icons/Send';
 
 import { CREATE_MESSAGE } from '../../apis/MessageAPI';
 
@@ -46,8 +47,8 @@ export default function ChatWindow(user) {
 
   return (
     <Dialog maxWidth="xl" open={isOpen} onClose={handleOpen}>
-      <Flex flexDirection="row" minWidth={['200px', '300px']} minHeight="200px" m={2}>
-        <Flex flexDirection="row">
+      <Flex flexDirection="column" minWidth={['200px', '300px']} minHeight="200px" m={2}>
+        <Flex flexDirection="row"justifyContent="space-evenly">
           <Text>{user.user.firstName}</Text>
           <Text>{user.user.secondName}</Text>
         </Flex>
@@ -63,8 +64,8 @@ export default function ChatWindow(user) {
                     onKeyDown={onEnterPress}
                   />
                   <Box ml="auto">
-                    <Button variant="contained" color="primary" type="submit" onClick={handleOpen}>
-                      {t('common.send')}
+                    <Button size="small" variant="contained" color="primary" type="submit" onClick={handleOpen}>
+                     <SendIcon/>
                     </Button>
                   </Box>
                 </Flex>

@@ -21,16 +21,7 @@ export const media = Object.keys(sizes).reduce((accumulator, label) => {
   return accumulator;
 }, {});
 export default {
-  breakpoints: [
-    {
-      xs: `${375 / 16}em`,
-      sm: `${540 / 16}em`,
-      md: `${720 / 16}em`,
-      lg: `${1024 / 16}em`,
-      xl: `${1280 / 16}em`,
-      xxl: `${1920 / 16}em`,
-    },
-  ],
+  breakpoints: [ '40em', '52em', '64em' ],
   fontSizes: [12, 14, 16, 20, 24, 32, 48, 64],
   colors: {
     blue: '#07c',
@@ -38,7 +29,7 @@ export default {
   },
   space: [0, 4, 8, 16, 32, 64, 128, 256],
   fonts: {
-    body: 'Nunito, sans-serif',
+    body: 'Montserrat, sans-serif',
     heading: 'inherit',
     monospace: 'Menlo, monospace',
   },

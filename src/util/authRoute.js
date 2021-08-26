@@ -10,9 +10,9 @@ function AuthRoute({ component: Component, ...rest }) {
       {...rest}
       render={() =>
         localStorage.getItem('jwtToken') ? (
-          <Route to="/" component={Dashboard} />
+          <Route exact to="/" component={Dashboard} />
         ) : (
-          <Route exact to="/authorization" component={Authorization} />
+          <Route to="/authorization" component={Authorization} />
         )
       }
     />

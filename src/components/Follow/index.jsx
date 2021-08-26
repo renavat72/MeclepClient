@@ -5,6 +5,8 @@ import { useMutation } from '@apollo/react-hooks';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { useTranslation } from 'react-i18next';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
 import { GET_AUTH_USER, CREATE_FOLLOW, DELETE_FOLLOW } from '../../apis/UserAPI';
 import { AuthContext } from '../../context/auth';
@@ -45,22 +47,20 @@ export default function Follow({ user, onFollowBtn, followBtn }) {
         <Box onClick={unFollowUser}>
           {onFollowBtn ? (
             <Fab color="secondary">
-              {' '}
               <CancelIcon fontSize="large" />
             </Fab>
           ) : (
-            <Button>{t('common.unFollow')}</Button>
+            <Button><DeleteForeverIcon/></Button>
           )}
         </Box>
       ) : (
         <Box onClick={followUser}>
           {followBtn ? (
             <Fab color="primary">
-              {' '}
               <GroupAddIcon fontSize="large" />
             </Fab>
           ) : (
-            <Button>{t('common.follow')}</Button>
+            <Button><PersonAddIcon/></Button>
           )}
         </Box>
       )}

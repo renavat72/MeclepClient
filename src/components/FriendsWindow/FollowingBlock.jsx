@@ -4,12 +4,12 @@ import { Text, Flex } from 'rebass';
 import { useQuery } from '@apollo/react-hooks';
 import { ModalLink } from 'react-router-modal';
 import { useTranslation } from 'react-i18next';
+import SendIcon from '@material-ui/icons/Send';
 
 import { GET_AUTH_USER } from '../../apis/UserAPI';
 import Follow from '../Follow';
 import ProfileWindow from '../Profile';
 import ChatWindow from '../Dialog/ChatWindow';
-import { DialogBlock, DialogFriend } from '../FriendsWindow';
 import AvatarUser from '../AvatarUser';
 
 export default function FollowingBlock({ handleClick, authUser, searchFollowing }) {
@@ -54,7 +54,7 @@ export default function FollowingBlock({ handleClick, authUser, searchFollowing 
     return null;
   } else {
     return (
-      <DialogBlock>
+      <Flex className="DialogBlock">
         {isOpen ? (
           <ChatWindow
             handleOpen={handleOpen}
@@ -71,7 +71,7 @@ export default function FollowingBlock({ handleClick, authUser, searchFollowing 
           </Text>
         ) : (
           MergeData.map((user) => (
-            <DialogFriend my={1} key={user.id}>
+            <Flex my={1} key={user.id} className="DialogBlockUser">
               <ModalLink
                 path={`/id${user.user}`}
                 component={ProfileWindow}
@@ -87,12 +87,12 @@ export default function FollowingBlock({ handleClick, authUser, searchFollowing 
               </Flex>
               <Flex ml="auto">
                 <Follow user={user} />
-                <Button onClick={() => handleOpen(user)}>{t('common.send')}</Button>
+                <Button onClick={() => handleOpen(user)}><SendIcon/></Button>
               </Flex>
-            </DialogFriend>
+            </Flex>
           ))
         )}
-      </DialogBlock>
+      </Flex>
     );
   }
 }

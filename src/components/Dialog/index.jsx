@@ -17,29 +17,7 @@ import { AuthContext } from '../../context/auth';
 import ConversationsSide from './ConversationsSide';
 import ChatSide from './ChatSide';
 import MobileDialog from './MobileDialog';
-
-export const FriendsSide = styled(Flex)`
-  background-color: #f8f8f8;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
-`;
-export const FriendsBlock = styled(Flex)`
-  border-bottom: 1px solid #e5e5e5;
-  box-sizing: border-box;
-  cursor: pointer;
-  max-height: 400px;
-  overflow: auto;
-
-  :hover {
-    background-color: #a0b9de;
-    transition: opacity 0.6s;
-    opacity: 0.9;
-  }
-  :active {
-    background-color: #a0b9de;
-    transition: opacity 0.6s;
-    opacity: 0.9;
-  }
-`;
+import "./index.css"
 
 export default function DialogWindow(props) {
   const { url } = useRouteMatch();
@@ -64,7 +42,7 @@ export default function DialogWindow(props) {
   });
 
   const updateMessageSeen = useCallback(async () => {
-    useMutation(UPDATE_MESSAGE_SEEN, {
+   await useMutation(UPDATE_MESSAGE_SEEN, {
       update(_, result) {
         console.log(result);
       },
@@ -89,7 +67,6 @@ export default function DialogWindow(props) {
       variables: { authUserId: user.id, userId: friendInfo.id },
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
-        updateMessageSeen();
         const newMessage = subscriptionData.data.messageCreated;
         const mergedMessages = [...prev.getMessages, newMessage];
 
@@ -103,7 +80,7 @@ export default function DialogWindow(props) {
   
   if (window.innerWidth < 768)
     return (
-      <Dialog open={isOpen} onClose={() => handleOpen()} maxWidth="xl">
+      <Dialog open={isOpen} onClose={() => handleOpen()}fullWidth={true} maxWidth={false}>
         <MobileDialog
           setFriendInfo={setFriendInfo}
           authUser={user.id}
@@ -114,8 +91,8 @@ export default function DialogWindow(props) {
     );
   else
     return (
-      <Dialog open={isOpen} onClose={() => handleOpen()} maxWidth="xl">
-        <Flex flexDirection="row" minWidth={['500px', '700px']} minHeight="470px">
+      <Dialog open={isOpen} onClose={() => handleOpen()} fullWidth={true} maxWidth={false}>
+        <Flex flexDirection="row" minWidth={['500px', '700px']} minHeight="720px">
           <ConversationsSide
             setFriendInfo={setFriendInfo}
             authUser={user.id}

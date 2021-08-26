@@ -1,0 +1,73 @@
+
+body{
+    font-family: 'Montserrat', sans-serif;
+}
+
+.FilterBlock {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    width: 100%;
+    padding-top: 25px;
+    background: #F3F3F3;
+}
+.EventsBlock {
+    min-height: 100%;
+    width: 100%;
+}
+@media (min-width: 640px) {
+    .FilterBlock {
+        max-width: 200px;
+        padding-left: 24px;
+        padding-right: 24px;
+        margin-left: auto;
+    }
+    .EventCard {
+        display: flex;
+        max-width: 350px;
+        margin: 15px 20px 10px 0px;
+        background: #fff;
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+    }
+}
+.EventList {
+    max-width: 1800px;
+    width: 100%;
+}
+
+.EventCard {
+    display: flex;
+    max-width: 350px;
+    margin-top: 15px;
+    background: #fff;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+}
+
+.EventMarkerWindow {
+    /* min-width: 300px; */
+    max-width: 400px;
+    background-color: #F3F3F3;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+}
+.AccordingFilter:checked{
+    background-color: #57A9FA;
+}
+.AccordingType:checked{
+    background-color: #57A9FA;
+}
+.FilterBtn{
+    color: #000000;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 4px;
+    padding-right: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 12;
+    font-weight: 500;
+    text-align: left;
+
+}
+.FilterBtn:active{
+    background-color: #57A9FA;
+}

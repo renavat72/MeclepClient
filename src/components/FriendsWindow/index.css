@@ -1,0 +1,34 @@
+
+.FriendsWindowBlock{
+
+}
+
+.DialogBlock{
+    flex-direction: column;
+    overflow: auto;
+    box-sizing: border-box;
+}
+
+.DialogFriend{
+    box-sizing: border-box;
+    border: 1px solid black;
+}
+
+.WrapperFriends{
+    height: 720px;
+}
+.InputBlock{
+    background-color: #f8f8f8;
+  border: 1px solid #e5e5e5;
+}
+
+.FriendsWindow {
+    max-height: 100%;
+    overflow: auto;
+    box-sizing: border-box;
+}
+.DialogBlockUser{
+    background-color: #f8f8f8;
+    box-shadow: 0px 1px 1px 1px rgba(34, 60, 80, 0.08);
+
+}

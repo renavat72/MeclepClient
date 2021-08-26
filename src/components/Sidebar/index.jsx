@@ -20,6 +20,7 @@ import { ModalLink } from 'react-router-modal';
 import styled from 'styled-components';
 import ReorderIcon from '@material-ui/icons/Reorder';
 import { useTranslation } from 'react-i18next';
+import './style.css';
 
 import { SET_CITY } from '../../reducers/geolocation';
 import EventsBlock from '../Events/EventsBlock';
@@ -66,8 +67,8 @@ const Sidebar = ({ panTo, user, logout }) => {
   };
   const Logout = () => {
     return (
-      <Box>
-        <Button variant="outlined" onClick={logout} href="/authorization">
+      <Box >
+        <Button size="large"variant="outlined" onClick={logout} href="/authorization">
           <ListItemIcon>
             <ExitToAppIcon />
           </ListItemIcon>
@@ -78,16 +79,14 @@ const Sidebar = ({ panTo, user, logout }) => {
   };
   const EventsBlockWindow = () => {
     return (
-      <Box>
-        <ModalLink path={`/events`} component={EventsBlock} props={{ panTo }}>
-          <Button>
+      <ModalLink path={`/events`} component={EventsBlock} props={{ panTo }}>
+          <Flex flexDirection="row">
             <ListItemIcon>
               <EventIcon />
             </ListItemIcon>
             <Text>{t('common.events')}</Text>
-          </Button>
+      </Flex>
         </ModalLink>
-      </Box>
     );
   };
   function Locate({ panTo }) {
@@ -103,67 +102,55 @@ const Sidebar = ({ panTo, user, logout }) => {
       );
     }
     return (
-      <Box>
-        {/* <CustomModalLink 
-                    path={`/city`} 
-                    component={CityWindow } 
-                    props={{setSelectedCity, panTo}} 
-                > */}
-        <Button disabled>
-          <Flex mr={4}>
-            <RoomOutlinedIcon
-            //   onClick={toLocate}
-            />
-          </Flex>
-          <Text mr="auto">
-            {/* {selectedCity} */}
-            {/* Доделать выбор города*/}
-            Moscow
-          </Text>
-        </Button>
-        {/* </CustomModalLink> */}
-      </Box>
+      // <ModalLink 
+      //     path={`/friends`} 
+      //     component={FriendsWindow} 
+      //     props={{ handleClick }}
+      //   >
+      <Flex flexDirection="row">
+          <ListItemIcon>
+            <RoomOutlinedIcon/>
+          </ListItemIcon>
+          <Text sx={{ textDecoration: 'none' }} color="Gray"> Moscow</Text>
+        </Flex>
+      // </ModalLink>
     );
   }
   const DialogBlock = () => {
     return (
-      <Box>
         <CustomModalLink path={`/dialog`} component={DialogWindow} textDecoration={'none'}>
-          <Button>
-            <MailIcon />
-            <Box ml={4}>{t('sidebar.dialog')}</Box>
-          </Button>
+        <Flex flexDirection="row">
+          <ListItemIcon>
+              <MailIcon />
+            </ListItemIcon>
+            <Text sx={{ textDecoration: 'none' }}>{t('sidebar.dialog')}</Text>
+        </Flex>
         </CustomModalLink>
-      </Box>
     );
   };
 
   const FriendWindowBlock = () => {
     return (
-      <Box>
-        <ModalLink path={`/friends`} component={FriendsWindow} props={{ handleClick }}>
-          <Button>
+        <ModalLink path={`/friends`} component={FriendsWindow}>
+        <Flex flexDirection="row">
             <ListItemIcon>
               <PeopleOutlineIcon />
             </ListItemIcon>
-            <Text sx={{ textDecoration: 'none' }}>{t('sidebar.friends')}</Text>
-          </Button>
+            <Text style={{ textDecoration: 'none' }}>{t('sidebar.friends')}</Text>
+          </Flex>
         </ModalLink>
-      </Box>
     );
   };
   const EditProfileBlock = () => {
     return (
-      <Box>
         <ModalLink path={`/settings`} component={EditProfile}>
-          <Button>
+        <Flex flexDirection="row">
             <ListItemIcon>
               <AccountBoxOutlinedIcon />
             </ListItemIcon>
             <Text>{t('sidebar.editProfile')}</Text>
-          </Button>
+          </Flex>
         </ModalLink>
-      </Box>
     );
   };
   function DrawerSide() {
@@ -174,18 +161,18 @@ const Sidebar = ({ panTo, user, logout }) => {
     const IsDesktopDrawer = ({ user }) => {
       if (user === undefined) return null;
       return (
-        <Drawer anchor="left" variant="permanent" onClose={openHandler} open={sidebarOpen} >
+        <div anchor="left" variant="permanent" onClose={openHandler} open={sidebarOpen} className="Drawer">
           <Flex flexDirection="column" px={2}>
             <ModalLink path={`/myProfile`} component={MyProfileWindow}>
-              <Flex mx={3} my={4}>
-                <AvatarUser props={user} />
-                <Flex my="auto" justifyContent="space-evenly" width={1}>
-                  <Box>{user.firstName}</Box>
-                  <Box>{user.secondName}</Box>
+              <Flex mx={2} my={4}>
+                <AvatarUser props={user}/>
+                <Flex my="auto" justifyContent="space-evenly" width={1} ml={3}>
+                  <Text fontWeight="500">{user.firstName}</Text>
+                  <Text fontWeight="500">{user.secondName}</Text>
                 </Flex>
               </Flex>
             </ModalLink>
-            <Flex flexDirection="column" mt={5}>
+            <Flex flexDirection="column" >
               <List>
                 {[
                   <Locate panTo={panTo} />,
@@ -200,11 +187,11 @@ const Sidebar = ({ panTo, user, logout }) => {
                 ))}
               </List>
             </Flex>
-          </Flex>
-          <Flex mx={4} mt="auto" pb={5}>
+          <Flex mx={4} mt="auto" pb={5} >
             <Logout />
           </Flex>
-        </Drawer>
+          </Flex>
+        </div>
       );
     };
     const IsMobileDrawer = () => {
@@ -214,15 +201,17 @@ const Sidebar = ({ panTo, user, logout }) => {
             <Flex>
               {[
                 <ModalLink path={`/friends`} component={FriendsWindow}>
-                  <PeopleOutlineIcon ml={3} />
-                </ModalLink>,
-                <ModalLink path={`/dialog`} component={DialogWindow}>
-                  <MailIcon ml={3} />
+                  <PeopleOutlineIcon  />
                 </ModalLink>,
                 <ModalLink path={`/events`} component={EventsBlock}>
-                  <EventIcon ml={3} />
+                  <EventIcon  />
                 </ModalLink>,
+                <ModalLink path={`/dialog`} component={DialogWindow}>
+                  <MailIcon  />
+                </ModalLink>,
+                <ModalLink path={`/`}>
                 <ReorderIcon onClick={handleMobSidebar} />,
+              </ModalLink>,
               ].map((block, index) => (
                 <Flex key={index} onClick={handleClick} my={1} mx="auto">
                   <ListItemText primary={block} />

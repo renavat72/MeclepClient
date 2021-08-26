@@ -7,20 +7,11 @@ import { useMutation } from '@apollo/react-hooks';
 import { Form } from 'react-final-form';
 import { ModalLink } from 'react-router-modal';
 import { useTranslation } from 'react-i18next';
+import SendIcon from '@material-ui/icons/Send';
 
 import { CREATE_MESSAGE } from '../../apis/MessageAPI';
 import ProfileWindow from '../Profile';
 
-const InputBlock = styled(Flex)`
-  background-color: #f8f8f8;
-  border: 1px solid #e5e5e5;
-`;
-const DialogBlock = styled(Flex)`
-  flex-direction: column;
-  height: 400px;
-  padding-bottom: 14px;
-  overflow-x: hidden;
-`;
 const Message = styled(Text)`
   width: fit-content;
   background-color: ${(p) => (p.userMessage ? '#8dabd8' : '#e5e5e5')};
@@ -66,7 +57,7 @@ export default function ChatSide(props) {
   };
   return (
     <Flex flexDirection="column" width={[1, 5 / 6]}>
-      <DialogBlock>
+      <Flex className="DialogBlock">
         {messages <= 0 ? null : (
           <Flex
             width={2 / 3}
@@ -126,9 +117,9 @@ export default function ChatSide(props) {
           })
         )}
         <div ref={bottomRef} />
-      </DialogBlock>
+      </Flex>
       {messages <= 0 ? null : (
-        <InputBlock width={1} p={3} flexDirection="column">
+        <Flex mt="auto" className="InputBlock" width={1} p={3} flexDirection="column">
           <Form
             onSubmit={onSubmit}
             render={({ handleSubmit }) => (
@@ -141,15 +132,15 @@ export default function ChatSide(props) {
                     onKeyDown={onEnterPress}
                   />
                   <Box px={3}>
-                    <Button variant="contained" color="primary" type="submit">
-                      {t('common.send')}
+                    <Button size="small" variant="contained" color="primary" type="submit">
+                      <SendIcon/>
                     </Button>
                   </Box>
                 </Flex>
               </form>
             )}
           />
-        </InputBlock>
+        </Flex>
       )}
     </Flex>
   );

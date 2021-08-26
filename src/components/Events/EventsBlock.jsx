@@ -10,8 +10,9 @@ import {
   Radio,
   RadioGroup,
   IconButton,
+  Grid,
 } from '@material-ui/core';
-import { Text, Box, Flex } from 'rebass';
+import { Text, Box, Flex, Button } from 'rebass';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
@@ -19,17 +20,12 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { useRouteMatch } from 'react-router-dom';
 import CloseIcon from '@material-ui/icons/Close';
 import { useTranslation } from 'react-i18next';
+import './index.css'
 
 import { FETCH_ALL_EVENTS_QUERY } from '../../apis/ParserEventAPI';
 import { AuthContext } from '../../context/auth';
 import ParserEvent from './ParserEvent';
 import Event from './Event';
-
-const WrapperEvent = styled(Box)`
-  width: 100%;
-  min-height: 720px;
-`;
-
 
 const Block = ({ children }) => <Box>{children}</Box>;
 
@@ -99,19 +95,23 @@ export default function EventsBlock(props) {
     });
   };
   return (
-    <Dialog open={isOpen} onClose={() => handleOpen()} width={1} maxWidth="xl">
-      <Flex mx={[3, 4]} my={[3, 1]} minWidth={[null, '650px']} flexDirection="column">
-        <Flex mb={3} justifyContent="space-between">
-          <Text fontWeight="bold" my="auto">
-            {' '}
-            {t('common.events')}
-          </Text>
-          <IconButton onClick={() => handleOpen()}>
-            <CloseIcon variant="second" />
-          </IconButton>
-        </Flex>
-        <Flex width={1} flexDirection={['column-reverse', 'row']}>
-          <WrapperEvent mr={[0, 5]}>
+    <Dialog open={isOpen} onClose={() => handleOpen()} fullWidth={false} width={1} maxWidth="xl">
+      <Flex flexDirection="column" >
+        <Flex flexDirection={['column-reverse', 'row']} >
+          <Flex   flexDirection="column">
+            <Box m={[2,4]}>
+            <Flex >   
+             <Text fontWeight="bold" my="auto" mx={["auto",0, 0]} ml="auto">
+                {t('common.events')}
+              </Text>
+            </Flex>
+            <Flex my={3} ml="auto"> 
+                <TextField
+                placeholder={t('events.find')}
+                value={searchValue}
+                onChange={onSearchChange}
+              />
+            </Flex>
             <EventsList
               events={filteredEvents}
               handleOpen={handleOpen}
@@ -120,8 +120,8 @@ export default function EventsBlock(props) {
               handleEventsWindow={handleEventsWindow}
               showMore={showMore}
             />
-          </WrapperEvent>
-          <Box width={[1, 1 / 3, 1 / 3]}>
+            </Box>
+            </Flex>
             <FilterBlock
               typeValue={typeValue}
               onTypeChange={onTypeChange}
@@ -131,7 +131,6 @@ export default function EventsBlock(props) {
               myFollowingHandle={myFollowingHandle}
               onlineHandle={onlineHandle}
             />
-          </Box>
         </Flex>
       </Flex>
     </Dialog>
@@ -145,37 +144,42 @@ function EventsList({ events, user, panTo, showMore, handleOpen }) {
   const [eventsData, setEventsData] = useState('');
   const { t } = useTranslation();
   return (
-    <Box>
+    <div className="EventList">
+      <div className="EventsBlockContent">
       {eventsData <= 0 ? (
-        <Box mt="300px">
-          <Text textAlign="center" fontWeight="bold" color="#aaa">
-            {t('common.noEvents')}
+        <Flex m="auto">
+          <Text fontWeight="bold" color="#aaa" textAlign="center" >
+          {t('common.noEvents')}
           </Text>
-        </Box>
-      ) : (
-        eventsData &&
+        </Flex>
+      ) : 
+      <Grid container  >
+        {eventsData &&
         eventsData
-          .sort((a, b) => b.date - a.date)
-          .map((post) => (
-            <Block item key={post.id}>
-              <Box my={3} ml={1}>
+        .sort((a, b) => b.date - a.date)
+        .map((post) => (
+          <Block item key={post.id}>
+            <Grid item zeroMinWidth > 
                 {post.website ? (
                   <ParserEvent post={post} user={user} panTo={panTo} handleOpen={handleOpen} />
-                ) : (
-                  <Event post={post} user={user} panTo={panTo} />
-                )}
-              </Box>
+                  ) : (
+                    <Event post={post} user={user} panTo={panTo} />
+                    )}
+              </Grid>
             </Block>
           ))
-      )}
-      {eventsData >= 10 ? null : (
-        <Flex width={1}>
+          }
+          </Grid>
+}
+        {eventsData <= 0  ?  null :
+          <Flex py={3} width={1} style={{cursor: "pointer"}}>
           <Flex mx="auto">
             <ArrowDownwardIcon onClick={() => showMore()} color="primary" fontSize="large" />
           </Flex>
         </Flex>
-      )}
-    </Box>
+      }
+      </div>
+      </div>
   );
 }
 
@@ -183,26 +187,21 @@ function FilterBlock(props) {
   const { t } = useTranslation();
   const { favoriteHandle, myFollowingHandle, onlineHandle } = props;
   return (
-    <Flex ml="auto">
-      <Box maxWidth={[null, '200px', '170px']} width={1}>
-        <Box>
-          <TextField
-            placeholder={t('events.find')}
-            value={props.searchValue}
-            onChange={props.onSearchChange}
-          />
-          <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+    <div className="FilterBlock"  ml={[0, "auto"]}>
+        <Box mx={[3, 0]} > 
+         
+          <Accordion className="AccordingFilter">
+            <AccordionSummary className="AccordingType">
               <Text textAlign="left">{t('common.type')}</Text>
             </AccordionSummary>
             <AccordionDetails>
-              <Flex flexDirection="column" mr="auto ">
+              <Flex flexDirection="column" mr="auto"  >
                 <RadioGroup value={props.typeValue} onChange={props.onTypeChange}>
                   <FormControlLabel
                     value="Party"
                     control={<Radio color="primary" />}
                     label={t('common.party')}
-                  />
+                  ></FormControlLabel>
                   <FormControlLabel
                     value="Club"
                     control={<Radio color="primary" />}
@@ -222,22 +221,30 @@ function FilterBlock(props) {
               </Flex>
             </AccordionDetails>
           </Accordion>
+        <Flex mt={3} flexDirection="column" >
+        <Box onClick={() => favoriteHandle()} className="FilterBtn" >
+        <Text textAlign="left">{t('common.favorite')}</Text> 
         </Box>
-        <Flex mt={3} flexDirection="column">
-          <FormControlLabel
-            control={<Checkbox onChange={() => favoriteHandle()} color="primary" />}
+        <Box onClick={() => myFollowingHandle()} className="FilterBtn">
+        <Text textAlign="left">{t('friends.myFriends')}</Text> 
+        </Box>
+        <Box onClick={() => onlineHandle()} className="FilterBtn">
+        <Text textAlign="left">{t('events.online')}</Text> 
+        </Box>
+           {/* <FormControlLabel
+            control={<Button my={3} onClick={() => favoriteHandle()} color="primary" />}
             label={t('common.favorite')}
-          />
+            /> 
           <FormControlLabel
-            control={<Checkbox onChange={() => myFollowingHandle()} color="primary" />}
+            control={<Button my={3} onClick={() => myFollowingHandle()} color="primary" />}
             label={t('friends.myFriends')}
-          />
+            />
           <FormControlLabel
-            control={<Checkbox onChange={() => onlineHandle()} color="primary" />}
+            control={<Button onClick={() => onlineHandle()} color="primary" />}
             label={t('events.online')}
-          />
+            />  */}
         </Flex>
-      </Box>
-    </Flex>
+            </Box>
+      </div>
   );
 }

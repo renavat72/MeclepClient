@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 import { GET_AUTH_USER } from '../../apis/UserAPI';
 import Follow from '../Follow';
 import ProfileWindow from '../Profile';
-import { DialogBlock, DialogFriend } from '../FriendsWindow';
 import ChatWindow from '../Dialog/ChatWindow';
 import AvatarUser from '../AvatarUser';
 
@@ -31,7 +30,7 @@ export default function FollowersBlock({ handleClick, authUser, searchFollowing 
     setIsOpen(!isOpen);
   };
   return (
-    <DialogBlock>
+    <Flex className="DialogBlock">
       {isOpen ? (
         <ChatWindow
           handleOpen={handleOpen}
@@ -48,7 +47,7 @@ export default function FollowersBlock({ handleClick, authUser, searchFollowing 
         </Text>
       ) : (
         MergeData.map((user) => (
-          <DialogFriend my={1} key={user.id}>
+          <Flex my={1} key={user.id} className="DialogBlockUser">
             <ModalLink path={`/id${user.follower}`} component={ProfileWindow} props={user.follower}>
               <AvatarUser props={user} size="small" followers={true} />
             </ModalLink>
@@ -64,9 +63,9 @@ export default function FollowersBlock({ handleClick, authUser, searchFollowing 
                 <Button onClick={() => handleOpen(user)}>{t('common.send')}</Button>
               </Flex>
             </Flex>
-          </DialogFriend>
+          </Flex>
         ))
       )}
-    </DialogBlock>
+    </Flex>
   );
 }

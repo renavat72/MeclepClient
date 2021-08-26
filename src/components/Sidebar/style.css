@@ -1,0 +1,12 @@
+.Drawer{
+    position:fixed;
+    display: flex;
+    background: #F3F3F3;
+    min-height:100%;
+    width: 250px;
+}
+a {
+    outline: none;
+    color: #000 !important;
+    text-decoration: none
+}

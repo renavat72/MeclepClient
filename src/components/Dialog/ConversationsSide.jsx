@@ -12,24 +12,6 @@ const FriendsSide = styled(Flex)`
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
 `;
 
-const FriendsBlock = styled(Flex)`
-  border-bottom: 1px solid #e5e5e5;
-  box-sizing: border-box;
-  cursor: pointer;
-  max-height: 400px;
-  overflow: auto;
-
-  :hover {
-    background-color: #a0b9de;
-    transition: opacity 0.6s;
-    opacity: 0.9;
-  }
-  :active {
-    background-color: #a0b9de;
-    transition: opacity 0.6s;
-    opacity: 0.9;
-  }
-`;
 
 export default function ConversationsSide(props) {
   const { authUser, setFriendInfo } = props;
@@ -65,18 +47,17 @@ export default function ConversationsSide(props) {
     };
   }, [subscribeToMore]);
   return (
-    <FriendsSide variables={variables} width={[1, 2 / 6]}>
+    <Flex className="FriendsSide" variables={variables} width={[1, 2 / 6]}>
       <Box mt={2} width={1}>
         {data &&
           data.getConversations.map((user) => (
-            <FriendsBlock
-              flexDirection="row"
+            <Flex
+              className="FriendsBlock"
               p={[0, 2]}
-              mb={1}
               py={1}
               key={user.id}
               onClick={() => setFriendInfo(user)}
-              backgroundColor={user.seen ? 'Gray' : '#8dabd9'}
+              backgroundColor={user.seen ? '#8dabd9' : ''}
             >
               <Avatar>{user.firstName[0] + user.secondName[0]}</Avatar>
               <Flex ml={3} flexDirection="column">
@@ -96,9 +77,9 @@ export default function ConversationsSide(props) {
                   )}
                 </Flex>
               </Flex>
-            </FriendsBlock>
+            </Flex>
           ))}
       </Box>
-    </FriendsSide>
+    </Flex>
   );
 }

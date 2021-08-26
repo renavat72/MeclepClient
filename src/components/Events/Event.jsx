@@ -2,18 +2,11 @@ import React, { useState } from 'react';
 import Countdown from 'react-countdown';
 import { IconButton, Button } from '@material-ui/core';
 import { Text, Box, Flex } from 'rebass';
-import styled from 'styled-components';
 import ShareIcon from '@material-ui/icons/Share';
 import { useTranslation } from 'react-i18next';
 
 import DeleteButton from '../Buttons/DeleteButton';
 import LikeButton from '../Buttons/LikeButton';
-
-const WrapperCard = styled(Flex)`
-  box-sizing: border-box;
-  background: #fff;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
-`;
 
 export default function Event(props) {
   const { post, user, handleEventsWindow } = props;
@@ -58,7 +51,7 @@ export default function Event(props) {
 
   return (
     <Box>
-      <WrapperCard>
+      <div className="EventCard">
         <Flex m={3} flexDirection="column" width="500px">
           <Flex flexDirection="column">
             <Text fontWeight="bold" fontSize={20}>
@@ -78,7 +71,6 @@ export default function Event(props) {
               <IconButton>
                 <ShareIcon />
               </IconButton>
-
               {user &&
                 user.id === post.userId &&
                 (open ? (
@@ -99,7 +91,7 @@ export default function Event(props) {
             </Text>
           </Box>
         </Flex>
-      </WrapperCard>
+      </div>
     </Box>
   );
 }

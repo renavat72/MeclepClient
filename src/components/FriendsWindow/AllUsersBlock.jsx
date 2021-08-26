@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 import { GET_ALL_USERS } from '../../apis/UserAPI';
 import Follow from '../Follow';
 import { AuthContext } from '../../context/auth';
-import { DialogBlock, DialogFriend } from '../FriendsWindow';
 import ProfileWindow from '../Profile';
 import AvatarUser from '../AvatarUser';
 
@@ -39,7 +38,7 @@ export default function AllUsersBlock({ searchFollowing }) {
     return <CircularProgress />;
   } else {
     return (
-      <DialogBlock variables={variables}>
+      <Flex className="DialogBlock" variables={variables}>
         {loading ? (
           <CircularProgress />
         ) : MergeData <= 0 ? (
@@ -48,7 +47,7 @@ export default function AllUsersBlock({ searchFollowing }) {
           </Text>
         ) : (
           MergeData.map((user) => (
-            <DialogFriend my={1} key={user.id}>
+            <Flex my={1} key={user.id} className="DialogBlockUser">
               <ModalLink path={`/id${user.id}`} component={ProfileWindow} props={user.id}>
                 <AvatarUser props={user} size="small" />
               </ModalLink>
@@ -61,10 +60,10 @@ export default function AllUsersBlock({ searchFollowing }) {
               <Flex ml="auto">
                 <Follow user={user} />
               </Flex>
-            </DialogFriend>
+            </Flex>
           ))
         )}
-      </DialogBlock>
+      </Flex>
     );
   }
 }

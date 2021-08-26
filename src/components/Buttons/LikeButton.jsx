@@ -38,8 +38,8 @@ export default function LikeButton(props) {
   }
 
   return (
-    <Flex>
-      <Flex my="auto">{likeCount}</Flex>
+    <Flex mr="auto">
+      {/* <Flex my="auto">{likeCount}</Flex> */}
       <IconButton onClick={handleLike}>{LikeButton}</IconButton>
     </Flex>
   );

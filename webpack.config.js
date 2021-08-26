@@ -16,13 +16,17 @@ module.exports = {
         use: 'babel-loader',
       },
       {
-        test: /\.css$/,
-        use: 'css-loader',
-      },
-      {
         test: /\.(gif|svg|jpg|png)(\?v=\d+\.\d+\.\d+)?$/,
         use: 'file-loader',
         include: path.join(__dirname, 'public'),
+      },
+      // {
+      //   test: /\.css$/,
+      //   use: 'css-loader',
+      // },
+      {
+        test: /\.(scss|css)$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.(woff(2)?|ttf|eot|svg|jpg)(\?v=\d+\.\d+\.\d+)?$/,

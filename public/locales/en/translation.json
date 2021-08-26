@@ -31,13 +31,16 @@
     "selectChat": "Select a chat"
   },
   "login": {
+    "login": "Login",
     "error": "All fields are required",
     "button": "Sign in",
     "createAcc": "Create account",
     "email": "Email",
-    "password": "Password"
+    "password": "Password",
+    "text":"You don't have account?"
   },
   "signUp": {
+    "signUp": "Sign up",
     "firstName": "First Name",
     "secondName": "Second Name",
     "email": "Email",

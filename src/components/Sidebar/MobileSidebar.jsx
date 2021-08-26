@@ -14,9 +14,10 @@ export default function MobileSidebar({
   mobSidebarOpen,
   handleMobSidebar,
 }) {
+  if(!user) return null;
   return (
-    <Dialog open={mobSidebarOpen} onClose={() => handleMobSidebar()} maxWidth="xl">
-      <Flex py={4} minWidth={['250px', '300px']} flexDirection="column">
+    <Dialog open={mobSidebarOpen} onClose={() => handleMobSidebar()} width="xl ">
+      <Flex py={4} minWidth={['250px', '300px']}  my="auto" flexDirection="column">
         <Flex mx="auto" mt="auto" mb={4}>
           {user.coverImage ? (
             <img
@@ -45,17 +46,14 @@ export default function MobileSidebar({
             <ModalLink path={`/createEvent`} component={AddEventWindow}>
               <Flex flexDirection="row" mx="auto" justifyContent="space-between">
               <Button>
-                <ListItemIcon>
-                  <AddIcon />
-                </ListItemIcon>
                 <Text>Create event</Text>
               </Button>
               </Flex>
             </ModalLink>
           </Flex>
-          <Flex mb={4}>
+          {/* <Flex mb={4}>
             <EditProfileBlock />
-          </Flex>
+          </Flex> */}
           <Flex mx="auto">
             <Logout />
           </Flex>

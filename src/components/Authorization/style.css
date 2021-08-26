@@ -1,0 +1,51 @@
+.AuthoriztionPage {
+  position: fixed;
+    top:0;
+    left:0; 
+    min-width:100%;
+    padding: 16px 0 16px 0;
+    background: rgb(31,175,191);
+    background: linear-gradient(332deg, rgba(31,175,191,1) 37%, rgba(153,217,242,1) 100%);
+    }
+.AuthoriztionBlock{ 
+    flex-direction: column;
+    display: flex;
+    width: 300px;
+    top: 25%;
+    right: 0;
+      
+    /* bottom: 0; */
+    left: 75%;
+    margin: auto;
+    background: #F0F0F0;
+    box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+    border-radius: 20px;
+  
+    text-align: center;
+}
+@media (min-width: 1024px) {
+  .AuthoriztionBlock{position: absolute}
+  .AuthoriztionPage{min-height: 100%; padding: 0}
+}
+.AuthorizationPageText { 
+    display: flex;
+    flex-direction: column;
+  
+    width: 250px;
+    height: 350px;
+  
+      position: absolute;
+      top: 0;
+      right: 75%;
+      bottom: 0;
+      left: 0;
+      margin: auto;
+  
+    font-size: 24px;
+    font-weight: 800;
+  }
+ 
+  a {
+    outline: none;
+  text-decoration: none;
+  }
